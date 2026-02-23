@@ -1,0 +1,27 @@
+#
+LaTeX build artifacts
+*.aux
+*.log
+*.out
+*.pdf
+*.fdb_latexmk
+*.fls
+*.synctex.gz
+*.toc
+*.lof
+*.lot
+*.bbl
+*.blg
+*.dvi
+*.ps
+*.eps
+*.kaux
+*.diagnose
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db

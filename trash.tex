@@ -1,0 +1,236 @@
+
+
+
+ 
+ Therefore, the outputs of the $u \cdot f'$ and $g'$ are linearly ordered by the prefix relation. Since $g'$ begins with a homomorphism, it follows from Lemma~\ref{lem:almost-periodic-lemma} that the outputs of both $u \cdot f'$ and $g'$ are prefixes of $x^\omega$ for some primitive word $x$. 
+    Both outputs above are prefixes of $x^\omega$, where $x$ is the primitive root of the first homomorphism in $f$. From this it follows that the last $|w_0|$ letters in the right-hand side of~\eqref{eq:cyclic-segments-prefix} are a copy of $w_0$, and thus we get the desired conjugacy. 
+
+
+In this case, the leftmost segments of $f$ and $g$ are cyclic, and therefore their outputs are prefixes of $x^\omega$ for some primitive word $x$.  
+  since $f'$ is the same as the first homomorphism $f_1$, because they are    $f_1$ is the same as the leftmost segment $f'$, and also $g_1$ is the same as the leftmost segment $g'$. It follows from the above conjugacy that the output of $f''$ always begins with $u$. 
+To complete the proof of the Segment Lemma in this case, we will show that 
+
+
+
+
+Consider the initial constants $v_0$ and $w_0$ in the decompositions of $f$ and $g$ into constants and homomorphisms. If both of these constants  are nonempty, then they must begin with the same letter, and we can strip this letter away without affecting the assumptions or conclusions of the lemma. By continuing this process, we can assume that at least one of these two constants is empty. 
+Therefore, without loss of generality, we can assume that $v_0$ is empty. 
+
+The following claim shows that the leftmost segments of $f$ and $g$ are conjugate. (The claim uses the assumption that $v_0$ is a prefix of $w_0$, but such an assumption can be made without loss of generality.)
+\begin{claim}\label{claim:first-segments-are-conjugate}
+    Assume that  $v_0$ is a prefix of $w_0$, i.e.~$w_0 = v_0 \cdot  u$ for some  $u$. Then  $ f' \cdot u = u \cdot g'$.
+\end{claim}
+\begin{proof}
+    We consider two cases, depending on cylicity of the  first homomorphisms.
+    \begin{itemize}
+        \item The first case is when one of the homomorphisms $f_1$ or $g_1$ is not cyclic.    By Claim~\ref{claim:different-lengths-implies-cyclic}, we know that if either $f_1$ or $g_1$ is not cyclic, then their  outputs must always have the same length. Since the outputs always have the same length, it follows that $f_1$ and $g_1$ must be use the same component $A^*_i$ of the input product $A$.  Furthermore, since the outputs have the same length, and one of the homomorphisms is not cyclic, it follows that the other homomorphism is also not cyclic. Summing up, we know that the leftmost segment $f'$ is the same as the first homomorphism $f_1$, and likewise the leftmost segment $g'$ is the same as the first homomorphism $g_1$,  and both homomorphisms use the same component $A^*_i$ of the input product.
+        
+        Choose some input $a_0 \in A_i^*$ so that $f_1(a)$ has length at least $|u|$, and therefore $f_1(a)$ begins with $u$. Such an input exists, since we assume that all homomorphisms involved are nonempty. For every input $a \in A_i^*$ we have 
+    \begin{align*}
+    f_1(a) \cdot f_1(a_0)  \quad \text{is a prefix of} \quad
+    u \cdot g_1(a) \cdot g_1(a_0).
+    \end{align*}
+    Since the strings $f_1(a)$ and $g_1(a)$ have the same length, it follows that  the last $|u|$ letters in $u \cdot g_1(a)$ must be equal to the first $|u|$ letters in $f_1(a_0)$, and therefore they must be equal to $u$. This gives the desired conjugacy.
+    \item We are left with the case when neither $f_1$ nor $g_1$ are cyclic.     Using the same argument as in the proof of Claim~\ref{claim:different-lengths-implies-cyclic}, we can show that the outputs of the leftmost segments of $f$ and $g$ have lengths that differ by a constant, since otherwise one of the two segments could be extended. Therefore, the outputs of the $f'$ and $u \cdot g'$ are linearly ordered by the prefix relation. Since $f'$ begins with a homomorphism, it follows from Lemma~\ref{lem:almost-periodic-lemma} that the outputs of both $f'$ and $u \cdot g'$ are prefixes of $x^\omega$ for some primitive word $x$. 
+    Both outputs above are prefixes of $x^\omega$, where $x$ is the primitive root of the first homomorphism in $f$. From this it follows that the last $|w_0|$ letters in the right-hand side of~\eqref{eq:cyclic-segments-prefix} are a copy of $w_0$, and thus we get the desired conjugacy. 
+    \end{itemize}
+\end{proof}
+
+The following claim strengthens the previous one by showing that the conjugacy can be proved in our axiomatic system.
+\begin{claim}
+    The conjugacy from the conclusion Claim~\ref{claim:first-segments-are-conjugate} can be proved in our axiomatic system.
+\end{claim}
+ \begin{proof}
+    A segment has one of two kinds: (a) homomorphism which is not cyclic, or (b)  maximal cyclic interval. If segments are conjugate, then they must have the same kind. Therefore, we prove the claim by considering these two cases separately.
+     
+    \begin{enumerate}[(a)]
+        \item Consider two conjugate homomorphisms (we do not even need the assumption that they are not cyclic). The conjugacy must also hold for inputs that are lists of length one, and therefore it must hold for the underlying functions which are homomorphically lifted. By induction assumption, the conjugacy for the underlying functions can be proved, and then we can use the axiom~\eqref{rule:conjugation} to prove conjugacy for the homomorphisms.
+        \item Consider two conjugate cyclic segments, i.e.~
+            \begin{align*}
+             \cdot f' = g' \cdot w_0
+            \end{align*}
+    Like any very simple function, the segment $f_i$ is a concatenation of constants and homomorphisms. Since the segment is cyclic, we know that if the concatenation contains a  homomorphism followed by a constant, i.e.~$h \cdot v$,  then $h$ has some period $x$ and $v$ is a prefix of $x^\omega$. Therefore, we can use the same reasoning as in the previous item  to prove conjugacy $h \cdot v \equiv v \cdot h'$ for some homomorphism. By repeatedly applying this argument, we can prove in our system that the segment $w \cdot f_i$ is equal to one in which all constants are on the left, and all homomorphisms are on the right. We can also do the same for $g_i \cdot w$. Summing up, we can prove equalities
+    \begin{align*}
+    w \cdot f_i \equiv u \cdot \myunderbrace{h_1 \cdots h_n}{concatenation \\ of homomomorphisms} \qquad g_i \cdot w \equiv u' \cdot \myunderbrace{h'_1 \cdots h'_{n'}}{concatenation \\ of homomomorphisms}.
+    \end{align*}
+    Since the equalities must also hold for empty inputs, it follows that $u = u'$. Also, all homomorphisms must have the same primitive period (not even up to conjugacy, but actually the same). Therefore, we can use axiom~\eqref{rule:periodic-commutativity} to rearrange the homomorphisms in any way. If we have two adjacent homomorphisms that use inputs from the same component $A_\ell$ of the product type $A$, then we can use axiom~\eqref{rule:periodic-homomorphism} to combine them into a single homomorphism. This way, we can modify the segments so that  for each component $A_\ell$ of the product type, each segment uses exactly one homomorphism. The homomorphisms that have inputs from the same component $A_\ell$ must be equal, by considering inputs where all components of the product are empty except for $A_\ell$. Therefore, this equality can be proved by induction assumption. 
+    \end{enumerate}
+    Suppose first that $f_i$ is not cyclic, in which case also $g_i$ is not cyclic. This means that both $f_i$ and $g_i$ are homomorphisms
+    \begin{align*}
+    f_i = \hom f'_i \qquad g_i = \hom g'_i.
+    \end{align*}
+    By looking at inputs which have one list item only, we see that  the conjugacy must also hold for the underlying functions, i.e.
+    \begin{align*}v \cdot f'_i = g'_i \cdot v.
+    \end{align*}
+    Therefore, we can use the induction assumption to show that the conjugacy for the underlying functions can be proved, and then we can use the axiom~\eqref{rule:conjugation} to prove conjugacy for the homomorphisms.
+    
+    Suppose now that both $f_i$ and $g_i$ are cyclic. Let $x$ be 
+ \end{proof}
+From the above we get completeness. Indeed, consider the decompositions of $f$ and $g$ into the leftmost segments and the remaining parts, as follows:
+\begin{align*}
+f = \myunderbrace{f'}{first\\ segment} \cdot f''  \quad \text{and} \quad g = w_0 \cdot \myunderbrace{g'}{first\\ segment} \cdot g''.
+\end{align*}
+By the conclusion of the above claim we have 
+\begin{align*}
+g = f' \cdot w_0 \cdot g''.
+\end{align*}
+The following claim shows that if the leftmost segment of one of the functions is not cyclic, then the same is true for the leftmost segment of the other function, and furthermore these two segments are conjugate.
+
+\begin{claim}
+    If either  $f_1$ and $g_1$ is not cyclic, then both are not cyclic and  $f_1 \cdot w_0 = w_0 \cdot g_1$. 
+\end{claim}
+\begin{proof}
+    By Claim~\ref{claim:different-lengths-implies-cyclic}, we know that if either $f_1$ or $g_1$ is not cyclic, then their  outputs must always have the same length. Since the outputs always have the same length, it follows that $f_1$ and $g_1$ must be use the same component $A^*_i$ of the input product $A$.  Choose some input $a_0 \in A_i^*$ so that $f_1(a)$ has length at least $|w_0|$, and therefore $f_1(a)$ begins with $w_0$. Such an input exists, since we assume that all homomorphisms involved are nonempty. For every input $a \in A_i^*$ we have 
+    \begin{align*}
+    f_1(a) \cdot f_1(a_0)  \quad \text{is a prefix of} \quad
+    w_0(a) \cdot g_1(a) \cdot g_1(a_0).
+    \end{align*}
+    Since the strings $f_1(a)$ and $g_1(a)$ have the same length, it follows that  the last $|w_0|$ letters in $w_0 \cdot g_1(a)$ must be equal to the first $|w_0|$ letters in $f_1(a_0)$, and therefore they must be equal to $w_0$.
+\end{proof}
+Thanks to the above lemma, we are left with the case when both $f_1$ and $g_1$ are cyclic. This means, that the leftmost segments of $f$ and $g$ are cyclic. We now show that these segments must be conjugate.
+\begin{claim}
+    If both $f_1$ and $g_1$ are cyclic, then the leftmost segments of $f$ and $g$ are  conjugate.
+\end{claim}
+\begin{proof}
+    Using the same argument as in the proof of Claim~\ref{claim:different-lengths-implies-cyclic}, we can show that the outputs of the leftmost segments of $f$ and $g$ have lengths that differ by a constant, since otherwise one of the two segments could be extended. Since we have assumed that $v_0$ is empty, it follows that 
+    \begin{align}\label{eq:cyclic-segments-prefix}
+    \text{(leftmost segment of $f$)} 
+    \quad \text{is a prefix of} \quad
+    w_0 \cdot \text{(leftmost segment of $g$)}.
+    \end{align}
+    Both outputs above are prefixes of $x^\omega$, where $x$ is the primitive root of the first homomorphism in $f$. From this it follows that the last $|w_0|$ letters in the right-hand side of~\eqref{eq:cyclic-segments-prefix} are a copy of $w_0$, and thus we get the desired conjugacy. 
+\end{proof}
+\end{proof}
+
+Using the Segment Lemma, decompose the functions $f$ and $g$ into segments and the string constants that separate them, as follows:
+    \begin{align*}
+f & = v_0  \cdot f_1 \cdot  v_1 \cdots f_k \cdot v_k \\
+g &= w_0 \cdot g_1 \cdot w_1 \cdots g_\ell \cdot w_\ell.
+\end{align*}
+Consider the leftmost segments $f_1$ and $g_1$.  By item~\ref{item:conjugate} of the Segment Lemma, we know that the leftmost segments are conjugate. Furthermore, as the following claim asserts, this conjugacy can be proved. 
+ \begin{claim}
+The conjugacy from item~\ref{item:conjugate} in Lemma~\ref{lem:segment-lemma} can be proved in our axiomatic system.    
+ \end{claim}
+
+
+
+\emph{segment} if either:
+\begin{itemize}
+    \item \emph{cyclic segment}: the outputs 
+\end{itemize}
+Such parts will be called \emph{segments} of $f$. 
+Define a \emph{segment} of $f$ to be any function of the form 
+Suppose that we have two very simple  functions with this input type, which are of the form 
+\begin{align*}
+f & = v_0  \cdot f_1 \cdot  v_1 \cdots f_k \cdot v_k \\
+g &= w_0 \cdot g_1 \cdot w_1 \cdots g_\ell \cdot w_\ell.
+\end{align*}
+
+
+Consider the function 
+\begin{align*}
+f & = v_0  \cdot f_1 \cdot  v_1 \cdots f_k \cdot v_k.
+\end{align*}
+Define a \emph{segment} of $f$ to be any function of the form 
+\begin{align*}
+ f_i v_i \cdots v_{j-i} f_j \quad \text{for some $i \leq j \in \set{1,\ldots,k}$}.
+\end{align*}
+We say that two homomorphisms $f_i$ and $f_j$ are \emph{adjacent} if either $i = j$, or otherwise the outputs of the function $f_i v_i \cdots v_{j-1} f_j$ are linearly ordered by the prefix relation. 
+\begin{lemma}
+    The adjacency relation is an equivalence relation on $\set{1,\ldots,k}$.
+\end{lemma}
+
+
+\begin{lemma}
+    Consider two very simple functions 
+    \begin{align*}
+f & = v_0  \cdot f_1 \cdot  v_1 \cdots f_k \cdot v_k \\
+g &= w_0 \cdot g_1 \cdot w_1 \cdots g_\ell \cdot w_\ell.
+\end{align*}
+whose domain is a product type. Then the 
+\end{lemma}
+
+We need to show that if $f=g$ then this can be proved, i.e.~$f \equiv g$. We will show this by induction on $k + \ell$, i.e.~on the total number of homomorphisms used. (This is a nested induction, since we are in the scope of a bigger induction on the structure of the input type.)  We assume that all homomorphisms have nonempty outputs, since otherwise they can be eliminated using the axiom~\eqref{rule:empty-image}.
+
+
+If both of the constants $v_0$ and $w_0$ are non-empty, then they must begin with the same letter, and we can strip this letter away without affecting the equality. By continuing this process, we can assume that at least one of these two constants is empty. Therefore, without loss of generality, we can assume that $v_0$ is empty.
+
+
+\begin{lemma}
+    If $v_0$ is empty and the outputs of $f_1$ and $g_1$ always have equal length, then  $f_1 w_0 = w_0 g_1$.
+\end{lemma}
+
+
+
+
+By conjugacy, we have $x f_1 = g_1 x$ for some string $x$, or the other way round. Assume the first case without loss of generality. 
+
+\begin{lemma}
+    If the outputs of $f_1$ and $g_1$ do not always have equal length, then both $f_1$ and $g_1$ are cyclic.
+\end{lemma}
+\begin{proof}
+    Consider two cases, depending on whether the homomorphisms $f_1$ and $g_1$ use the same component of the product as input, or they use different components.
+    
+    \begin{itemize}
+        \item 
+    Consider first the case where  the homomorphisms $f_1$ and $g_1$ use different components of the product. Since all homomorphisms are assumed to have possibly nonempty outputs, it follows that they have outputs of unbounded lengths.  Because the arguments for $f_1$ and $g_1$ can be chosen independently, it follows that 
+    \begin{align}
+        \label{eq:prefix-ordered-image-union-two}
+        \im (v_1 \cdot f_1) \cup \im (w_1 \cdot g_1)
+    \end{align}
+    is  linearly ordered by the prefix relation. Hence we can apply Lemma~\ref{lem:almost-periodic-lemma} to conclude that both $f_1$ and $g_1$ are cyclic. 
+
+\item  Suppose now that the homomorphisms $f_1$ and $g_1$ use the same component $A^*_i$ of the product as input. Since the outputs of $f_1$ and $g_1$ can have different lengths, it follows that there is some input $a \in A_i^*$ which makes a difference, say the output of $f_1$ is longer.  Suppose that feed functions $f$ and $g$ with an input where the $i$-th component has $a^n b$ for some $b \in A_i^*$. If $n$ is large enough with respect to $b$, then 
+    \begin{align*}
+    (w_0 \cdot g_1)(a^nb) \quad \text{is a prefix of} \quad 
+    (v_0 \cdot f_1)(a^n).
+    \end{align*}
+    This means that $g_1(b)$ is a prefix of some word that is conjugate to  $f_1(a)^\omega$. The conjugacy class of $f_1(a)^\omega$ depends only on the choice of $n$, and therefore we can assume that this conjugacy class is always the same for all $b$, by using some conjugacy class that arises for infinitely many $n$. Thus we have shown that the outputs of $g_1$ are linearly ordered by the prefix relation, and thus we can use Claim~\ref{claim:prefix-ordered-image}  and Lemma~\ref{lem:almost-periodic-lemma} to conclude that $g_1$ is periodic. This implies in turn that the outputs of $f_1$ are also linearly ordered by the prefix relation, and thus we can use the same argument to conclude that $f_1$ is also periodic. 
+\end{itemize}
+
+
+
+We have shown that both of the functions $f_1$ and $g_1$ are cyclic.  Let $x$ be the primitive root of $f_1$, which exists since this function is cyclic. 
+
+In the function $f$, we define a \emph{cyclic block} to be an interval of the form 
+\begin{align*}
+f_i v_{i} f_{i+1} v_{i+1} \cdots v_{j-1} f_j
+\end{align*}
+such that for some $x$, the outputs of the interval are prefixes of $x^\omega$. In a cyclic block all the homomorphisms are cyclic, and their roots are conjugates of $x$. If 
+
+For $i \in \set{0,\ldots,k}$ we decompose the function $f$ into two parts:  
+\begin{align*}
+f_{\le i}  \quad  \eqdef \quad  \myunderbrace{v_0 f_1  \cdots v_{i-1} f_i}{$f_{\le i}$}
+\myunderbrace{v_i f_{i+1} \cdots v_{k-1} f_k v_k}{$f_{>i}$}.
+\end{align*}
+
+
+\begin{lemma}
+    If $f_1$ and $g_1$ are cyclic, then there exist some $i, j \ge 1$ such that the functions $f_{\le i}$ and $g_{\le j}$ satisfy: (a) their outputs are linearly ordered by the prefix relation; and (b) there is some $\delta \in \Int$ such that the difference of output lengths of $f_{\le i}$ and $g_{\le j}$ is equal to $\delta$ for every input.
+\end{lemma}
+
+Choose $i$ to be maximal such that the first part $f_{\le i}$ has outputs that are linearly ordered by the prefix relation. Since this is a regular function, it follows that all outputs of $f_{\le i}$ are prefixes of $xy^\omega$ for some words $x,y$ with $y$ primitive. By Lemma~\ref{lem:almost-periodic-lemma}, it follows  all the homomorphisms $f_1,\ldots,f_i$ are cyclic, and with their corresponding roots $y_1,\ldots,y_i$ being  conjugates of $y$. By maximality of $i$, it follows that some output of $v_i f_{i+1}$ is not a prefix of $y_i^\omega$. This means that either: (a) $v_i$ is not a prefix of $y_i^\omega$; or (b) $f_{i+1}$ is not cyclic; or (b) $f_{i+1}$ is cyclic but its root $y_{i+1}$ is such that $v_i y_{i+1}^\omega$ is not a prefix of $y_i^\omega$. 
+
+
+We extend this to $i=0$, in which case $f_{\le 0}$ is the function that always outputs the empty string. Similarly, we define $g_{\le j}$ for $j \in \set{0,\ldots,\ell}$ as the prefix of $g$ that ends with the $j$-th homomorphism.
+
+\begin{lemma}
+    Choose $i \in \set{0,\ldots,k}$ to be  maximal so that $f_{\le i}$ has outputs that are linearly ordered by the prefix relation, and similarly choose $j \in \set{0,\ldots,\ell}$ to be maximal so that $g_{\le j}$ has outputs that are linearly ordered by the prefix relation. Then 
+\end{lemma}
+
+Choose $i$ to be maximal such that $f_{\le i}$ has outputs that are linearly ordered by the prefix relation.  This is a regular function, and thus all outputs are prefixes of $xy^\omega$ for some words $x,y$ with $y$ primitive.  By Lemma~\ref{lem:almost-periodic-lemma}, it follows  all the homomorphisms $f_1,\ldots,f_i$ are cyclic, and their roots are conjugates of $y$. By maximality of $i$, it follows that some output of $v_i f_{i+1}$ is not a prefix of $y'^\omega$, which is the root of $f_i$. 
+
+prefixes of $v_0x^\omega$. Similarly, choose the maximal $j$ such that the function 
+\begin{align*}
+w_0 g_1 \cdots w_{j-1} g_j
+\end{align*}
+has outputs which are prefixes of $v_0x^\omega$. We know that both $i$ and $j$ are at least $1$, since we have proved that $f_1$ and $g_1$ are cyclic. 
+
+The corresponding roots must be conjugates of each other, since the outputs of $f_1$ and $g_1$ can have unbounded overlap.
+
+
+Suppose that $f_1$ can have longer outputs than $g_1$. Since the output of $f_1$ can be arbitrarily bigger than the output of $g_1$, we can use the same  kind of argument as in item 2 above, to conclude that the outputs of $g_1 \cdot w \cdot g_2$ are linearly ordered by the prefix relation. If $x$ is the primitive root of $g_1$, then this implies that $w$ is a prefix of $x^\omega$. Therefore, we can use Lemma~\ref{lem:cyclic-shift-lemma} to show that $g_1 \cdot w \equiv w \cdot g'_1$ can be proved for some very simple function $g'_1$. Since the outputs of $g'_1 \cdot g_2$ are linearly ordered by the prefix relation, it follows that $g_2$ is also periodic, and its root is the same as the root of $g'_1$. Therefore, we can use axiom~\eqref{rule:associativity} to show that 
+\begin{align*}
+g_1 \cdot g'_2 \equiv g'
+\end{align*}
+for some homomorphism $g'$. Therefore, we are able to prove that $g$ is equivalent to a function that has a smaller number of homomorphisms, and we can use the induction assumption to conclude that $f \equiv g$.
