@@ -1,0 +1,64 @@
+\documentclass{article}
+\usepackage{macros}
+
+\begin{document}
+
+
+Work in progress: 
+
+
+
+\paragraph{Simple Functions}
+
+Those are the attempts made with the general case.
+
+
+The lists are of the type $A_1 \times (A_1 + \dots + A_n ) \times A_1 $. In particular, they have at least two elements - first and last, both of the same specified type.
+
+To the list of constructors of simple functions we add the bihomomorphism, that is a repeating of a special product functions on windows of size two on a list or its reverse and \emph{first} and \emph{last} constructors that apply a function to the first/last element of a list.
+
+
+\begin{lemma}[Katzper]
+
+    Consider two simple functions $f, g$ on type $A = A_1 \times (A_1 + \dots + A_n ) \times A_1$. 
+    Assume that they can be decomposed as $f = f_1 \cdot f'$ and $g = h \cdot g_3 \cdot g'$ such that $f_1$ and $g_3$ are both bihomomorphisms on the same input list  (and in the same direction), and $h$ is a function on the first element of this list. 
+    Then either both $f_1$ and $g_3$ are unary, or $f_1(w)h(w_1) = h(w_1)g(w)$ can be proved by the system.
+ 
+\end{lemma}
+
+
+\begin{proof}
+    Assume that for every $x$, $|f_1(x, x)| = |g_3(x, x)|$. If not, it should be easy to see that they are unary.
+
+    Consider an input list $w = a_1 w' a_n$.
+    
+    We have $\delta(w) = |h(a_1)| + |g_3(w)| - |f_1(w)| =  |h(a_1)| + |g_3(a_1, a_n)| - |f_1(a_1, a_n)| = \delta(a_1, a_n)$.
+
+    Consider the following cases:
+
+    \begin{enumerate}
+        \item $\exists a_n : A_1 \   \text{sup}_{a_1 : A_1} \delta(a_1, a_n) = \infty$ 
+        \item $\exists a_n : A_1 \   \text{inf}_{a_1 : A_1} \delta(a_1, a_n) = -\infty$ 
+        \item $\forall a_n : A_1 \   |\delta(a_1, a_n)| \leq c $ for some constant $c$ depending on $a_n$
+    \end{enumerate}
+
+    At least one of those conditions holds.
+
+    For cases (1) and (2) both bihoms are unary.
+
+    For case (3) note that $\alpha_{a_n}(a_1) = \delta(a_1, a_n)$ is a simple fucntion of type $A_1 \rightarrow \mathbb{Z}$ with bounded outputs, so it is constant. 
+    [TODO: exact prove of this statement above].
+
+    So $\delta(a_1, a_n) = c(a_n)$.
+
+    We have that $\delta(a_1, a_n) = c(a_n) = \delta(a_n, a_n) = |h(a_n)|$.
+
+    \includegraphics{pictures/schema.png}
+ 
+
+\end{proof}
+
+
+
+
+\end{document}
