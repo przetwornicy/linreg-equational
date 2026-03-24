@@ -1,23 +1,127 @@
-\documentclass{article}
-\usepackage{macros}
-
-\begin{document}
-
-
 Work in progress: 
 
+\section{Simple Functions}
 
+\subsection*{Type system and definitions}
 
-\paragraph{Simple Functions}
-
-Those are the attempts made with the general case.
-
+\katzper{TODO: formally}
 
 The lists are of the type $A_1 \times (A_1 + \dots + A_n ) \times A_1 $. In particular, they have at least two elements - first and last, both of the same specified type.
 
 To the list of constructors of simple functions we add the bihomomorphism, that is a repeating of a special product functions on windows of size two on a list or its reverse and \emph{first} and \emph{last} constructors that apply a function to the first/last element of a list.
 
+\subsection*{Rules}\label{sec:simple_functions_rules}
 
+\katzper{Perhaps not enough}
+
+\begin{mathpar}
+    \inferrule[Good interface partition]
+        {
+            \forall \overline x : A \quad f_1(\shell{\overline x}) \cdot f_2(\overline x) = g_1(\shell{\overline x}) \cdot g_2(\overline x) \\\\
+            \forall \overline x : A \quad f_1(\overline x) \cdot f_2(\shell{\overline x}) = g_1(\overline x) \cdot g_2(\shell{\overline x})
+        }
+        {
+            f_1 \cdot f_2 = g_1 \cdot g_2
+        }
+\end{mathpar}
+
+\begin{mathpar}
+    \inferrule[Fix left]
+        {
+            \forall \overline x : A \quad f_1(\first{\overline x}) \cdot f_2(\overline x) = g_1(\first{\overline x}) \cdot g_2(\overline x) \\\\
+            \forall \overline x : A \quad f_1(\overline x) \cdot f_2(\first{\overline x}) = g_1(\overline x) \cdot g_2(\first{\overline x})
+        }
+        {
+            f_1 \cdot f_2 = g_1 \cdot g_2
+        }
+\end{mathpar}
+
+\begin{mathpar}
+    \inferrule[Fix right]
+        {
+            \forall \overline x : A \quad f_1(\last{\overline x}) \cdot f_2(\overline x) = g_1(\last{\overline x}) \cdot g_2(\overline x) \\\\
+            \forall \overline x : A \quad f_1(\overline x) \cdot f_2(\last{\overline x}) = g_1(\overline x) \cdot g_2(\last{\overline x})
+        }
+        {
+            f_1 \cdot f_2 = g_1 \cdot g_2
+        }
+\end{mathpar}
+
+\begin{mathpar}
+    \inferrule[4 is enough]
+        {
+            \forall \overline x : A \quad f(\overline x) = f_1(\first{\overline x}) \cdot (\beta^\to f_2)(\overline x) \cdot f_3(\last{\overline x}) \\\\
+            \forall \overline x : A \quad g(\overline x) = g_1(\first{\overline x}) \cdot (\beta^\to g_2)(\overline x) \cdot g_3(\last{\overline x}) \\\\
+            \forall \overline x : A \quad |\overline x| \leq 4 \implies f(\overline x) = g(\overline x)
+        }
+        {
+            f = g   
+        }
+\end{mathpar}
+
+\subsection*{Soundness}
+
+\katzper{TODO}
+
+\subsection*{Completeness}
+
+Following the notation from the previous sections, we write $f \equiv g$ if the equality of $f$ and $g$ can be proved using rules from \cref{sec:simple_functions_rules}.
+
+\begin{lemma}\label{lem:simple_functions_completeness}
+    For every pair of simple functions $f,g : A \to \Gamma^*$, if $f = g$, then $f \equiv g$. 
+\end{lemma}
+
+The rest of this section is devoted to proving \cref{lem:simple_functions_completeness}. We proceed by a nested induction. The outer induction is on the rank of type $A$ \katzpermargin{define the rank of type}. Once the type is fixed, we write
+\begin{gather*}
+    f = \delta_0 \cdot f_1 \cdot \delta_1 \cdots \delta_{n-1} \cdot f_n \cdot \delta_n \\ 
+    g = \gamma_0 \cdot g_1 \cdot \gamma_1 \cdots \gamma_{m-1} \cdot g_m \cdot \gamma_m,
+\end{gather*}
+where $f_1, \dots, f_n, g_1, \dots, g_m$ are bihomomorphisms ($\leftarrow$ or $\rightarrow$) on one of the root lists, and $\delta_0, \dots, \delta_n, \gamma_0, \dots, \gamma_m$ are functions on $(\first{A}, \last{A})$. Then, the inner induction is on $n+m$. 
+
+We start with some simple cases. If $A = 1$, then the only possible functions are constant, so we actually need a rule for them? \katzpermargin{how to resolve constant functions?} If $n = 0$ or $m = 0$, then it must hold that either $n = m = 0$, in which case we reduce to a simpler type, or there is some $f_i = \varepsilon$ (or $g_j = \varepsilon$), which we can eliminate.
+
+First, we show that only three cases can occur: (1) all $f_1, \dots, f_n,g_1, \dots, g_m$ are unary, (2) $n = m = 1$, or (3) we can find a proper good interface and split reasoning into two parts. 
+
+\begin{claim}\label{claim:the_only_three_cases}
+    Suppose that $f = g$ and $n,m \geq 1$. Then at least one of the following must hold:
+    \begin{enumerate}
+        \item There exists $u \in \Gamma^*$ such that $\im(f_1 \cdot \delta_1 \cdots \delta_{n-1} \cdot f_n), \im(g_1 \cdot \gamma_1 \cdots \gamma_{m-1} \cdot g_m) \subseteq_{\mathrm{infix}} u^\omega$,
+        \item $n = m = 1$, or
+        \item there exist $i \in \{1, \dots, n-1\}$ and $j \in \{1, \dots, m-1\}$, such that the right-interface of $(\delta_0 \cdot f_1 \cdots f_i \cdot \delta_i, \gamma_0 \cdot g_1 \cdots g_j \cdot \gamma_j)$ is good.
+    \end{enumerate}
+\end{claim}
+
+\begin{proof}
+    \katzper{TODO}
+\end{proof}
+
+Hence, it suffices to show progress in all three cases of \cref{claim:the_only_three_cases}. We divide it into three separate claims.
+
+\begin{claim}\label{claim:progress_for_unary}
+    If $f = g$ and there exists $u \in \Gamma^*$ such that $\im(f_1 \cdot \delta_1 \cdots \delta_{n-1} \cdot f_n), \im(g_1 \cdot \gamma_1 \cdots \gamma_{m-1} \cdot g_m) \subseteq_{\mathrm{infix}} u^\omega$, then $f \equiv g$. 
+\end{claim}
+
+\begin{proof}
+    \katzper{TODO}
+\end{proof}
+
+\begin{claim}\label{claim:progress_for_one_bihom_in_both_functions}
+    If $f = g$ and $n = m = 1$, then $f \equiv g$.
+\end{claim}
+
+\begin{proof}
+    \katzper{TODO}
+\end{proof}
+
+\begin{claim}\label{claim:progress_for_good_interface}
+    If $f = g$ and there exist $i \in \{1, \dots, n-1\}$ and $j \in \{1, \dots, m-1\}$, such that the right-interface of $(\delta_0 \cdot f_1 \cdots f_i \cdot \delta_i, \gamma_0 \cdot g_1 \cdots g_j \cdot \gamma_j)$ is good, then $f \equiv g$.
+\end{claim}
+
+\begin{proof}
+    \katzper{TODO}
+\end{proof}
+
+\begin{comment}
 \begin{lemma}[Katzper]
 
     Consider two simple functions $f, g$ on type $A = A_1 \times (A_1 + \dots + A_n ) \times A_1$. 
@@ -25,7 +129,6 @@ To the list of constructors of simple functions we add the bihomomorphism, that 
     Then either both $f_1$ and $g_3$ are unary, or $f_1(w)h(w_1) = h(w_1)g(w)$ can be proved by the system.
  
 \end{lemma}
-
 
 \begin{proof}
     Assume that for every $x$, $|f_1(x, x)| = |g_3(x, x)|$. If not, it should be easy to see that they are unary.
@@ -54,11 +157,5 @@ To the list of constructors of simple functions we add the bihomomorphism, that 
     We have that $\delta(a_1, a_n) = c(a_n) = \delta(a_n, a_n) = |h(a_n)|$.
 
     \includegraphics{pictures/schema.png}
- 
-
 \end{proof}
-
-
-
-
-\end{document}
+\end{comment}

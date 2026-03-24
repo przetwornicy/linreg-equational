@@ -48,11 +48,15 @@
 % todonotes
 \usepackage{todonotes}
 
-% Knowledge 
+% infer rules
+\usepackage{mathpartir}
 
+% comments
+\usepackage{comment}
+
+% Knowledge 
 \usepackage[composition,hyperref,xcolor]{knowledge}
 \knowledgeconfigure{notion}
-
 
 \knowledgestyle{intro notion}{emphasize}
 \knowledgestyle{notion}{}
@@ -62,11 +66,7 @@
 \knowledgestyle{kl unknown}{color={red}}
 \knowledgestyle{kl unknown cont}{color={red}}
 
-
-
-
 % ********** configuration for various packages ************
-
 
 %  ******** configuration for amsthm **********
 % amsthm provides infrastructure for theorem-like environments, but it does not define the environments themselves. This is done below.
@@ -375,3 +375,13 @@ $\Box$ \smallskip
 \newcommand{\eqdef}{\stackrel{\text{def}}=}
 \newcommand{\downset}[1]{#1\!\downarrow}
 \newcommand{\xor}{\oplus}
+
+% notation specific to Simple Functions
+\newcommand{\shell}[1]{#1 . \mathsf{shell}}
+\newcommand{\first}[1]{#1 . \mathsf{first}}
+\newcommand{\last}[1]{#1 . \mathsf{last}}
+
+
+% Comments
+\newcommand{\katzpermargin}[1]{\todo[color=magenta!30]{Katzper: #1}}
+\newcommand{\katzper}[1]{\todo[color=magenta!30,inline]{Katzper: #1}}
