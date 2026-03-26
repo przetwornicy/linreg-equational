@@ -12,7 +12,6 @@
 \usepackage{thmtools}
 \usepackage{thm-restate}
 
-
 % the proof macro
 \usepackage{proof}
 
@@ -26,8 +25,12 @@
 \usepackage{url}
 
 % used for automatically naming environments, configuration below
-\usepackage[capitalise]{cleveref} 
+% \usepackage[capitalise]{cleveref} 
+\usepackage[capitalize,nameinlink,noabbrev]{cleveref}
 \usepackage{aliascnt} % Helps cleveref distinguish shared counters 
+
+% nameref
+\usepackage{nameref}
 
 % used for fancy script font mathscr
 \usepackage{mathrsfs}
@@ -57,6 +60,9 @@
 % Knowledge 
 \usepackage[composition,hyperref,xcolor]{knowledge}
 \knowledgeconfigure{notion}
+
+% xstring for parsing arguments
+\usepackage{xstring}
 
 \knowledgestyle{intro notion}{emphasize}
 \knowledgestyle{notion}{}
@@ -159,7 +165,14 @@
     xrightmargin=15pt % Right margin inside the box
 }
 
-
+% hyperlinks configuration
+% \definecolor{ao(english)}{rgb}{0.0, 0.5, 0.0}
+\definecolor{ao}{rgb}{0.0, 0.0, 1.0}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=ao,
+  citecolor=magenta
+}
 
 % ************** remaining macros ***************
 
@@ -304,9 +317,16 @@ $\Box$ \smallskip
 \newcommand{\im}{\operatorname{\mathrm{im}}}
 \newcommand{\arity}{\operatorname{\mathrm{ar}}}
 
+% infix, prefix, suffix
+\newcommand{\infix}{\mathrm{infix}}
+\newcommand{\prefix}{\mathrm{prefix}}
+\newcommand{\suffix}{\mathrm{suffix}}
 
 % a set 
 \newcommand{\set}[1]{\{#1\}}
+
+% substring
+\newcommand{\substr}[3]{#1\left[#2 \dots #3\right]}
 
 % set builder expression, which can be multiline
 \newcommand{\setbuild}[2]{\set{#1 \ | 
@@ -380,8 +400,39 @@ $\Box$ \smallskip
 \newcommand{\shell}[1]{#1 . \mathsf{shell}}
 \newcommand{\first}[1]{#1 . \mathsf{first}}
 \newcommand{\last}[1]{#1 . \mathsf{last}}
-
+\newcommand{\inter}[1]{#1 . \mathsf{inter}}
+\newcommand{\bihom}[1]{%
+  \StrBefore{#1}{,}[\firstarg]%  
+  \StrBehind{#1}{,}[\secondarg]%  
+  \ifthenelse{\equal{\firstarg}{to}}{%
+    \beta^{\rightarrow}\left(\secondarg \right)%
+  }{%
+    \beta^{\leftarrow}\left(\secondarg \right)%
+  }%
+}
 
 % Comments
 \newcommand{\katzpermargin}[1]{\todo[color=magenta!30]{Katzper: #1}}
 \newcommand{\katzper}[1]{\todo[color=magenta!30,inline]{Katzper: #1}}
+
+% Overwriting \inferrule to allow cross-referrencing
+\makeatletter
+\let\originferrule\inferrule
+\DeclareDocumentCommand \inferrule { s O {} m m o }{%
+  \IfBooleanTF{#1}%
+  {%
+    \mpr@inferstar*[#2]{#3}{#4}%
+  }{%
+    \mpr@inferrule[#2]{#3}{#4}%
+  }%
+  \IfValueT{#5}%
+  {%
+    \quad
+    #5%
+    \my@name@inferrule{#5}%
+  }%
+}
+\NewDocumentCommand \my@name@inferrule { m }{%
+  \def\@currentlabelname{\ensuremath{#1}}%
+}
+\makeatother
