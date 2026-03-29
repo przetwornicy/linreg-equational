@@ -325,8 +325,10 @@ $\Box$ \smallskip
 % a set 
 \newcommand{\set}[1]{\{#1\}}
 
-% substring
-\newcommand{\substr}[3]{#1\left[#2 \dots #3\right]}
+% string infixes, prefixes, suffixes
+\NewDocumentCommand{\strinfix}{m m m}{#1[\,#2\,..\,#3]}
+\NewDocumentCommand{\strpref}{m m}{#1[\,..\,#2]}
+\NewDocumentCommand{\strsuf}{m m}{#1[#2\,..]}
 
 % set builder expression, which can be multiline
 \newcommand{\setbuild}[2]{\set{#1 \ | 
@@ -410,6 +412,9 @@ $\Box$ \smallskip
     \beta^{\leftarrow}\left(\secondarg \right)%
   }%
 }
+\newcommand{\sfpref}[2]{#1[\,..\,#2]}
+\newcommand{\rint}[2]{\ensuremath{I_R \left[ #1, #2 \right]}}
+\newcommand{\lint}[2]{\ensuremath{I_L \left[ #1, #2 \right]}}
 
 % Comments
 \newcommand{\katzpermargin}[1]{\todo[color=magenta!30]{Katzper: #1}}

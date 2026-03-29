@@ -14,9 +14,52 @@
 
 \katzper{TODO: formally}
 
-The lists are of the type $A_1 \times (A_1 + \dots + A_n ) \times A_1 $. In particular, they have at least two elements - first and last, both of the same specified type.
+The lists are of the type $A_1 \times (A_1 + \dots + A_n )^* \times A_1 $. In particular, they have at least two elements - first and last, both of the same specified type.
 
 To the list of constructors of simple functions we add the bihomomorphism, that is a repeating of a special product functions on windows of size two on a list or its reverse and \emph{first} and \emph{last} constructors that apply a function to the first/last element of a list.
+
+In general, a type $A$ is a product of $t$ list types, which we denote by $A^{(1)}, \dots, A^{(t)}$, i.e., $A = A^{(1)} \times \dots \times A^{(t)}$. If $\overline x : A$, by $\overline x^{(1)}, \dots, \overline x^{(t)}$ we denote the independent parts of the input $\overline x$.
+
+For a list type $A = A_1 \times (\sum A_i)^* \times A_1$, we denote $\first{A} = \last{A} = A_1$ and $\inter{A} = \sum A_i$. Furthermore, if $\overline x : A$, then $\first{\overline x} : \first{A}$ is the first element of list $\overline x$ and $\last{\overline x} : \last{A}$ is the last element.
+
+\begin{definition}[Shell]
+    Suppose that $A = A^{(1)} \times \dots \times A^{(t)}$ is a general type and $\overline x : A$. Then, the shell of $\overline x$ is
+    \[
+        \shell{\overline x} = \left(\first{\overline x^{(1)}}, \last{\overline x^{(1)}}, \dots, \first{\overline x^{(t)}}, \last{\overline x^{(t)}} \right),
+    \]
+    and $\shell{A}$ is the type of a shell of input of type $A$ --- that is, 
+    \[
+        \shell{A} = \first{A^{(1)}} \times \last{A^{(1)}} \times \dots \times \first{A^{(t)}} \times \last{A^{(t)}}.
+    \]
+\end{definition}
+
+\begin{definition}[Unary simple functions]
+    We say that $f : A \xrightarrow{\mathrm{sf}} \Gamma^*$ is $u$-unary, for some prime $u \in \Gamma^*$, if there exist mappings $p,s : \shell{A} \to \{0, \dots, |u|-1 \}$ (they depend only on the shell!), such that
+    \[
+        \forall \overline x : A \quad f(\overline x) \in \strsuf{u}{s} \cdot u^* \cdot \strpref{u}{p}.
+    \]
+\end{definition}
+
+\begin{definition}[Right interface]
+    Suppose that $f, g : A \xrightarrow{\mathrm{sf}} \Gamma^*$ are prefix-compatible --- that is, for every $\overline x : A$ we have $f(\overline x) \leq_\prefix g(\overline x)$ or $g(\overline x) \leq_\prefix f(\overline x)$. The, the right interface of $f$ and $g$ is a function $\rint{f}{g} : A \to \{+, -\} \times \Gamma^*$ defined as 
+    \[
+        \rint{f}{g}(\overline x) = \begin{cases}
+            g(\overline x)^{-1} \cdot f(\overline x) & \text{ if } \, |f(\overline x)| \geq |g(\overline x)|, \\ 
+            -  \left(f(\overline x)^{-1} \cdot g(\overline x)\right) & \text{ if } \, |f(\overline x)| < |g(\overline x)| .
+        \end{cases}
+    \]
+\end{definition}
+
+We similarly define the left interface $\lint{f}{g}$ for suffix-compatible functions. Next, we define what is a good interface.
+
+\begin{definition}[Good (right) interface]
+    A (right) interface $\rint{f}{g}$ is good if it only depends on the shell of the input. In other words,
+    \[
+        \forall \overline x, \overline y : A \quad \shell{\overline x} = \shell{\overline y} \implies \rint{f}{g}(\overline x) = \rint{f}{g}(\overline y).
+    \]
+\end{definition}
+
+Again, similarly we define good left interfaces.
 
 \subsection{Rules}\label{subsec:simple_functions_rules}
 
@@ -71,11 +114,11 @@ The rule \nameref{rule:4_is_enough} needs a reversed counterpart.
 
 Following the notation from the previous sections, we write $f \equiv g$ if the equality of $f$ and $g$ can be proved using rules from \cref{subsec:simple_functions_rules}.
 
-\begin{lemma}\label{lem:simple_functions_completeness}
+\begin{theorem}\label{thm:simple-functions-completeness}
     For every pair of simple functions $f,g : A \to \Gamma^*$, if $f = g$, then $f \equiv g$. 
-\end{lemma}
+\end{theorem}
 
-The rest of this section is devoted to proving \cref{lem:simple_functions_completeness}. We proceed by a nested induction. The outer induction is on the rank of type $A$ \katzpermargin{define the rank of type}. Once the type is fixed, we write
+The rest of this section is devoted to proving \cref{thm:simple-functions-completeness}. We proceed by a nested induction. The outer induction is on the rank of type $A$ \katzpermargin{define the rank of type}. Once the type is fixed, we write
 \begin{gather*}
     f = \delta_0 \cdot f_1 \cdot \delta_1 \cdots \delta_{n-1} \cdot f_n \cdot \delta_n \\ 
     g = \gamma_0 \cdot g_1 \cdot \gamma_1 \cdots \gamma_{m-1} \cdot g_m \cdot \gamma_m,
@@ -84,18 +127,18 @@ where $f_1, \dots, f_n, g_1, \dots, g_m$ are bihomomorphisms ($\leftarrow$ or $\
 
 We assume that no $f_i$, $g_j$ is equal to $\varepsilon$, otherwise we can eliminate it.
 
-We start with some simple cases. If $A = 1$, then the only possible functions are constant, so we actually need a rule for them? \katzpermargin{how to resolve constant functions?} If $n = 0$ or $m = 0$, then it must hold that either $n = m = 0$, in which case we reduce to a simpler type, or there is some $f_i = \varepsilon$ (or $g_j = \varepsilon$), which we can eliminate.
+We start with some simple cases. If $A = 1$, then the only possible functions are constant, so we actually need a rule for them? \katzpermargin{how do we formally resolve constant functions?} If $n = 0$ or $m = 0$, then it must hold that either $n = m = 0$, in which case we reduce to a simpler type, or there is some $f_i = \varepsilon$ (or $g_j = \varepsilon$), which we can eliminate.
 
 First, we show that only three cases can occur: (1) $n = m = 1$, (2) all $f_1, \dots, f_n,g_1, \dots, g_m$ are unary, or (3) we can find a proper good interface and split reasoning into two separate parts. 
 
-By $f[i:j]$ we denote the function $f_i \cdot \delta_i \cdots \delta_{j-1} \cdot f_j$, and analogously we define $g[i:j]$. If $i > j$, then $f[i:j] = \varepsilon$.
+For $i \in [n]$, by $\sfpref{f}{i}$ we denote the function $f_1 \cdot \delta_1 \cdots \delta_{i-1} \cdot f_i$. Analogously we define $\sfpref{g}{j}$ for $j \in [m]$.
 
 \begin{lemma}\label{lemma:the-only-three-cases-for-simple-functions}
-    Suppose that $f = g$ and $n,m \geq 1$. Then at least one of the following must hold:
+    Suppose that $f = g$ and $n, m \geq 1$. Then at least one of the following must hold:
     \begin{enumerate}
         \item $n = m = 1$,
-        \item there exists $u \in \Gamma^*$ such that $\im(f[1:n]), \im(g[1:m]) \subseteq_{\mathrm{infix}} u^\omega$, or
-        \item there exist $i \in [n], j \in [m]$, such that $1 \leq i + j < n+m$ and the right-interface of $\delta_0 \cdot f[1: i]$ and $\gamma_0 \cdot g[1:j]$ is good.
+        \item there exists prime $u \in \Gamma^*$ such that $\sfpref{f}{n}$ and $\sfpref{g}{m}$ are $u$-unary, or
+        \item there exist $i \in [n], j \in [m]$, such that $1 \leq i + j < n+m$ and the right-interface of $\delta_0 \cdot \sfpref{f}{i}$ and $\gamma_0 \cdot \sfpref{g}{j}$ is good.
     \end{enumerate}
 \end{lemma}
 
@@ -127,14 +170,36 @@ Before we prove \cref{lemma:the-only-three-cases-for-simple-functions}, we show 
 
 \subsection{A proof of \cref{lemma:the-only-three-cases-for-simple-functions}}
 
-First, we formally define what we mean that a simple function is unary.
+\begin{lemma}\label{lem:if-bihom-has-unary-image-then-its-unary}
+    If $f : A \xrightarrow{\mathrm{sf}} \Gamma^*$ is a bihomomorphism and $\im(f) \subseteq_\infix u^\omega$ for some prime $u \in \Gamma^*$, then $f$ is $u$-unary.
+\end{lemma}
 
-\begin{definition}[Unary simple functions]
-    We say that $f : A \xrightarrow{\mathrm{sf}} \Gamma^*$ is $u$-unary, for some prime $u \in \Gamma^*$, if there exist mappings $p,s : \shell{A} \to \{0, \dots, |u|-1 \}$ (they depend only on the shell!), such that
+\begin{proof}
+    We can assume that $A$ is a list type. If $f = \varepsilon$, then the lemma holds. Otherwise, suppose that $f = \bihom{to, \cdot}$ (the $\leftarrow$ case is symmetric). Fix any shell $(a_f, a_l) \in \first{A} \times \last{A}$. Take $\overline y, \overline z : A$ such that $\last{\overline y} = a_f, \first{\overline z} = a_l$ and $|f(\overline y)|, |f(\overline z)| \geq 2|u| - 1$ --- which can be achieved because $f \neq \varepsilon$.
+
+    We know that $f(\overline y), f(\overline z) \leq_\infix u^\omega$. Because of the fact that $f(\overline y), f(\overline z)$ are long, $u \leq_\infix f(\overline y)$ and $u \leq_\infix f(\overline z)$. Since $u$ is prime, in the compositions of mappings 
+    \begin{gather*}
+        u \leq_\infix f(\overline y) \leq_\infix u^\omega, \\
+        u \leq_\infix f(\overline z) \leq_\infix u^\omega,
+    \end{gather*}
+    the left-most $u$ must be mapped to perfectly align with a copy of $u$ in $u^\omega$. Otherwise, $u$ would not be prime due to \cref{lem:prime-words-must-perfectly-align}.
+
+    This implies that there are unique $p_1,p_2,s_1,s_2$ such that 
+    \begin{gather*}
+        f(\overline y) \in \strsuf{u}{s_1} \cdot u^* \cdot \strpref{u}{p_1}, \\ 
+        f(\overline z) \in \strsuf{u}{s_2} \cdot u^* \cdot \strpref{u}{p_2}.
+    \end{gather*}
+
+    Now, let $\overline x : A$ be arbitrary with $\shell{\overline x} = (a_f, a_l)$. Consider the following string:
     \[
-        \substr{u}{}{p} \cdot f \cdot \substr{u}{|u| - s + 1}{} \in u^*.
+        f\left(\overline y \cdot a_f^{-1} \cdot \overline x \cdot a_l^{-1} \cdot \overline z\right) = f(\overline y) \cdot f(\overline x) \cdot f(\overline z) \leq_\infix u^\omega.
     \]
-\end{definition}
+    From the line above, we see that $f(\overline x)$ must align perfectly between $f(\overline y)$ and $f(\overline z)$, which we know that have only one map into $u^\omega$, modulo translations. Thus,
+    \[
+        f(\overline x) \in \strsuf{u}{p_1+1} \cdot u^* \cdot \strpref{}{s_2-1},
+    \]
+    where $p_1,s_2$ depend only on $\shell{\overline x}$.
+\end{proof}
 
 We prove that if (1) and (3) does not not hold, then (2) must be true. We start by showing that $f_1,g_1$ are unary.
 
@@ -143,60 +208,95 @@ We prove that if (1) and (3) does not not hold, then (2) must be true. We start 
 \end{claim}
 
 \begin{proof}
-    \katzper{todo}
-    \paragraph{Case I: $f_1$ and $g_1$ work on different parts of the input} Without loss of generality, suppose that $f_1$ works on $A^{(1)}$ and $g_1$ works on $A^{(2)}$. Let $ a : \first{ A^{(1)} }, \overline x : A^{(2)}$ be arbitrary such that \katzpermargin{actually $a$ might not exist, so we need $a_0$ and $a$ as in the second case} $|f_1([a,a])|, |g_1(\overline x)| > 0$. Consider an input $\overline y : A$ of the form $(a^N, \overline x^M, \dots)$. We look at $(\delta_0 \cdot f_1)(\overline y)$ and $(\gamma_0 \cdot g_1)(\overline y)$. As $N,M$ increase, $\shell{\overline y}$ remains constant, so $\delta_0(\overline y)$ and $\gamma_0(\overline y)$ do not change. However, $f_1(\overline y)$ and $g_1(\overline y)$ grow, so at some point we will have that
-    \[
-        g_1(\overline x) \leq_\infix f_1([a,a])^\omega.
-    \]
-    As $\overline x$ was arbitrary, and by symmetricity, we actually obtain that
-    \begin{gather*}
-        \exists a : \first{A^{(1)}} \quad \im(g_1) \subseteq_\infix f_1([a,a])^\omega \\ 
-        \exists a' : \first{A^{(2)}} \quad \im(f_1) \subseteq_\infix g_1([a',a'])^\omega
-    \end{gather*}
-    Since $g_1([a',a']) \leq_\infix f_1([a,a])^k$ for some $k \geq 1$, we deduce that $\im(f_1) \subseteq_\infix f_1([a,a])^\omega$. Therefore, we finish by setting $u := f_1[(a,a)]$.
+    We consider two cases: where $f_1, g_1$ use independent parts of the input, and where they use the same part of the input.
     
-    \paragraph{Case II: $f_1$ and $g_1$ work on the same part of the input} 
-    Suppose that both $f_1$ and $g_1$ work on $A^{(1)}$. We know that the right-interface of $(\delta_0 \cdot f_1)$ and $(\gamma_0 \cdot g_1)$ is not good, so we can pump it with some internal element of the input to make it grow arbitrarily long. In other words, there exists $a : \inter{ A^{(1)} }$ such that $|f_1([a,a])| > |g_1([a,a])|$, or the other way around. Without loss of generality, assume that it indeed is in this direction, and let $a_0 : \first{A^{(1)}}$ be an arbitrary element.
+    \paragraph{Case I: Independent parts of input.} Without loss of generality, suppose that $f_1$ works on $A^{(1)}$ and $g_1$ works on $A^{(2)}$. 
+
+    Let $a_f : \first{A^{(1)}}$ be arbitrary and $a : \inter{A^{(1)}}$ be such that $|f_1(a,a)| > 0$. Next, choose any $\overline x : A^{(2)}$. Consider an input $\overline y : A$ with $y^{(1)} = a_f \cdot a^N \cdot a_f$ and $y^{(2)} = \overline x^M$ for some parameters $N,M \geq 1$. As $N$ and $M$ increase, $\shell{\overline y}$ remains the same, so $\delta_0(\overline y)$ and $\gamma_0(\overline y)$ do not change. However, $f_1(\overline y)$ and $g_1(\overline y)$ grow, so at some point we will have that
+    \[
+        g_1(\overline x) \leq_\infix f_1(a,a)^\omega.
+    \]
+    The choice of $a$ does not depend on $\overline x$. Therefore, we have
+    \[
+        \im(g_1) \subseteq_\infix f_1(a,a)^\omega.
+    \]
+    By a symmetric argument, we deduce that there exists an element $a' : \inter{A^{(2)}}$ such that $\im(f_1) \subseteq_\infix g_1(a',a')^\omega$. Since $g_1(a',a') \leq_\infix f_1(a,a)^k$ for some $k \geq 1$, we deduce that $\im(f_1) \subseteq_\infix f_1(a,a)^\omega$. Therefore, by \cref{lem:if-bihom-has-unary-image-then-its-unary}, we finish by setting $u$ to a the prime root of $f_1(a,a)$.
     
-    Suppose that $g_1 = \bihom{to, \cdot}$ and $f_1 = \bihom{to, \cdot}$ (other cases are similar). Fix arbitrary $\overline x \in A^{(1)}$ such that $|g_1(\overline x)| > 0$ --- we want to show that $g_1(\overline x)$ is unary. To this end, consider an input of the following form:
-    \[
-        A \ni \overline z = \left ( a_0 \cdot a^N \cdot \overline x^M, \dots \right).
-    \]
-    As $N$ and $M$ increase, the shell of the input remains the same, so $\delta_0(\overline z)$ and $\gamma_0(\overline z)$ do not change. As $N$ increases, the gap $|f_1([a_0, a^N])| - |g_1([a_0, a^N])|$ increases, and with sufficiently large $M$, we will obtain that
-    \[
-        g_1(\overline x) \leq_\infix f_1([a,a])^\omega.
-    \]
-    Since $a$ does not depend on the choice of $\overline x$, we have $\im(g_1) \subseteq_\infix f_1([a,a])^\omega$. 
+    \paragraph{Case II: Same part of input.} 
+
+    We only prove the statement in the case that that $f_1 = \bihom{to, \cdot}$ and $g_1 = \bihom{to, \cdot}$ --- other cases are similar. 
     
-    It remains to show that $f_1$ is also unary. To this end, take any $a' : \inter{A^{(1)}}$ with $|g_1([a',a'])| > 0$, and fix arbitrary $\overline x : A^{(1)}$ with $|f_1(\overline x)| > 0$. Consider an input of the form:
+    Suppose that both $f_1$ and $g_1$ work on $A^{(1)}$. We know that the right-interface of $(\delta_0 \cdot f_1)$ and $(\gamma_0 \cdot g_1)$ is not good, so we can pump it with some internal element of the input to make it grow arbitrarily long. In other words, there exists $a : \inter{A^{(1)}}$ such that $|f_1(a,a)| \neq |g_1(a,a)|$. Without loss of generality, assume that $|f_1(a,a)| > |g_1(a,a)|$.
+    
+    Let $a_f : \first{A^{(1)}}$ be arbitrary and let $\overline x : A^{(1)}$ be such that $|g_1(\overline x)| > 0$. Consider an input $\overline y : A$ with $\overline y^{(1)} = a_f \cdot a^N \cdot \overline x^M$ for some parameters $N,M \geq 1$. As $N$ and $M$ increase, $\shell{\overline y}$ remains the same, so $\delta_0(\overline y)$ and $\gamma_0(\overline y)$ do not change. As $N$ increases, the gap $|f_1(a_f \cdot  a^N)| - |g_1(a_f, a^N)|$ increases, and with sufficiently large $M$, we will eventually have
     \[
-        A \ni \overline z = \left( a_0 \cdot a^N \cdot \overline x \cdot (a')^M \right).
+        g_1(\overline x) \leq_\infix f_1(a,a)^\omega.
     \]
-    First, we choose $N$ large enough, so that in $f_1([a_0, a^N, \overline x])$, the suffix corresponding to $f_1(\overline x)$ is sufficiently far to the right to not be covered by $g_1([a_0, a^N, \overline x, a'])$. Then, increasing $M$ will eventually yield
+    Since $a$ does not depend on the choice of $\overline x$, we obtain $\im(g_1) \subseteq_\infix f_1([a,a])^\omega$.
+    
+    Now, we analyze $f_1$. Take any $a' : \inter{A^{(1)}}$ with $|g_1(a',a')| > 0$, and fix arbitrary $\overline x : A^{(1)}$ with $|f_1(\overline x)| > 0$. Consider an input $\overline y : A$ with $\overline y^{(1)} = a_f \cdot a^N \cdot \overline x \cdot (a')^M \cdot a_f$, for some parameters $N,M \geq 1$.
+    
+    First, we choose $N$ large enough, so that in $f_1(a_f \cdot  a^N \cdot \overline x)$, the suffix $f_1(\overline x)$ is sufficiently far to the right, not to be covered by $g_1(a_f \cdot a^N \cdot \overline x \cdot a')$. Then, increasing $M$ will eventually give that
     \[
-        f_1(\overline x) \leq_\infix g_1([a',a'])^\omega.
+        f_1(\overline x) \leq_\infix g_1(a',a')^\omega.
     \]
-    Again, since $a'$ does not depend on $\overline x$, we obtain $\im(f_1) \subseteq_\infix g_1([a', a'])^\omega$. Now, we finish as in the previous case.
+    Again, since $a'$ does not depend on $\overline x$, we obtain $\im(f_1) \subseteq_\infix g_1(a', a')^\omega$. Identically to the previous case, we deduce that $\im(f_1),\im(g_1) \subseteq_\infix f_1(a,a)^\omega$. Therefore, we finish by \cref{lemma:the-only-three-cases-for-simple-functions} with $u$ equal to the prime root of $f_1(a,a)$.
 \end{proof}
 
-Let $i \in [n], j \in [m]$ be such that $f[1:i], g[1:j]$ are $u$-unary, and $(i,j)$ is maximal lexicographically. We want to show that $(i,j) = (n,m)$. Suppose not, without loss of generality assume that $j < m$. Since (3) does not hold, we know that $\delta_0 \cdot f[1:i]$, $\gamma_0 \cdot g[1:j]$ have a bad right-interface. It means that we can pump interior elements of the input, so the length of one exceeds the other. If it is $\gamma_0 \cdot g[1:j]$ which can be arbitrarily longer, then $i < n$. Therefore, at the cost of maybe renaming $f$'s with $g$'s, we can assume that $|f[1:i]| - |g[1:j]|$ can be arbitrarily large, for any fixed input shell.
+Let $i \in [n], j \in [m]$ be such that $\sfpref{f}{i}, \sfpref{g}{j}$ are $u$-unary, and $(i,j)$ is maximal lexicographically. We want to show that $(i,j) = (n,m)$. Suppose that it is not the case. Without loss of generality assume that $j < m$. Since (3) does not hold, we know that $\delta_0 \cdot \sfpref{f}{i}$, $\gamma_0 \cdot \sfpref{g}{j}$ have a bad right-interface. It means that we can pump interior elements of the input, so the length of one exceeds the other. If it is $\gamma_0 \cdot \sfpref{g}{j}$ which can be arbitrarily longer, then $i < n$. Therefore, by potentially renaming symbols, we can assume that $|\sfpref{f}{i}| - |\sfpref{g}{j}|$ can be arbitrarily large, for any fixed input shell. It remains to prove the following claim, which clearly gives a contradiction with the assumption that $(i,j) \neq (n,m)$.
 
 \begin{claim}
-    $\gamma_j \cdot g_{j+1}$ is $u$-unary.
+    $\sfpref{g}{j+1}$ is $u$-unary.
 \end{claim}
 
 \begin{proof}
-    We will show that $p := ???, s:= ???$ is a mapping witnessing $u$-unarity of $\gamma_j \cdot g_{j+1}$. Fix arbitrary $\overline x : A$. 
+    Assume that $g_{j+1} = \bihom{to, \cdot}$ (the $\leftarrow$ case is symmetric) and without loss of generality, assume that $g_{j+1}$ works on $A^{(1)}$. Let $\overline x : A$ be arbitrary. Take $\overline y : A$ to pump, such that for every $j$, $\shell{\overline y^{(j)}} = (\last{\overline x^{(j)}}, \last{\overline x^{(j)}})$. Let $\overline z : A$ be such that $\overline z^{(j)} = \overline x^{(j)} \cdot \last{\overline x^{(j)}}^{-1} \cdot \overline y^{(j)}$. Observe that $\shell{\overline z} = \shell{\overline x}$. In addition, we can assume that $\overline z$ satisfies the following: 
+    \[
+        \big|\sfpref{f}{i}(\overline z) \big| - \big|\sfpref{g}{j}(\overline z) \big| \geq \big|\gamma_j(\overline x)\big| + \big|g_{j+1}(\overline x)\big|.
+    \]
+    We have:
+    \[
+        \sfpref{g}{j+1}(\overline z) = \sfpref{g}{j}(\overline z) \cdot \gamma_j(\overline x) \cdot g_{j+1}(\overline x) \cdot g_{j+1}(\overline y).
+    \]
+    By the two equations above and the fact that $\sfpref{f}{i}$ is $u$-unary, we have
+    \[
+        \gamma_j(\overline x) \cdot g_{j+1}(\overline x) \leq_\infix \sfpref{f}{i}(\overline z) \leq_\infix u^\omega.
+    \]
+    By the arbitrary choice of $\overline x$ we have $\im(\gamma_j \cdot g_{j+1}) \subseteq_\infix u^\omega$. Therefore, $g_{j+1}$ is $u$-unary by \cref{lem:if-bihom-has-unary-image-then-its-unary}. Since $\gamma_j(\overline x)$ depends only on $\shell{\overline x}$, the concatenation $\gamma_j \cdot g_{j+1}$ is $u$-unary. The prefix $\sfpref{g}{j}$ is also $u$-unary. Therefore, we have $p_1,p_2,s_1,s_2$ depending only on $\shell{\overline x}$ (equal to $\shell{\overline z}$) such that
+    \begin{align*}
+        \sfpref{g}{j}(\overline z) &\in \strsuf{u}{s_1} \cdot u^* \cdot \strpref{u}{p_1}, \\
+        (\gamma_j \cdot g_{j+1})(\overline x) &\in \strsuf{u}{s_2} \cdot u^* \cdot \strpref{u}{p_2}. 
+    \end{align*}
 
-    \katzper{TODO: finish}
+    To finish the proof, we only need to show that $p_1 + s_2 \in \{0, |u| \}$. Indeed, if that is the case, then $\strpref{u}{p_1} \cdot \strsuf{u}{s_2} \in u^*$, and therefore 
+    \[
+        \sfpref{g}{j}(\overline z) \cdot (\gamma_j \cdot g_{j+1})(\overline x) \in \strsuf{u}{s_1} \cdot u^* \cdot \strpref{u}{p_2}.
+    \]
+    But since $\sfpref{g}{j}$ is $u$-unary and $\shell{\overline z} = \shell{\overline x}$, then we also have 
+    \[
+        \sfpref{g}{j+1}(\overline x) = \sfpref{g}{j}(\overline x) \cdot (\gamma_j \cdot g_{j+1})(\overline x) \in \strsuf{u}{s_1} \cdot u^* \cdot \strpref{u}{p_2},
+    \]
+    which implies that mappings $p_2,s_1$ witness $u$-unarity of $\sfpref{g}{j+1}$.
+
+    To prove that $p_1 + s_2 \in \{0, |u| \}$, we can additionaly assume something stronger about $\overline x$ and $\overline z$ (without changing their shell --- hence not changing $p_1$ and $s_2$). Namely, that (1) $|\sfpref{g}{j}(\overline z)|, |(\gamma_j \cdot g_{j+1})(\overline x)| \geq 3|u|$, and (2) $\sfpref{f}{i}(\overline z)$ covers the last $2|u| - 1$ letters of $\sfpref{g}{j}(\overline z)$. By arguments similar to used in the proof of \cref{lem:if-bihom-has-unary-image-then-its-unary}, there must a copy of $u$ in both $\sfpref{g}{j}(\overline z)$ and $(\gamma_j \cdot g_{j+1})(\overline x)$, which must be covered by copies of $u$ in $\sfpref{f}{i}(\overline z)$. This determines that the string between them --- $\strpref{u}{p_1} \cdot \strpref{u}{s_2}$ --- must be of the form $u^*$ (see \cref{fig:extending-the-unary-prefix}).
+
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.8\linewidth]{pictures/bihoms_unary_extension.pdf}
+        \caption{The choice of $\overline x$ and $\overline z$ ensures that the last occurence of $u$ in $\sfpref{g}{j}(\overline z)$ and the first occurence in $(\gamma_j \cdot g_{j+1})(\overline x)$ is covered exactly by some copies of $u$ in $\sfpref{f}{i}(\overline z)$. This implies that $\strpref{u}{p_1} \cdot \strsuf{u}{s_2} \in u^*$.}
+        \label{fig:extending-the-unary-prefix}
+    \end{figure}
+
+    As commented above, this proves that mappings $p_2,s_1$ witness the fact that $\sfpref{g}{j+1}$ is $u$-unary, finishing the proof.
 \end{proof}
 
-\begin{claim}
+\begin{comment}
+\begin{lemma}
     Suppose that $f : A \xrightarrow{\mathrm{sf}} \Gamma^*$ is a bihomomorphism, $f \neq \varepsilon$, $u \in \Gamma^*$ is prime, and $p : \shell{A} \to \{0, \dots, |u|-1\}$ is such that $\substr{u}{}{p} \cdot f \leq_\prefix u^\omega$. Then $f$ is $u$-unary.
-\end{claim}
+\end{lemma}
 
 \begin{proof}
-    We can assume that $A$ is a list type. Let $\overline x : A$. It suffices to show that $|f(\overline x)| \, (\mathrm{mod} \, |u|)$ depends only on $\shell{\overline x}$. Assume that $f = \bihom{to, \cdot}$ (the case $\leftarrow$ is symmetric). Take $\overline y : A$ such that $\first{\overline y} = \last{\overline x}$, and $\last{\overline y} = \first{\overline x}$, and $|f(\overline y)| \geq 3 \cdot |u|$. Consider the string $S = \substr{u}{}{p(\shell{\overline x})} \cdot f(\overline x \cdot \overline y) = \substr{u}{}{p(\shell{\overline x})} \cdot f(\overline x)  \cdot f(\overline y)$. We know that:
+    We can assume that $A$ is a list type. Let $\overline x : A$. It suffices to show that $|f(\overline x)| \, (\mathrm{mod} \, |u|)$ depends only on $\shell{\overline x}$. Assume that $f = \bihom{to, \cdot}$ (the case $\leftarrow$ is symmetric). Take $\overline y : A$ such that $(\first{\overline y}, \last{\overline y}) = (\last{\overline x}, \last{\overline x})$ and $|f(\overline y)| \geq 3 \cdot |u|$. Consider the string $S = \substr{u}{}{p(\shell{\overline x})} \cdot f(\overline x \cdot \last{\overline x}^{-1} \cdot \overline y) = \substr{u}{}{p(\shell{\overline x})} \cdot f(\overline x)  \cdot f(\overline y)$. We know that:
     \begin{itemize}
         \item $S \leq_\prefix u^\omega$,
         \item For $\Delta = |u| - p(\shell{\overline y})$, we have $\substr{f(\overline y)}{\Delta + 1}{} \leq_\prefix u^\omega$.
@@ -231,6 +331,7 @@ Let $i \in [n], j \in [m]$ be such that $f[1:i], g[1:j]$ are $u$-unary, and $(i,
         \in \, &u^* \qedhere
     \end{align*}
 \end{proof}
+\end{comment}
 
 \begin{comment}
 \begin{lemma}[Katzper]
