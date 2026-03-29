@@ -12,7 +12,7 @@
 
 \subsection{Type system and definitions}
 
-\katzper{TODO: formally}
+\katzper{WIP}
 
 The lists are of the type $A_1 \times (A_1 + \dots + A_n )^* \times A_1 $. In particular, they have at least two elements - first and last, both of the same specified type.
 
@@ -63,7 +63,7 @@ Again, similarly we define good left interfaces.
 
 \subsection{Rules}\label{subsec:simple_functions_rules}
 
-\katzper{Perhaps not enough}
+\katzper{WIP}
 
 \begin{mathpar}
     \inferrule
@@ -108,7 +108,32 @@ The rule \nameref{rule:4_is_enough} needs a reversed counterpart.
 
 \subsection{Soundness}
 
-\katzper{TODO}
+\katzper{WIP}
+
+\begin{lemma}\label{lem:good-interface-rule-soundness}
+    The rule \nameref{rule:good_interface} is sound.
+\end{lemma}
+
+\begin{proof}
+    By assumptions, we have that $f_1$ and $g_1$ are prefix-compatible. Furthermore, $\rint{f_1}{g_1}$ is good. Indeed: suppose that $\overline x, \overline y$ are such that $\shell{\overline x} = \shell{\overline y}$ but $\rint{f_1}{g_1}(\overline x) \neq \rint{f_1}{g_1}(\overline y)$. We know that 
+    \[
+        f_1(\overline x) \cdot f_2(\shell{\overline x}) = g_1(\overline x) \cdot g_2(\shell{\overline x}),
+    \]
+    but then we definitely must have that
+    \[
+        f_1(\overline z) \cdot f_2(\shell{\overline x}) \neq g_1(\overline z) \cdot g_2(\shell{\overline x}),
+    \]
+    which gives a contradiction with assumptions, because $\shell{\overline x} = \shell{\overline z}$. By a similar argument, $\lint{f_2}{g_2}$ is also good. 
+
+    Take any $\overline x : A$. By prefix and suffix compatibility, we know that $f_1(\overline x), g_1(\overline x)$ are in prefix relation, and that $f_2(\overline x), g_2(\overline x)$ are in suffix relation. Therefore, it remains to show that 
+    \[
+        \rint{f_1}{g_1}(\overline x) = - \lint{f_2}{g_2}(\overline x).
+    \]
+    In other words, that interfaces match. But this must be true, because interfaces are good, and by assumptions we have $(f_1 \cdot f_2)(\shell{\overline x}) = (g_1 \cdot g_2)(\shell{ \overline x})$, thus
+    \[
+        \rint{f_1}{g_1}(\overline x) = \rint{f_1}{g_1}(\shell{\overline x}) = - \lint{f_2}{g_2}(\shell{\overline x}) = - \lint{f_2}{g_2}(\overline x). \qedhere
+    \]
+\end{proof}
 
 \subsection{Completeness}
 
@@ -138,14 +163,14 @@ For $i \in [n]$, by $\sfpref{f}{i}$ we denote the function $f_1 \cdot \delta_1 \
     \begin{enumerate}
         \item $n = m = 1$,
         \item there exists prime $u \in \Gamma^*$ such that $\sfpref{f}{n}$ and $\sfpref{g}{m}$ are $u$-unary, or
-        \item there exist $i \in [n], j \in [m]$, such that $1 \leq i + j < n+m$ and the right-interface of $\delta_0 \cdot \sfpref{f}{i}$ and $\gamma_0 \cdot \sfpref{g}{j}$ is good.
+        \item there exist $i \in [n], j \in [m]$, such that $1 \leq i + j < n+m$ and $\rint{\delta_0 \cdot \sfpref{f}{i}}{\gamma_0 \cdot \sfpref{g}{j}}$ is good.
     \end{enumerate}
 \end{lemma}
 
 Before we prove \cref{lemma:the-only-three-cases-for-simple-functions}, we show progress in all of the tree cases.
 
 \begin{claim}\label{claim:progress_for_unary}
-    If $f = g$ and there exists $u \in \Gamma^*$ such that $\im(f[1:n]), \im(g[1:m]) \subseteq_{\mathrm{infix}} u^\omega$, then $f \equiv g$. 
+    If $f = g$ there exists prime $u \in \Gamma^*$ such that $\sfpref{f}{n}$ and $\sfpref{g}{m}$ are $u$-unary, then $f \equiv g$. 
 \end{claim}
 
 \begin{proof}
@@ -161,11 +186,23 @@ Before we prove \cref{lemma:the-only-three-cases-for-simple-functions}, we show 
 \end{proof}
 
 \begin{claim}\label{claim:progress_for_good_interface}
-    If $f = g$ and there exist $i \in \{1, \dots, n-1\}$ and $j \in \{1, \dots, m-1\}$, such that the right-interface of $\delta_0 \cdot f[1:i]$ and $\gamma_0 \cdot g[1:j]$ is good, then $f \equiv g$.
+    If $f = g$ and there exist $i \in [n], j \in [m]$, such that $1 \leq i + j < n+m$ and $\rint{\delta_0 \cdot \sfpref{f}{i}}{\gamma_0 \cdot \sfpref{g}{j}}$ is good, then $f \equiv g$.
 \end{claim}
 
 \begin{proof}
-    \katzper{TODO}
+    Let $f_1 = \delta_0 \cdot \sfpref{f}{i}, g_1 = \gamma_0 \cdot \sfpref{g}{j}$ and $f = f_1 \cdot f_2$, $g = g_1 \cdot g_2$. By assumptions, $\rint{f_1}{g_1}$ is good. Starting from $f = g$, we deduce that for every $\overline x : A$ we have
+    \begin{align*}
+        f&(\shell{\overline x}) = g(\shell{\overline x}) \\ 
+        &\implies f_1(\shell{\overline x}) \cdot f_2(\shell{\overline x}) = g_1(\shell{\overline x}) \cdot g_2(\shell{\overline x}) \\ 
+        &\implies f_1(\overline x) \cdot f_2(\shell{\overline{x}}) = g_1(\overline x) \cdot g_2(\shell{\overline x}), \tag{$*$}\label{eq:good-interface-completeness-1}
+    \end{align*}
+    where the last implication holds because (1) $f_1,g_1$ are prefix-compatible, and (2) their right interface is good.
+
+    It is clear that $\lint{f_2}{g_2}$ is also good. Therefore, by a symmetric argument we obtain that for every $\overline x$ we have
+    \[
+        f_1(\shell{\overline x}) \cdot f_2(\overline x) = g_1(\shell{\overline x}) \cdot g_2(\overline x). \tag{$**$}\label{eq:good-interface-completeness-2}
+    \]
+    Both \eqref{eq:good-interface-completeness-1} and \eqref{eq:good-interface-completeness-2} can be proved in the system by induction (smaller $n + m$ thanks to $1 \leq i+j < n +m$). Therefore, we finish by applying \nameref{rule:good_interface}.
 \end{proof}
 
 \subsection{A proof of \cref{lemma:the-only-three-cases-for-simple-functions}}
