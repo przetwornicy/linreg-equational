@@ -125,21 +125,13 @@ Again, similarly we define good left interfaces.
 
         \inferrule
         {
-            \forall \overline x : A \quad f_1(\first{\overline x}) \cdot f_2(\overline x) = g_1(\first{\overline x}) \cdot g_2(\overline x) \\\\
-            \forall \overline x : A \quad f_1(\overline x) \cdot f_2(\first{\overline x}) = g_1(\overline x) \cdot g_2(\first{\overline x})
+            \forall a : A \quad \delta_0 \cdot f(\first{a}) \cdot \delta_1(\first{a}) = \gamma_0 \cdot g(\first{a}) \cdot \gamma_1(\first{a}) \\ 
+            \forall a : A \quad \delta_0(\last{a}) \cdot f(\last{a}) \cdot \delta_1 = \gamma_0(\last{a}) \cdot g(\last{a}) \cdot \gamma_1 \\ 
+            \forall a : A \quad \delta_0(\first{a}) \cdot f \cdot \delta_1(\last{a}) = \gamma_0(\first{a}) \cdot g \cdot \gamma_1(\last{a})
         }
         {
-            f_1 \cdot f_2 = g_1 \cdot g_2
-        }[\textsc{(Fix first)}]\label{rule:fix_first}
-
-        \inferrule
-        {
-            \forall \overline x : A \quad f_1(\last{\overline x}) \cdot f_2(\overline x) = g_1(\last{\overline x}) \cdot g_2(\overline x) \\\\
-            \forall \overline x : A \quad f_1(\overline x) \cdot f_2(\last{\overline x}) = g_1(\overline x) \cdot g_2(\last{\overline x})
-        }
-        {
-            f_1 \cdot f_2 = g_1 \cdot g_2
-        }[\textsc{(Fix last)}]\label{rule:fix_last}
+            \delta_0 \cdot f \cdot \delta_1 = \gamma_0 \cdot g \cdot \gamma_1
+        }[\textsc{(Good bounds)}]\label{rule:good_bounds}
 
         \inferrule
         {
@@ -152,11 +144,30 @@ Again, similarly we define good left interfaces.
         }[\textsc{(4 is enough)}]\label{rule:4_is_enough}
 \end{mathpar}
 
-The rule \nameref{rule:4_is_enough} needs a reversed counterpart.
+Rules \nameref{rule:4_is_enough} and \nameref{rule:good_bounds} need a reversed counterpart, or we can add a congruence rule for reversal.
 
 \subsection{Soundness}
 
 \katzper{WIP}
+
+\begin{lemma}\label{lem:good-bounds-rule-soundness}
+    The rule \nameref{rule:good_bounds} is sound.
+\end{lemma}
+
+\begin{proof}
+    By the first and second assumption we have
+    \begin{gather*}
+        \overline{\gamma_0} \cdot \delta_0 = \overline{\gamma_0(\first{a})} \cdot \delta_0(\first{a}) \iff \delta_0(\first{a}) = \gamma_0(\first{a}) \cdot \overline{\gamma_0} \cdot \delta_0, \\ 
+        \gamma_1 \cdot \overline{\delta_1} = \gamma_1(\last{a}) \cdot \overline{\delta_1(\last{a})} \iff \delta_1(\last{a}) = \delta_1 \cdot \overline{\gamma_1} \cdot \gamma_1(\last{a}).
+    \end{gather*}
+    Now starting from the third assumption, we obtain:
+    \begin{gather*}
+        \delta_0(\first{a}) \cdot f \cdot \delta_1(\last{a}) = \gamma_0(\first{a}) \cdot g \cdot \gamma_1(\last{a}) \\ 
+        \left( \gamma_0(\first{a}) \cdot \overline{\gamma_0} \cdot \delta_0 \right)  \cdot f \cdot \left( \delta_1 \cdot \overline{\gamma_1} \cdot \gamma_1(\last{a}) \right) = \gamma_0(\first{a}) \cdot g \cdot \gamma_1(\last{a}) \\ 
+        \overline{\gamma_0} \cdot \delta_0 \cdot f \cdot \delta_1 \cdot \overline{\gamma_1} = g \\
+        \delta_0 \cdot f \cdot \delta_1 = \gamma_0 \cdot g \cdot \gamma_1. \qedhere
+    \end{gather*}
+\end{proof}
 
 \begin{lemma}\label{lem:good-interface-rule-soundness}
     The rule \nameref{rule:good_interface} is sound.
