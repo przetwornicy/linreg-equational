@@ -61,6 +61,54 @@ We similarly define the left interface $\lint{f}{g}$ for suffix-compatible funct
 
 Again, similarly we define good left interfaces.
 
+\subsection{Unarity}
+
+\begin{lemma}\label{lem:weak-unarity-implies-strong-unarity}
+    Suppose that $f : A \xrightarrow{\mathrm{sf}} \Gamma^*$ and $u \in \Gamma^*$ are such that $\im(f) \subseteq_{\infix} u^\omega$. Then there is a cyclic shift $v$ of $u$ and $v_0 <_\suffix v$, $v_1 <_\prefix v$ such that
+    \[
+        \im(f) \subseteq v_0 \cdot v^* \cdot v_1.
+    \]
+\end{lemma}
+
+\begin{proof}
+    We proceed by structural induction, but we also want to consider types in order of their rank. If $f$ is a constant, then the statement is trivial. Otherwise, we separately consider concatenations and bihomomorphisms.
+
+    \paragraph{Concatenation.} We prove the statement for $f \cdot g$, where $f,g : A \xrightarrow{\mathrm{sf}} \Gamma^*$. By induction, there are cyclic shifts $v,w$ of $u$ and $v_0 <_\suffix v, v_1 <_\prefix v, w_0 <_\suffix w, w_1 <_\prefix w$ such that $\im(f) \subseteq v_0 \cdot v^* \cdot v_1$ and $\im(g) \subseteq w_0 \cdot w^* \cdot w_1$. 
+    
+    If both $f,g$ are bounded, then they are constant, and the statement follows. Assume that one of the functions is constant, while the other is unbounded. Assume that $f$ is unbounded (the other case is symmetric) and $g = c$. By considering an input $a : A$ such that $|f(a)| \geq 2|v|-1$, we argue that $v_1 \cdot c <_\prefix v^*$. Therefore,
+    \[
+        \im(f \cdot g) \subseteq v_0 \cdot v^* \cdot v_1 \cdot c \subseteq v_0 \cdot v^* \cdot \strpref{v}{|v_1| + |c| \, (\mathrm{mod} \, |v|)}.
+    \]
+    It remains to consider the case where both $f$ and $g$ are unbounded. Suppose that $w$ is the $i$-th cyclic shift of $v$, i.e. that $w = \strsuf{v}{i+1} \cdot \strpref{v}{i}$. \katzpermargin{is it easy to verify that if $v,w$ are prime, then $i$ is unique} We take $a  :A$ such that $|f(a)|, |g(a)| \geq 2|v|-1$. Consider $(f \cdot g)(a)$ --- between the last occurrence of $v$ in $f(a)$ and the first occurrence of $w$ in $g(a)$, we have exactly $v_1 \cdot w_0$. Therefore, we have $v_1 \cdot w_0 \in v^* \cdot \strpref{v}{i}$. Moreover, we have $w_1 <_\prefix \strsuf{v}{i+1} \cdot v^*$. Thus,
+    \begin{align*}
+        \im(f \cdot g) &\subseteq v_0 \cdot v^* \cdot (v_1 \cdot w_0) \cdot w^* \cdot w_1 \\ 
+                       &\subseteq v_0 \cdot v^* \cdot \strpref{v}{i} \cdot w^* \cdot w_1 \\ 
+                       &\subseteq v_0 \cdot v^* \cdot \strpref{v}{i} \cdot w_1 \\ 
+                       &\subseteq v_0 \cdot v^* \cdot \strpref{v}{i + |w_1| \, (\mathrm{mod} \, |v|)}.
+    \end{align*}    
+
+    \paragraph{Bihomomorphism.} Suppose that $A = A_1 \times (A_1 + \dots + A_m)^* \times A_1$ and $f$ is a bihomomorphism. If $f = \varepsilon$, the statement holds. Otherwise, we choose any $c = (a_0 \cdot b \cdot a_0) : A$ such that $|f(c)| \geq 2|u|-1$. Because of the length and $f(c) <_\infix u^\omega$, we have $u \leq_\infix f(c)$. Since $u$ is prime, there are unique $u_0 <_\suffix u$ and $u_1 <_\prefix u$ with $f(c) \in u_0 \cdot u^+ \cdot u_1$. 
+    Now consider: 
+    \[
+        u^\omega >_\infix f(a_0 \cdot b \cdot a_0 \cdot b \cdot a_0) = f(c)^2 \in u_0 \cdot u^+ \cdot (u_1 \cdot u_0) \cdot u^+ \cdot u_1,
+    \]
+    we obtain that $u_1 \cdot u_0 \in \{\varepsilon, u\}$. In both cases, we get that $f(c) \in v^*$ for some cyclic shift $v$ of $u$.
+
+    We now argue that $\im(f) \subseteq v^*$. Pick any $a : A$. Suppose that $a = (a_1, \dots, a_n)$ and consider a function $g : \prod_{i=1}^n \type{a_i} \to \Gamma^*$ which agrees with $f$ on inputs of length exactly $n$ with types of elements exactly the same as in $a$. We have $\im(g) \subseteq_\infix v^\omega$ and $g$ is defined on a type of smaller rank, so from induction there are $w, w_0, w_1$ such that $\im(g) \subseteq w_0 \cdot w^* \cdot w_1$ and $w$ is a cyclic shift of $v$. In particular, we have $f(a) \in w_0 \cdot w^* \cdot w_1$.
+
+    By exchanging $\first{a}$ and $\last{a}$ to $a_0$, we obtain an input $a' \in \dom(g)$. So $f(a') \in w_0 \cdot w^* \cdot w_1$. By arguments similar as previously, we show that $w_1 \cdot w_0 \in \{\varepsilon, w\}$. Moreover, we consider 
+    \[
+        v^\omega >_\infix f(a_0 \cdot b \cdot a' \cdot b \cdot a_0) = f(c) \cdot f(a) \cdot f(c) \in v^+ \cdot f(a) \cdot v^+,
+    \]
+    so we have $f(a) \in v^*$.
+
+    If $w_1 \cdot w_0 = \varepsilon$, then $f(a') \in v^* \cap w^*$, so $f(a') = \varepsilon$ or $w = v$. The latter gives $f(a) \in v^*$.
+
+    If $w_1 \cdot w_0 = w$, then $f(a') \in (w_0 \cdot w_1)^* \cap v^*$, so $f(a') = \varepsilon$ or $w_0 \cdot w_1 = v$. The latter gives $w_0 \cdot w^* \cdot w_1 = v^+ \implies f(a) \in v^*$.
+
+    It remains to solve the case where $f(a) = \varepsilon$. This case can be easily avoided if $f(A_1 \times A_1) \neq \varepsilon$ --- by chosing an appropriate $a_0$ at the very beginning of the proof. However, if $f(A_1) = \varepsilon$, then we have $f(a') = f(a)$, but we already established that $f(a) \in v^*$. This finishes the proof.
+\end{proof}
+
 \subsection{Rules}\label{subsec:simple_functions_rules}
 
 \katzper{WIP}
@@ -233,7 +281,7 @@ Before we prove \cref{lemma:the-only-three-cases-for-simple-functions}, we show 
     \]
     From the line above, we see that $f(\overline x)$ must align perfectly between $f(\overline y)$ and $f(\overline z)$, which we know that have only one map into $u^\omega$, modulo translations. Thus,
     \[
-        f(\overline x) \in \strsuf{u}{p_1+1} \cdot u^* \cdot \strpref{}{s_2-1},
+        f(\overline x) \in \strsuf{u}{p_1+1} \cdot u^* \cdot \strpref{u}{s_2-1},
     \]
     where $p_1,s_2$ depend only on $\shell{\overline x}$.
 \end{proof}
