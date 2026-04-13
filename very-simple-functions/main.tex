@@ -1,0 +1,286 @@
+In this section, we consider a simplification of the simple functions, which does not use bi-homomorphisms. 
+
+Essentially speaking, the inputs to the function are types which are constructed from a unit type $1$ using products $ A \times B$, co-products $A + B$ and lists $A^*$. However, we assume that the types have been normalised, by distributing products over sums, and lists over sums. This leads us to the following definition of types. 
+
+\begin{definition}[Very simple types]
+    A very simple type is any type that can be generated using the following grammar:
+    \begin{enumerate}
+        \item a \emph{product type} is any type of the form 
+        \begin{align*}
+        A_1 \times \cdots \times A_n \qquad \text{where $n \ge 0$ and  $A_1,\ldots,A_n$ are list types}.
+        \end{align*}
+        \item a \emph{list type} is any type of the form $A^*$ where $A$ is a co-product type;
+        \item a \emph{co-product type} is any type of the form
+        \begin{align*}A_1 + \cdots + A_m
+            \qquad \text{where $m \ge 1$ and  $A_1,\ldots,A_m$ are product types}.
+\end{align*}
+    \end{enumerate}
+\end{definition}
+
+
+When the  number of products in a product type is $n=0$, then  we get a unit type which has only one element. We denote this unit type by $1$, and it is where the induction starts. One could also allow this for the list type, by allowing $m=0$, but this would simply give another way of generating a unit type, which will not be necessary for us.
+
+
+
+
+\begin{definition}[Very simple functions] For a very simple type $A$, the \emph{very simple functions} of type $A \to \Gamma^*$ are defined inductively as follows:
+    \begin{itemize}
+        \item A very simple function of type 
+$
+        A^* \to \Gamma^*
+ $
+        is obtained by taking the homomorphic lifting $\hom f$ of some very simple function $f : A \to \Gamma^*$. 
+        \item A very simple function of type $A_1 + \cdots + A_n \to \Gamma^*$ is obtained combining, using a cases construction, some very simple functions 
+        \begin{align*}
+        f_1 : A_1 \to \Gamma^*, \quad \ldots \quad, f_n : A_n \to \Gamma^*.
+        \end{align*}
+        \item A very simple function of type $A_1 \times \cdots \times A_n \to \Gamma^*$ is obtained by taking any concatenation of functions which are either: (a) a string constant; or (b) a very simple function whose domain is one of $A_1,\ldots,A_n$. 
+    \end{itemize}
+\end{definition}
+
+
+
+The main result of this section is the following theorem, which gives a complete axiomatization of equality of very simple functions.
+\begin{theorem}
+Let $f,g : A \to \Gamma^*$ be two very simple functions. If their outputs are always equal, then this  can be proved using the following rules: 
+    \begin{align}
+    & \quad f \cdot (g \cdot h) = (f \cdot g) \cdot h
+    \label{rule:associativity}\\ 
+    & \pi_i(f \cdot g) = \pi_i(f) \cdot \pi_i(g) \quad \text{for $i \in \set{1,2}$}
+    \label{rule:projections-distribute-over-concatenation}
+    \\
+    f \cdot w = w \cdot g \quad  \implies \quad &  (\hom f) \cdot w = w \cdot (\hom g)
+    \label{rule:conjugation}
+    \\
+    \im f, \im g \subseteq w^* \quad   \implies \quad & (\hom f) \cdot (\hom g) = (\hom g) \cdot (\hom f)
+    \label{rule:periodic-commutativity}
+    \\
+    \im f, \im g \subseteq w^* \quad  \implies \quad & (\hom f) \cdot (\hom g)  = \hom (f \cdot g)
+    \label{rule:periodic-homomorphism}\\
+    \im f \subseteq \varepsilon^* \quad \implies \quad & f \cdot g = g = g \cdot f
+    \label{rule:empty-image}
+    \end{align}
+\end{theorem}
+
+
+In the above theorem, we implicitly assume rules for \emph{congruence}, which say that applying the same function constructor to equal functions gives equal functions. For example, the congruence rule for homomorphic lifting is 
+\begin{align*}
+f = g \qquad \implies \qquad \hom f = \hom g.
+\end{align*}
+The rest of this section is devoted to proving the above theorem.  We write $f \equiv g$ if the equality of the outputs  can be proved using the above rules. Our goal is to show that the system is complete, i.e.~equality of outputs implies $f \equiv g$. The converse implication, which can be called soundness, is trivial. The rest of this section is devoted to proving completeness.
+
+
+\paragraph*{Roots and periods.} An important role in the proof will be played by periodicity in strings, so we begin by introducing the appropriate terminology. We say that a word $w$ is a \emph{root} of some other word $v$ if there is a decomposition $v = w^n$ for some $n$. A word is called \emph{primitive} if it does not have any roots other than itself. We say that a language $L$  with   is \emph{cyclic} if 
+\begin{align*}
+L \subseteq w^*  \qquad \text{for some string $w$.}
+\end{align*}
+The string $w$ is called a root of the language. The root can always be chosen to be primitive, in which case it becomes unique. The following lemma gives a useful characterization of cyclicity for languages which are closed under concatenation. 
+
+\begin{lemma}\label{lem:almost-periodic-lemma} Let $L$ be a string language. If $L^*$ is linearly ordered by the prefix relation, then it is cyclic.
+\end{lemma}
+\begin{proof}
+    Take any two words $x,y \in L^*$. Then we know that both $xy$ and $yx$ are prefixes of $wv^*$ and hence they must be equal. Therefore, they have a common root by the Lyndon-Sch\"utzenberger theorem. Since every two words in $L^*$ have a common root, it follows that $L^*$ is cyclic.
+\end{proof}
+
+\begin{lemma}[Cyclic shift lemma]\label{lem:cyclic-shift-lemma}
+    Let $f : A \to B^*$ is a very simple function, which is cyclic with  root $w$.  Then for every decomposition $w = w_1 w_2$  there exists a very simple function $g$ such $
+    f w_1 \equiv w_1 g.$
+\end{lemma}
+\begin{proof}
+    Induction on the syntax of $f$. 
+\end{proof}
+
+
+\paragraph*{Completeness for unary functions.} We begin by proving completeness for a special class of functions, which we call unary.
+\begin{definition}
+    A string-to-string function is called \emph{unary} if its outputs are linearly ordered by the prefix relation.
+\end{definition}
+By Lemma~\ref{lem:almost-periodic-lemma}, if a homomorphism is unary, then its set of outputs is cyclic.
+
+\begin{lemma}\label{lem:completeness-for-when-outputs-are-prefixes}
+    The axiomatic system is complete for unary functions.
+\end{lemma} 
+\begin{proof}
+    A simple induction on the structure of the input type. If the input type is a co-product, then the two functions must be constructed using the cases construction, and the corresponding cases must be equal, thus we can appeal to the induction assumption. If the input type is a list type, then the two functions must be homomorphic lifting of some simpler functions. Since the homomorphisms must agree on input lists that have one item only, it follows that the lifted functions must be equal. Therefore, we can apply the induction assumption.
+
+    The only interesting case is when the input type is a product type. Suppose that the first function is a concatenation 
+    \begin{align*}
+    f = v_0 \cdot f_1 \cdot v_1 \cdots f_n \cdot v_n.
+    \end{align*}
+    By Lemma~\ref{lem:almost-periodic-lemma}, it follows that the first homomorphism $f_1$ is cyclic, say its outputs are always in $x^*$ for some primitive $x$.
+    
+    \begin{claim}
+        Consider a very simple function
+        \begin{align*}
+        f  :  A_1^* \times \cdots \times A_n^* \to \Gamma^*.
+        \end{align*}
+        If $f$ is unary then  one can prove 
+        \begin{align*}
+        f  \equiv v \cdot f_1 \cdot f_2 \cdots f_n 
+        \end{align*}
+        for some string $v$ and 
+        homomorphisms
+        \begin{align*}
+        f_1 : A_1^* \to \Gamma^*, \quad \ldots \quad, f_n : A_n^* \to \Gamma^*,
+        \end{align*}
+        which are cyclic and have the same root.
+    \end{claim}
+    \begin{proof}
+        Induction on the number of concatenations used in $f$. Since the assumptions and conclusion of the claim are both invariant under prepending a constant, we can assume that $f$ begins with a homomorphism, i.e.~it is of the form $f = h \cdot g$ for some homomorphism $h$ and some very simple function $g$. Since the outputs of $h$ are unary, we can use Lemma~\ref{lem:almost-periodic-lemma} to conclude that $h$ is cyclic, say its outputs are in $x^*$ for some primitive $x$. From this it follows that the outputs of $g$ are prefixes of $x^\omega$, and therefore we can apply the induction assumption to present $g$ as 
+        \begin{align*}
+        g \equiv w \cdot g_1 \cdot g_2 \cdots g_n.
+        \end{align*}
+        We can now use Lemma~\ref{lem:cyclic-shift-lemma} to prove $h \cdot w \equiv w \cdot h'$ for some homomorphism $h'$. The homomorphism $h'$ must have the same root as $g_1,\ldots,g_n$. Therefore, we can use axioms~\ref{rule:periodic-commutativity} and~\ref{rule:periodic-homomorphism} to move $h'$ inside the sequence $g_1,\ldots,g_n$ and then merge it with the homomorphism that uses the same component of the input product as $h'$.
+    \end{proof}
+
+    We can apply the above claim to both $f$ and $g$, yielding two decompositions 
+    \begin{align*}
+    f \equiv v \cdot f_1 \cdots f_n \\
+    g \equiv w \cdot g_1 \cdots g_n.
+    \end{align*}
+    By considering inputs that use only empty lists, we conclude that $v = w$. By considering inputs that use only one nonempty list, we conclude that the homomorphisms $f_i = g_i$ for every $i \in \set{1,\ldots,n}$.  Finally, since all homomorphisms are cyclic (and therefore unary), we can use the induction assumption to prove $f_i \equiv g_i$. 
+\end{proof}
+
+
+
+
+
+
+
+
+
+
+
+\paragraph*{Completeness, general case.} We now prove the completeness result for the general case. As in the special case of unary functions, it is proved by induction on the structure of the input type. Also as in the case of unary functions, the only interesting case is when the input type is a product type. 
+\begin{align}\label{eq:product-input-type}
+A = A_1^* \times \cdots \times A_n^*.
+\end{align}
+The rest of the proof of the theorem is devoted to this case.
+Let us begin with introducing some terminology. Consider a very simple function with domain $A$, which is of the form 
+\begin{align*}
+f & = v_0  \cdot f_1 \cdot  v_1 \cdots f_k \cdot v_k,
+\end{align*}
+where $f_1,\ldots,f_k$ are homomorphisms and $v_0,\ldots,v_k$ are string constants. We will be interested in parts of the function that begin and end with some homomorphism.
+Consider an interval $\set{i,\ldots,j}$ in the set $\set{1,\ldots,k}$ and the part of the function which corresponds to this interval in the following sense
+\begin{align*}
+ f_i v_i \cdots v_{j-i} f_j 
+\end{align*}
+The interval is called \emph{unary} if the  corresponding function is unary. 
+\begin{lemma}\label{lem:cyclic-intervals-lemma}
+    If an interval is unary, then the outputs of the corresponding  function  are prefixes of $x^\omega$ for some primitive word $x$. Furthermore, if two unary intervals have nonempty intersection, then their union is also unary.
+\end{lemma}
+Thanks to the above lemma, there is a unique decomposition of $\set{1,\ldots,k}$ into maximal unary intervals. The parts of this decomposition, and the remaining non-unary intervals, will be called \emph{segments}. In other words, an interval is called  a \emph{segment} if either: (a) it consists of a single homomorphism $h_i$ which is not unary; or (b) it is unary and the interval is maximal for this property.  We number the segments from left to right, i.e.~the leftmost segment is the one that contains $f_1$, and the rightmost segment is the one that contains $f_k$. The main lemma in the proof of the theorem is the following, which shows that the leftmost segments in two equal functions must be essentially the same, up to a string constant.
+
+
+\begin{lemma}[Segment Lemma]\label{lem:segment-lemma}
+    Consider two very simple functions $f$ and $g$ with a product input type as in~\eqref{eq:product-input-type}
+    and decompose  as follows:
+\begin{align*}
+f = \myoverbrace{v_0}{string\\ constant} \cdot  \myunderbrace{f'}{leftmost\\ segment} \cdot \myoverbrace{f''}{after leftmost \\ segment}  \quad \text{and} \quad 
+g = \myoverbrace{w_0}{string\\ constant} \cdot \myunderbrace{g'}{leftmost\\ segment} \cdot \myoverbrace{g''}{after leftmost \\ segment}.
+\end{align*}
+If the outputs of $f$ and $g$ are always equal, then there is some string constant $u$ such that 
+\begin{align*}
+v_0 \cdot f' \cdot u \equiv w_0 \cdot g' 
+\quad \text{or} \quad v_0 \cdot f' \equiv w_0 \cdot g' \cdot u.
+\end{align*}
+\end{lemma}
+
+Before proving the Segment Lemma, we use it to complete the proof of the completeness theorem. Indeed, consider two functions $f$ and $g$ whose outputs are always equal, and whose input type is a product type. Decompose them as in the assumptions of the Segment Lemma, and apply the lemma. Without loss of generality, assume that we have the first equality 
+\begin{align}\label{eq:left-part-equal}
+v_0 \cdot f' \cdot u \equiv w_0 \cdot g'.
+\end{align}
+The above implies in particular that the output of $v_0 \cdot f'$ is obtained by removing a suffix $u$ from the output of $w_0 \cdot g'$. This means that the output of $f''$ is obtained by adding a prefix $u$ to the output of $g''$, i.e.~
+\begin{align*}
+f'' = u \cdot g''.
+\end{align*}
+In the above equality, the very simple functions have a smaller number of segments than the functions $f$ and $g$, and therefore we can use an induction on the number segments to prove that 
+\begin{align}\label{eq:right-part-equal}
+f'' \equiv u \cdot g''.
+\end{align}
+Using the above, we can now derive the conclusion of the theorem:
+\begin{align*}
+f  \equiv  v_0 \cdot f' \cdot f'' 
+\myoverbrace{\equiv}{\eqref{eq:right-part-equal}}  v_0 \cdot f' \cdot u \cdot g'' 
+\myoverbrace{\equiv}{\eqref{eq:left-part-equal}} w_0 \cdot g' \cdot g'' \equiv g.
+\end{align*} 
+ It remains therefore to prove the lemma.
+
+\begin{proof}[Proof of Segment Lemma]
+Let $f_1$ and $g_1$ be the leftmost homomorphisms used in the functions $f$ and $g$, which are also the leftmost homomorphisms used in their leftmost segments. 
+
+
+\begin{claim}\label{claim:different-lengths-implies-cyclic}
+    If there is some input for which the outputs of $f_1$ and $g_1$ have different lengths, then both $f_1$ and $g_1$ are unary (and therefore cyclic by Lemma~\ref{lem:almost-periodic-lemma}).
+\end{claim}
+
+\begin{proof}
+    Consider two cases, depending on whether the homomorphisms $f_1$ and $g_1$ use the same coordinate of the product in the  input type, or they use different coordinate.
+    
+    \begin{itemize}
+        \item 
+    Consider first the case where  the homomorphisms $f_1$ and $g_1$ use different coordinates of the product in the input type. Since all homomorphisms are assumed to have possibly nonempty outputs, it follows that they have outputs of unbounded lengths.  Because the arguments for $f_1$ and $g_1$ can be chosen independently, it follows that the set of output strings
+    \begin{align}
+        \label{eq:prefix-ordered-image-union-two}
+        \im (v_1 \cdot f_1) \cup \im (w_1 \cdot g_1)
+    \end{align}
+    is  linearly ordered by the prefix relation. Hence we can apply Lemma~\ref{lem:almost-periodic-lemma} to conclude that both $f_1$ and $g_1$ are cyclic. 
+
+\item  Suppose now that the homomorphisms $f_1$ and $g_1$ use the same coordinate $A^*_i$ of the product in the input type $A$. Since the outputs of $f_1$ and $g_1$ can have different lengths, it follows that there is some input $a \in A_i^*$ which makes a difference, say the output of $f_1$ is longer.  Suppose that feed functions $f$ and $g$ with an input where the $i$-th coordinate has $a^n b$ for some $b \in A_i^*$. If $n$ is large enough with respect to $b$, then 
+    \begin{align*}
+    (w_0 \cdot g_1)(a^nb) \quad \text{is a prefix of} \quad 
+    (v_0 \cdot f_1)(a^n).
+    \end{align*}
+    This means that $g_1(b)$ is a prefix of some word that is conjugate to  $f_1(a)^\omega$. The conjugacy class of $f_1(a)^\omega$ depends only on the choice of $n$, and therefore we can assume that this conjugacy class is always the same for all $b$, by using some conjugacy class that arises for infinitely many $n$. Thus we have shown that the outputs of $g_1$ are linearly ordered by the prefix relation, and thus we can use  Lemma~\ref{lem:almost-periodic-lemma} to conclude that $g_1$ is cyclic. This implies in turn that the outputs of $f_1$ are also linearly ordered by the prefix relation, and thus we can use the same argument to conclude that $f_1$ is also cyclic. 
+\end{itemize}
+\end{proof}
+
+A consequence of the above claim is that the leftmost segments are either both unary, or both non-unary, as shown in the following claim.
+
+\begin{claim}\label{claim:first-segments-are-both-cyclic-or-both-non-cyclic}
+    If the  leftmost segment $f'$ is non-unary, then so is the leftmost segment $g'$. 
+\end{claim}
+\begin{proof}
+    By definition, the leftmost segment is non-unary if and only if the first homomorphism used in the segment is non-unary. 
+    By Claim~\ref{claim:different-lengths-implies-cyclic}, we know that if $f_1$ is non-unary, then the outputs of $f_1$ and $g_1$ must always have the same length.  Since the outputs always have the same length, and $f_1$ is non-unary, it follows that $g_1$ must also be non-unary. 
+\end{proof}
+
+We now finish the proof of the Segment Lemma by considering two cases, depending on whether the leftmost segments are unary or non-unary.
+
+\paragraph*{The leftmost segments are both unary.}  Assume that both segments $f'$ and $g'$ are unary. 
+ Using the same argument as in the proof of Claim~\ref{claim:different-lengths-implies-cyclic}, we can show that the outputs of the leftmost segments $f'$ and $g'$ have lengths that differ by a constant, since otherwise one of the two segments could be extended. Since $g'$ is unary and begins with a homomorphism, it follows that the outputs of $g'$ are prefixes of $x^\omega$ for some primitive word $x$.  
+ Since the outputs of $v_0 \cdot f'$ are always shorter than the outputs of $w_0 \cdot g'$, and the difference in lengths is always the same, it follows that   
+ \begin{align}\label{eq:cyclic-segments-conjugacy}
+ v_0  \cdot f' \cdot u = w_0 \cdot g' 
+ \end{align}
+for some $u$. The above two functions are both unary, and therefore we can the completeness result for unary functions from  Lemma~\ref{lem:completeness-for-when-outputs-are-prefixes} to get the conclusion of the Segment Lemma.
+
+
+\paragraph*{The leftmost segments are both non-unary.}  Without loss of generality, we can assume that the constant $v_0$ at the beginning of $f$ is a prefix of the constant $w_0$ at the beginning of $g$. Let $u$ be the string that witnesses this, i.e.~$v_0 \cdot u = w_0$. By Claim~\ref{claim:different-lengths-implies-cyclic}, we know that the outputs of $f_1$ and $g_1$ must always have the same length, and also that $f_1$ and $g_1$ must use the same component $A^*_i$ of the input product $A$.
+        Choose some input $a_0 \in A_i^*$ so that $f_1(a)$ has length at least $|u|$, and therefore $f_1(a)$ begins with $u$. Such an input exists, since we assume that all homomorphisms involved are nonempty. For every input $a \in A_i^*$ we have 
+    \begin{align*}
+    f_1(a) \cdot f_1(a_0)  \quad \text{is a prefix of} \quad
+    u \cdot g_1(a) \cdot g_1(a_0).
+    \end{align*}
+    Since the strings $f_1(a)$ and $g_1(a)$ have the same length, it follows that  the last $|u|$ letters in $u \cdot g_1(a)$ must be equal to the first $|u|$ letters in $f_1(a_0)$, and therefore they must be equal to $u$. This shows that 
+\begin{align*}
+    f_1 \cdot u = u \cdot g_1.
+\end{align*}
+Let us now show that the above equality can be proved in our axiomatic system.
+The above is a conjugacy between homomorphisms.
+The conjugacy must also hold for inputs that are lists of length one, and therefore it must hold for the underlying functions which are homomorphically lifted to obtain $f_1$ and $g_1$. By induction assumption on a simpler input type, the conjugacy for the underlying functions can be proved, and then we can use the axiom~\eqref{rule:conjugation} to prove the  conjugacy 
+\begin{align*}
+    f_1 \cdot u \equiv u \cdot g_1.
+\end{align*}
+Since $v_0 \cdot u = w_0$, this gives us the conclusion of the Segment Lemma.
+
+
+\end{proof}
+
+\section{Simple functions}
+\input{simple-functions/main.tex}
+
+% \bibliographystyle{plain}
+% \bibliography{bib}
+
+\end{document}

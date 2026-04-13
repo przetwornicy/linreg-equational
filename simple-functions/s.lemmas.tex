@@ -1,0 +1,82 @@
+\katzper{WIP}
+
+\begin{mathpar}
+    \inferrule
+        {
+            \forall \overline x : A \quad f_1(\shell{\overline x}) \cdot f_2(\overline x) = g_1(\shell{\overline x}) \cdot g_2(\overline x) \\\\
+            \forall \overline x : A \quad f_1(\overline x) \cdot f_2(\shell{\overline x}) = g_1(\overline x) \cdot g_2(\shell{\overline x})
+        }
+        {
+            f_1 \cdot f_2 = g_1 \cdot g_2
+        }[\textsc{(Good interface)}]\label{rule:good_interface}
+
+        \inferrule
+        {
+            \forall a : A \quad \delta_0 \cdot f(\first{a}) \cdot \delta_1(\first{a}) = \gamma_0 \cdot g(\first{a}) \cdot \gamma_1(\first{a}) \\ 
+            \forall a : A \quad \delta_0(\last{a}) \cdot f(\last{a}) \cdot \delta_1 = \gamma_0(\last{a}) \cdot g(\last{a}) \cdot \gamma_1 \\ 
+            \forall a : A \quad \delta_0(\first{a}) \cdot f \cdot \delta_1(\last{a}) = \gamma_0(\first{a}) \cdot g \cdot \gamma_1(\last{a})
+        }
+        {
+            \delta_0 \cdot f \cdot \delta_1 = \gamma_0 \cdot g \cdot \gamma_1
+        }[\textsc{(Good bounds)}]\label{rule:good_bounds}
+
+        \inferrule
+        {
+            \forall \overline x : A \quad f(\overline x) = f_1(\first{\overline x}) \cdot (\beta^\to f_2)(\overline x) \cdot f_3(\last{\overline x}) \\\\
+            \forall \overline x : A \quad g(\overline x) = g_1(\first{\overline x}) \cdot (\beta^\to g_2)(\overline x) \cdot g_3(\last{\overline x}) \\\\
+            \forall \overline x : A \quad |\overline x| \leq 4 \implies f(\overline x) = g(\overline x)
+        }
+        {
+            f = g   
+        }[\textsc{(4 is enough)}]\label{rule:4_is_enough}
+\end{mathpar}
+
+\katzpermargin{There will be one more rule for unary case in the tetrachomy}
+
+Rules \nameref{rule:4_is_enough} and \nameref{rule:good_bounds} need a reversed counterpart, or we can add a congruence rule for reversal.
+
+Now we prove that the lemmas above can be derived from axioms.
+
+\begin{lemma}\label{lem:good-bounds-rule-soundness}
+    The rule \nameref{rule:good_bounds} is sound.
+\end{lemma}
+
+\begin{proof}
+    By the first and second assumption we have
+    \begin{gather*}
+        \overline{\gamma_0} \cdot \delta_0 = \overline{\gamma_0(\first{a})} \cdot \delta_0(\first{a}) \iff \delta_0(\first{a}) = \gamma_0(\first{a}) \cdot \overline{\gamma_0} \cdot \delta_0, \\ 
+        \gamma_1 \cdot \overline{\delta_1} = \gamma_1(\last{a}) \cdot \overline{\delta_1(\last{a})} \iff \delta_1(\last{a}) = \delta_1 \cdot \overline{\gamma_1} \cdot \gamma_1(\last{a}).
+    \end{gather*}
+    Now starting from the third assumption, we obtain:
+    \begin{gather*}
+        \delta_0(\first{a}) \cdot f \cdot \delta_1(\last{a}) = \gamma_0(\first{a}) \cdot g \cdot \gamma_1(\last{a}) \\ 
+        \left( \gamma_0(\first{a}) \cdot \overline{\gamma_0} \cdot \delta_0 \right)  \cdot f \cdot \left( \delta_1 \cdot \overline{\gamma_1} \cdot \gamma_1(\last{a}) \right) = \gamma_0(\first{a}) \cdot g \cdot \gamma_1(\last{a}) \\ 
+        \overline{\gamma_0} \cdot \delta_0 \cdot f \cdot \delta_1 \cdot \overline{\gamma_1} = g \\
+        \delta_0 \cdot f \cdot \delta_1 = \gamma_0 \cdot g \cdot \gamma_1. \qedhere
+    \end{gather*}
+\end{proof}
+
+\begin{lemma}\label{lem:good-interface-rule-soundness}
+    The rule \nameref{rule:good_interface} is sound.
+\end{lemma}
+
+\begin{proof}
+    By assumptions, we have that $f_1$ and $g_1$ are prefix-compatible. Furthermore, $\rint{f_1}{g_1}$ is good. Indeed: suppose that $\overline x, \overline y$ are such that $\shell{\overline x} = \shell{\overline y}$ but $\rint{f_1}{g_1}(\overline x) \neq \rint{f_1}{g_1}(\overline y)$. We know that 
+    \[
+        f_1(\overline x) \cdot f_2(\shell{\overline x}) = g_1(\overline x) \cdot g_2(\shell{\overline x}),
+    \]
+    but then we definitely must have that
+    \[
+        f_1(\overline z) \cdot f_2(\shell{\overline x}) \neq g_1(\overline z) \cdot g_2(\shell{\overline x}),
+    \]
+    which gives a contradiction with assumptions, because $\shell{\overline x} = \shell{\overline z}$. By a similar argument, $\lint{f_2}{g_2}$ is also good. 
+
+    Take any $\overline x : A$. By prefix and suffix compatibility, we know that $f_1(\overline x), g_1(\overline x)$ are in prefix relation, and that $f_2(\overline x), g_2(\overline x)$ are in suffix relation. Therefore, it remains to show that 
+    \[
+        \rint{f_1}{g_1}(\overline x) = - \lint{f_2}{g_2}(\overline x).
+    \]
+    In other words, that interfaces match. But this must be true, because interfaces are good, and by assumptions we have $(f_1 \cdot f_2)(\shell{\overline x}) = (g_1 \cdot g_2)(\shell{ \overline x})$, thus
+    \[
+        \rint{f_1}{g_1}(\overline x) = \rint{f_1}{g_1}(\shell{\overline x}) = - \lint{f_2}{g_2}(\shell{\overline x}) = - \lint{f_2}{g_2}(\overline x). \qedhere
+    \]
+\end{proof}

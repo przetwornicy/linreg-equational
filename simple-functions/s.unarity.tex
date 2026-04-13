@@ -1,0 +1,178 @@
+\begin{definition}[Unary simple functions]
+    Given primal $v \in \Gamma^* \setminus \{\varepsilon\}$, we say that $f : A \xrightarrow{\mathrm{sf}} \Gamma^*$ is $v$-unary, if there are $u,w \in \Gamma^*$ such that
+    \[
+        \im \left( u \cdot f \cdot w \right) \subseteq v^*.
+    \]
+\end{definition}
+
+First, we give an equivalent definition of unarity in terms of functions equality.
+
+\begin{lemma}\label{lem:unarity-in-terms-of-functions-equality}
+    $\im \left(u \cdot f \cdot w \right) \subseteq v^*$ if and only if $v^{|u f w|} = (u \cdot f \cdot w)^{|v|}$.
+\end{lemma}
+
+\begin{proof}
+    The length of both sides is equal: it is $|v| \cdot |u \cdot f \cdot w|$. This suffices for $\implies$. Now suppose that the right hand side holds. Then $v^\omega = (u \cdot f \cdot w)^\omega$, and therefore by the Fine-Wilf's Theorem, words $v$ and $u \cdot f \cdot w$ have a common root of length $\mathrm{gcd}(|v|, |u \cdot f \cdot w|)$. By the fact that $u$ is primal, this root must have length $|v|$, and hence $u \cdot f \cdot w \in v^*$.
+\end{proof}
+
+Thanks to \cref{lem:unarity-in-terms-of-functions-equality}, we can attempt to prove unarity in our equational system. Everytime we write $\im(u \cdot f \cdot w) \subseteq v^*$, we treat it as sugar syntax for the equational definition.
+
+Now, we introduce axioms that we need to add to our system to prove unarity.
+
+\[
+    \im (v) \subseteq v^{(*)} 
+\]
+
+\[
+    \im(\overline v) \subseteq v^{(*)}
+\]
+
+\begin{mathpar}
+    \inferrule
+        {   
+            \im (f) \subseteq v^{(*)} \\ 
+            \im (g) \subseteq v^{(*)} 
+        }
+        {
+            f \cdot g = g \cdot f
+        }[\textsc{(unarity-comm)}]\label{rule:unarity-commutativity}
+
+    \inferrule
+        {   
+            \im (h) \subseteq v^{(*)}
+        }
+        {
+            \im \left( \bihom{to, h} \right) \subseteq v^{(*)}
+        }[\textsc{(unarity-bihom-lift)}]\label{rule:unarity-bihom-lift}
+
+    \inferrule
+        {   
+            \im (g) \subseteq v^{(*)} \\ 
+            \im (h) \subseteq v^{(*)}
+        }
+        {
+            \bihom{to, g \cdot h} = \bihom{to, g} \cdot \bihom{to, h}
+        }[\textsc{(unarity-bihom-dist)}]\label{rule:unarity-bihom-dist}
+\end{mathpar}
+
+We introduce two lemmas used for proving unarity in our system and prove that they follow from our axioms.
+
+\begin{mathpar}
+    \inferrule
+        {
+            \im \left( u \cdot f \cdot x \right) \subseteq v^* \\\\ 
+            \im \left( y \cdot g \cdot w \right) \subseteq v^* \\\\ 
+            y \cdot x = v
+        }
+        {
+            \im \left(u \cdot fg \cdot w \right) \subseteq v^*
+        }[\textsc{(unarity-concat)}]\label{rule:unarity-concat}
+
+        \inferrule
+        {
+            \forall i,j \quad \im \left( u_i \cdot h_{| A_i \times A_j} \cdot w_j \right) \subseteq v^* \\\\
+            \forall i \quad u_i \cdot w_i = v
+        }
+        {
+            \im \left( u_1 \cdot \bihom{to, h} \cdot w_1 \right) \subseteq v^*
+        }[\textsc{(unarity-bihom)}]\label{rule:unarity-bihom}
+\end{mathpar}
+
+\begin{lemma}\label{lem:unarity-concat-follows-from-axioms}
+    \nameref{rule:unarity-concat} follows from axioms.
+\end{lemma}
+
+\begin{proof}
+    \begin{align*}
+        \left( u \cdot f g \cdot w \right)^{|v|} &= \left( u \cdot f \cdot x \cdot \overline{xy} \cdot y \cdot g \cdot w \right)^{|v|} \\ 
+                                                     &= \left( \left( u \cdot f \cdot x \right) \cdot \overline v \cdot \left( y \cdot g \cdot w \right) \right)^{|v|} \tag{by $y \cdot x = v$} \\ 
+                                                     &= \left( u \cdot f \cdot x \right)^{|v|} \cdot \overline{v}^{|v|} \cdot \left( y \cdot g \cdot w \right)^{|v|} \tag{by \nameref{rule:unarity-commutativity}} \\ 
+                                                     &= v^{|u f x|} \cdot v^{-|v|} \cdot u^{|y g w|} \tag{by assumptions} \\ 
+                                                     &= u^{|u fg w|} \tag{by $|x| + |y| = |v|$}
+    \end{align*}
+\end{proof}
+
+\begin{lemma}\label{lem:unarity-bihom-follows-from-axioms}
+    \nameref{rule:unarity-bihom} follows from axioms.
+\end{lemma}
+
+\begin{proof}
+    \begin{align*}  
+        \left( u_1 \cdot \bihom{to, h} \cdot w_1 \right)^{|v|} &= \left( u_1 \cdot w_1 \cdot \bihom{to, \overline{w_i} \cdot h_{| A_i \times A_j} \cdot w_j } \right)^{|v|}  \tag{by \eqref{rule:bihom-rotation}} \\ 
+                                          &= \left( v \cdot \bihom{to, \overline v \cdot u_i \cdot h_{| A_i \times A_j} \cdot w_j } \tag{by $u_i \cdot w_i = v$} \right)^{|v|} \\
+                                          &= \left( v \cdot \bihom{to, \overline v} \cdot \bihom{to, u_i \cdot h_{| A_i \times A_j} \cdot w_j } \right)^{|v|} \tag{by \nameref{rule:unarity-bihom-dist}} \\ 
+                                          &= v^{|v|} \cdot \bihom{to, \overline{v}}^{|v|} \cdot \bihom{to, u_i \cdot h_{| A_i \times A_j} \cdot w_j }^{|v|} \tag{by \nameref{rule:unarity-commutativity}} \\
+                                          &= v^{|v|} \cdot \bihom{to, \overline{v}^{|v|}} \cdot \bihom{to, \left(u_i \cdot h_{| A_i \times A_j} \cdot w_j\right)^{|v|} } \tag{by \nameref{rule:unarity-bihom-dist}} \\
+                                          &= v^{|v|} \cdot \bihom{to, v^{-|v|}} \cdot \bihom{to, v^{|u_i| + |h_{|A_i \times A_j}| + |w_j|}} \tag{by assumptions} \\
+                                          &= v^{|v|} \cdot \bihom{to, v^{|h_{|A_i \times A_j}|}} \cdot \bihom{to, v^{|u_i| + |w_j| - |v|}} \tag{by \nameref{rule:unarity-bihom-dist} and \nameref{rule:unarity-commutativity}} \\
+                                          &= v^{|v|} \cdot v^{|\bihom{to, h}|} \cdot v^{|u_1|} \cdot \bihom{to, v^{|u_j| + |w_j| - |v|}} \cdot v^{-|u_1|} \tag{by \eqref{rule:bihom-rotation}} \\ 
+                                          &= v^{|v| + |\bihom{to, h}|} \tag{by $|u_j| + |w_j| = |v|$} \\ 
+                                          &= v^{|u_1 \cdot \bihom{to, h} \cdot w_1|} \tag{by $|u_1| + |w_1| = |v|$}
+    \end{align*}
+\end{proof}
+
+Finally, we prove completeness, in some even stronger version. We show that in fact, $\im(f) \subseteq \infix(u^\omega)$ suffices to be unary.
+
+\begin{lemma}\label{lem:unarity-completeness}
+    If $\im(f) \subseteq \infix \left(v^\omega \right)$, then $\im \left(u \cdot f \cdot w \right) \subseteq v^*$ for some $u, w \in \Gamma^*$ and it can be derived from our axioms.
+\end{lemma}
+
+\begin{proof}
+    The proof follows an induction of the rank of type. If $f$ is a constant function, then trivial. Otherwise we consider concatenation and bihomomorphism separately.
+
+    \paragraph{Concatenation.} Suppose that $\im(f \cdot g) \subseteq \infix \left( v^\omega\right)$. Then $\im(f), \im(g) \subseteq \infix \left( v^\omega\right)$, so from induction we have $u_0, w_0, u_1, w_1$ such that $\im(u_0 \cdot f \cdot w_0) \subseteq v^*$ and $\im(u_1 \cdot g \cdot w_1) \subseteq v^*$. We can assume that $|w_0| + |u_1| \in \{ 1, |v|+1, \dots, 2|v| - 1\}$. If both $f,g$ are bounded, then they are constant and the statement follows.
+    
+    Suppose that one of $f,g$ is bounded. Assume that $g$ is bounded (the other case is symmetric). Then $g$ is constant, equal to some $c \in \Gamma^*$. By considering an input such that $f$ contains a copy of $v$, we obtain that $c$ is in prefix relation with $w_0$. If $c \leq_\prefix w_0$, then $\im(u_0 \cdot f \cdot c \cdot (\overline{c} \cdot w_0)) \subseteq v^*$ and it can be proved by induction. If $w_0 <_\prefix c$, then the same argument works if we take $w_0 = w_0 \cdot v^k$ for some constant $k$ (to make it longer than $c$).
+
+    Now suppose that both $f$ and $g$ are unbounded. By \nameref{rule:unarity-concat}, it suffices to show that $|v| \, | \, |w_0| + |u_1|$. To see that this holds, we consider an input such that both $f$ and $g$ have a copy of $v$ in them. Then we argue that since there is only one way for $f$ and $g$ to map into $v^\omega$ and $(f \cdot g), (f \cdot w_0 \cdot u_1 \cdot g) \leq_\infix u^\omega$, it must be the case that $|v| \, | \, |w_0 \cdot u_1|$.
+
+    \paragraph{Bihomomorphism.} Suppose that $\im(\bihom{to, h}) \subseteq \infix \left( v^\omega \right)$ (the case that bihomomorphism is reversed is symmetric). By induction, for every $i,j$, there are $u_{i,j},w_{i,j}$ such that $\im(u_{i,j} \cdot h_{|A_i \times A_j} \cdot w_{i,j}) \subseteq v^*$. We can assume that $|u_{i,j}| \in \{1, \dots, |v| \}$ and $|w_{i,j}| \in \{0, \dots, |v|-1 \}$. \katzpermargin{TODO: Finish}
+\end{proof}
+
+\begin{comment}
+\begin{lemma}\label{lem:weak-unarity-implies-strong-unarity}
+    Suppose that $f : A \xrightarrow{\mathrm{sf}} \Gamma^*$ and $u \in \Gamma^*$ are such that $\im(f) \subseteq_{\infix} u^\omega$. Then there is a cyclic shift $v$ of $u$ and $v_0 <_\suffix v$, $v_1 <_\prefix v$ such that
+    \[
+        \im(f) \subseteq v_0 \cdot v^* \cdot v_1.
+    \]
+\end{lemma}
+
+\begin{proof}
+    We proceed by structural induction, but we also want to consider types in order of their rank. If $f$ is a constant, then the statement is trivial. Otherwise, we separately consider concatenations and bihomomorphisms.
+
+    \paragraph{Concatenation.} We prove the statement for $f \cdot g$, where $f,g : A \xrightarrow{\mathrm{sf}} \Gamma^*$. By induction, there are cyclic shifts $v,w$ of $u$ and $v_0 <_\suffix v, v_1 <_\prefix v, w_0 <_\suffix w, w_1 <_\prefix w$ such that $\im(f) \subseteq v_0 \cdot v^* \cdot v_1$ and $\im(g) \subseteq w_0 \cdot w^* \cdot w_1$. 
+    
+    If both $f,g$ are bounded, then they are constant, and the statement follows. Assume that one of the functions is constant, while the other is unbounded. Assume that $f$ is unbounded (the other case is symmetric) and $g = c$. By considering an input $a : A$ such that $|f(a)| \geq 2|v|-1$, we argue that $v_1 \cdot c <_\prefix v^*$. Therefore,
+    \[
+        \im(f \cdot g) \subseteq v_0 \cdot v^* \cdot v_1 \cdot c \subseteq v_0 \cdot v^* \cdot \strpref{v}{|v_1| + |c| \, (\mathrm{mod} \, |v|)}.
+    \]
+    It remains to consider the case where both $f$ and $g$ are unbounded. Suppose that $w$ is the $i$-th cyclic shift of $v$, i.e. that $w = \strsuf{v}{i+1} \cdot \strpref{v}{i}$. \katzpermargin{is it easy to verify that if $v,w$ are prime, then $i$ is unique} We take $a  :A$ such that $|f(a)|, |g(a)| \geq 2|v|-1$. Consider $(f \cdot g)(a)$ --- between the last occurrence of $v$ in $f(a)$ and the first occurrence of $w$ in $g(a)$, we have exactly $v_1 \cdot w_0$. Therefore, we have $v_1 \cdot w_0 \in v^* \cdot \strpref{v}{i}$. Moreover, we have $w_1 <_\prefix \strsuf{v}{i+1} \cdot v^*$. Thus,
+    \begin{align*}
+        \im(f \cdot g) &\subseteq v_0 \cdot v^* \cdot (v_1 \cdot w_0) \cdot w^* \cdot w_1 \\ 
+                       &\subseteq v_0 \cdot v^* \cdot \strpref{v}{i} \cdot w^* \cdot w_1 \\ 
+                       &\subseteq v_0 \cdot v^* \cdot \strpref{v}{i} \cdot w_1 \\ 
+                       &\subseteq v_0 \cdot v^* \cdot \strpref{v}{i + |w_1| \, (\mathrm{mod} \, |v|)}.
+    \end{align*}    
+
+    \paragraph{Bihomomorphism.} Suppose that $A = A_1 \times (A_1 + \dots + A_m)^* \times A_1$ and $f$ is a bihomomorphism. If $f = \varepsilon$, the statement holds. Otherwise, we choose any $c = (a_0 \cdot b \cdot a_0) : A$ such that $|f(c)| \geq 2|u|-1$. Because of the length and $f(c) <_\infix u^\omega$, we have $u \leq_\infix f(c)$. Since $u$ is prime, there are unique $u_0 <_\suffix u$ and $u_1 <_\prefix u$ with $f(c) \in u_0 \cdot u^+ \cdot u_1$. 
+    Now consider: 
+    \[
+        u^\omega >_\infix f(a_0 \cdot b \cdot a_0 \cdot b \cdot a_0) = f(c)^2 \in u_0 \cdot u^+ \cdot (u_1 \cdot u_0) \cdot u^+ \cdot u_1,
+    \]
+    we obtain that $u_1 \cdot u_0 \in \{\varepsilon, u\}$. In both cases, we get that $f(c) \in v^*$ for some cyclic shift $v$ of $u$.
+
+    We now argue that $\im(f) \subseteq v^*$. Pick any $a : A$. Suppose that $a = (a_1, \dots, a_n)$ and consider a function $g : \prod_{i=1}^n \type{a_i} \to \Gamma^*$ which agrees with $f$ on inputs of length exactly $n$ with types of elements exactly the same as in $a$. We have $\im(g) \subseteq_\infix v^\omega$ and $g$ is defined on a type of smaller rank, so from induction there are $w, w_0, w_1$ such that $\im(g) \subseteq w_0 \cdot w^* \cdot w_1$ and $w$ is a cyclic shift of $v$. In particular, we have $f(a) \in w_0 \cdot w^* \cdot w_1$.
+
+    By exchanging $\first{a}$ and $\last{a}$ to $a_0$, we obtain an input $a' \in \dom(g)$. So $f(a') \in w_0 \cdot w^* \cdot w_1$. By arguments similar as previously, we show that $w_1 \cdot w_0 \in \{\varepsilon, w\}$. Moreover, we consider 
+    \[
+        v^\omega >_\infix f(a_0 \cdot b \cdot a' \cdot b \cdot a_0) = f(c) \cdot f(a) \cdot f(c) \in v^+ \cdot f(a) \cdot v^+,
+    \]
+    so we have $f(a) \in v^*$.
+
+    If $w_1 \cdot w_0 = \varepsilon$, then $f(a') \in v^* \cap w^*$, so $f(a') = \varepsilon$ or $w = v$. The latter gives $f(a) \in v^*$.
+
+    If $w_1 \cdot w_0 = w$, then $f(a') \in (w_0 \cdot w_1)^* \cap v^*$, so $f(a') = \varepsilon$ or $w_0 \cdot w_1 = v$. The latter gives $w_0 \cdot w^* \cdot w_1 = v^+ \implies f(a) \in v^*$.
+
+    It remains to solve the case where $f(a) = \varepsilon$. This case can be easily avoided if $f(A_1 \times A_1) \neq \varepsilon$ --- by chosing an appropriate $a_0$ at the very beginning of the proof. However, if $f(A_1) = \varepsilon$, then we have $f(a') = f(a)$, but we already established that $f(a) \in v^*$. This finishes the proof.
+\end{proof}
+\end{comment}

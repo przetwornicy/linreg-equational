@@ -299,7 +299,8 @@ $\Box$ \smallskip
 \newcommand\mb[1]{\todo[inline,size=\scriptsize,backgroundcolor=yellow]{#1 - \textbf{Mikolaj}}}
 \newcommand\alc[1]{\todo[inline,size=\scriptsize,backgroundcolor=green]{#1 - \textbf{Aliaume}}}
 \newcommand\rs[1]{\todo[inline,size=\scriptsize,backgroundcolor=blue]{#1 - \textbf{Rafal}}}
-
+\newcommand\katzper[1]{\todo[inline,size=\scriptsize,backgroundcolor=magenta!30]{#1 - \textbf{Katzper}}}
+\newcommand\katzpermargin[1]{\todo[size=\scriptsize,backgroundcolor=magenta!30]{#1 - \textbf{Katzper}}}
 
 % various kinds of numbers
 \newcommand{\Nat}{{\mathbb N}}
@@ -403,24 +404,22 @@ $\Box$ \smallskip
 \newcommand{\shell}[1]{#1 . \mathsf{shell}}
 \newcommand{\first}[1]{#1 . \mathsf{first}}
 \newcommand{\last}[1]{#1 . \mathsf{last}}
+\newcommand{\projLeft}[1]{#1 . \mathsf{left}}
+\newcommand{\projRight}[1]{#1 . \mathsf{right}}
 \newcommand{\inter}[1]{#1 . \mathsf{inter}}
 \newcommand{\bihom}[1]{%
   \StrBefore{#1}{,}[\firstarg]%  
   \StrBehind{#1}{,}[\secondarg]%  
   \ifthenelse{\equal{\firstarg}{to}}{%
-    \beta^{\rightarrow}\left(\secondarg \right)%
+    \beta \left( \secondarg \right)%
   }{%
-    \beta^{\leftarrow}\left(\secondarg \right)%
+    \beta^{\leftarrow} \left( \secondarg \right)%
   }%
 }
 \newcommand{\sfpref}[2]{#1[\,..\,#2]}
 \newcommand{\sfsuf}[2]{#1[#2\,..\,]}
 \newcommand{\rint}[2]{\ensuremath{I_R \left[ #1, #2 \right]}}
 \newcommand{\lint}[2]{\ensuremath{I_L \left[ #1, #2 \right]}}
-
-% Comments
-\newcommand{\katzpermargin}[1]{\todo[color=magenta!30]{Katzper: #1}}
-\newcommand{\katzper}[1]{\todo[color=magenta!30,inline]{Katzper: #1}}
 
 % Overwriting \inferrule to allow cross-referrencing
 \makeatletter

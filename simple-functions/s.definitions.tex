@@ -1,0 +1,41 @@
+\katzper{WIP}
+
+The lists are of the type $A_1 \times (A_1 + \dots + A_n )^* \times A_1 $. In particular, they have at least two elements - first and last, both of the same specified type.
+
+To the list of constructors of simple functions we add the bihomomorphism, that is a repeating of a special product functions on windows of size two on a list or its reverse and \emph{first} and \emph{last} constructors that apply a function to the first/last element of a list.
+
+In general, a type $A$ is a product of $t$ list types, which we denote by $A^{(1)}, \dots, A^{(t)}$, i.e., $A = A^{(1)} \times \dots \times A^{(t)}$. If $\overline x : A$, by $\overline x^{(1)}, \dots, \overline x^{(t)}$ we denote the independent parts of the input $\overline x$.
+
+For a list type $A = A_1 \times (\sum A_i)^* \times A_1$, we denote $\first{A} = \last{A} = A_1$ and $\inter{A} = \sum A_i$. Furthermore, if $\overline x : A$, then $\first{\overline x} : \first{A}$ is the first element of list $\overline x$ and $\last{\overline x} : \last{A}$ is the last element.
+
+\begin{definition}[Shell]
+    Suppose that $A = A^{(1)} \times \dots \times A^{(t)}$ is a general type and $\overline x : A$. Then, the shell of $\overline x$ is
+    \[
+        \shell{\overline x} = \left(\first{\overline x^{(1)}}, \last{\overline x^{(1)}}, \dots, \first{\overline x^{(t)}}, \last{\overline x^{(t)}} \right),
+    \]
+    and $\shell{A}$ is the type of a shell of input of type $A$ --- that is, 
+    \[
+        \shell{A} = \first{A^{(1)}} \times \last{A^{(1)}} \times \dots \times \first{A^{(t)}} \times \last{A^{(t)}}.
+    \]
+\end{definition}
+
+\begin{definition}[Right interface]
+    Suppose that $f, g : A \xrightarrow{\mathrm{sf}} \Gamma^*$ are prefix-compatible --- that is, for every $\overline x : A$ we have $f(\overline x) \leq_\prefix g(\overline x)$ or $g(\overline x) \leq_\prefix f(\overline x)$. The, the right interface of $f$ and $g$ is a function $\rint{f}{g} : A \to \{+, -\} \times \Gamma^*$ defined as 
+    \[
+        \rint{f}{g}(\overline x) = \begin{cases}
+            g(\overline x)^{-1} \cdot f(\overline x) & \text{ if } \, |f(\overline x)| \geq |g(\overline x)|, \\ 
+            -  \left(f(\overline x)^{-1} \cdot g(\overline x)\right) & \text{ if } \, |f(\overline x)| < |g(\overline x)| .
+        \end{cases}
+    \]
+\end{definition}
+
+We similarly define the left interface $\lint{f}{g}$ for suffix-compatible functions. Next, we define what is a good interface.
+
+\begin{definition}[Good (right) interface]
+    A (right) interface $\rint{f}{g}$ is good if it only depends on the shell of the input. In other words,
+    \[
+        \forall \overline x, \overline y : A \quad \shell{\overline x} = \shell{\overline y} \implies \rint{f}{g}(\overline x) = \rint{f}{g}(\overline y).
+    \]
+\end{definition}
+
+Again, similarly we define good left interfaces.
