@@ -19,17 +19,22 @@ For a list type $A = A_1 \times (\sum A_i)^* \times A_1$, we denote $\first{A} =
     \]
 \end{definition}
 
-\begin{definition}[Right interface]
-    Suppose that $f, g : A \xrightarrow{\mathrm{sf}} \Gamma^*$ are prefix-compatible --- that is, for every $\overline x : A$ we have $f(\overline x) \leq_\prefix g(\overline x)$ or $g(\overline x) \leq_\prefix f(\overline x)$. The, the right interface of $f$ and $g$ is a function $\rint{f}{g} : A \to \{+, -\} \times \Gamma^*$ defined as 
-    \[
-        \rint{f}{g}(\overline x) = \begin{cases}
-            g(\overline x)^{-1} \cdot f(\overline x) & \text{ if } \, |f(\overline x)| \geq |g(\overline x)|, \\ 
-            -  \left(f(\overline x)^{-1} \cdot g(\overline x)\right) & \text{ if } \, |f(\overline x)| < |g(\overline x)| .
-        \end{cases}
-    \]
+
+
+\begin{definition}[Interface]
+    The right and left interfaces of two simple functions $f, g: \sfarrow{A}{\Gamma}$ are simple functions with group output, of type $\sfarrowG{A}{\Gamma}$ given by the following definition.
+
+    \begin{align*}
+        \rint{f}{g} = \inv{g}f \\
+        \lint{f}{g} = f\inv{g}
+    \end{align*}
+
 \end{definition}
 
-We similarly define the left interface $\lint{f}{g}$ for suffix-compatible functions. Next, we define what is a good interface.
+\begin{definition}[Prefix compatible]
+    We say that $f, g: \sfarrow{A}{\Gamma}$ are prefix-compatible if for every $\overline x : A$ we have $f(\overline x) \leq_\prefix g(\overline x)$ or $g(\overline x) \leq_\prefix f(\overline x)$.
+\end{definition}
+
 
 \begin{definition}[Good (right) interface]
     A (right) interface $\rint{f}{g}$ is good if it only depends on the shell of the input. In other words,
