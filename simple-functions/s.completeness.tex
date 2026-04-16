@@ -31,11 +31,60 @@ For $i \in [n]$, by $\sfpref{f}{i}$ we denote the function $f_1 \cdot \delta_1 \
 Before we prove \cref{lemma:the-only-three-cases-for-simple-functions}, we show progress in all of the tree cases.
 
 \begin{claim}\label{claim:progress_for_unary}
-    If $f = g$ there exists prime $u \in \Gamma^*$ such that $\sfpref{f}{n}$ and $\sfpref{g}{m}$ are $u$-unary, then $f \equiv g$. 
+    If $f = g$ and there exists prime $u \in \Gamma^*$ such that $\sfpref{f}{n}$ and $\sfpref{g}{m}$ are $u$-unary, then $f \equiv g$. 
 \end{claim}
 
 \begin{proof}
     \katzper{TODO}
+\end{proof}
+
+
+\begin{lemma}
+    If $\bihom{to, f} = \bihom{to, g}$ then $\bihom{to, f} \equiv \bihom{to, g}$ 
+\end{lemma}
+\begin{proof}
+    We will find a simple function with group output $h$, with the following properties: 
+    \begin{itemize}
+        \item  ${h|}_{A_1} \equiv \epsilon$
+        \item  $h(x)g(x, y) \equiv f(x, y)h(y)$
+    \end{itemize} 
+
+    The result will follow from axiom \cref{rule:bihom-rotation}.
+   
+    Let $a_0$ be a fixed element of $A_1$.
+    Define $h(x) := \rint{g(a_0, x)}{f(a_0, x)}$.
+
+    $h(A_1) = \epsilon$ because then for any $[a_0, a]$ forms a valid input to $\bihom{to, f}$ and $\bihom{to, g}$, so they agree on it, and the interface is empty.
+
+    Note that with this definition items (i) and (ii) are equivalent to \dots \kacpermargin{Explain that those two facts are about concatenations of (subgroup) simple functions, so they are provable by induction.}
+
+    Since $f, g$ are used under a homomorphism it is natural to apply them to tuples longer than a pair. Below I write $f(x, y, z)$ to denote $f(x, y)f(y, z)$ and similarily for four inputs.
+
+    Since $f(a_0, y, a_0) = g(a_0, y, a_0)$  and $f(a_0, x, y, a_0) = g(a_0, x, y, a_0)$ and it is on a simpler type, we have:
+
+
+    from them we can deduce
+
+    \begin{align}
+        f(a_0, y, a_0) &\equiv g(a_0, y, a_0)\notag\\
+        f(y, a_0)\inv{g(y, a_0)} &\equiv \inv{f(a_0, y)}g(a_0, y) \label{eq:3-element-list}
+    \end{align}
+    
+    \begin{align}
+        f(a_0, x, y, a_0) &\equiv g(a_0, x, y, a_0)\notag\\
+        f(y, a_0)\inv{g(y, a_0)} &\equiv \inv{(f(a_0, x)f(x, y))}g(a_0, x)g(x, y)\label{eq:4-element-list}
+    \end{align}
+
+    We can now deduce $h(x) \cdot g(x, y) \equiv f(x, y) \cdot h(y)$, which finishes the proof.
+
+    \begin{align*}
+        f(y, a_0)\inv{g(y, a_0)} \equiv f(y, a_0)\inv{g(y, a_0)} \tag{idendity} \\
+        f(y, a_0)\inv{g(y, a_0)} \equiv \inv{f(a_0, y)}g(a_0, y) \tag{by \cref{eq:3-element-list}} \\
+        \inv{(f(a_0, x)f(x, y))}g(a_0, x)g(x, y) \equiv \inv{f(a_0, y)}g(a_0, y) \tag{by \cref{eq:4-element-list}} \\
+        \inv{f(a_0, x)}g(a_0, x)g(x, y) \equiv f(x, y)\inv{f(a_0, y)g(a_0, y)} \\
+        h(x) \cdot g(x, y) \equiv f(x, y) \cdot h(y) \tag{definition of h}
+    \end{align*}
+
 \end{proof}
 
 \begin{claim}\label{claim:progress_for_one_bihom_in_both_functions}
