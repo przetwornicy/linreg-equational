@@ -17,6 +17,8 @@ LaTeX build artifacts
 *.eps
 *.kaux
 *.diagnose
+main-blx.bib
+main.run.xml
 
 # IDE
 .vscode/
