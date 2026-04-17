@@ -1,0 +1,48 @@
+\begin{definition}[Root-free group elements]
+    We say that $v \in \Gamma^{(*)}$ is root-free if 
+    \[
+        \forall w \in \Gamma^{(*)}, k \geq 0 \quad v = w^k \implies k = 1.
+    \]
+\end{definition}
+
+Note that, in particular, $\varepsilon$ is not root-free. We will be mostly interested in root-free elements of the free monoid $\Gamma^*$. As it turns out, for such elements, being root-free in the free monoid implies being root-free in the ambient free group.
+
+\begin{lemma}\label{lem:root-free-in-monoid-gives-root-free-in-group}
+    Suppose that $v \in \Gamma^*$ satisfies that for every $w \in \Gamma^*$ and $k \geq 0$, if $v = w^k$, then $k = 1$. Then the same is true for every $w \in \Gamma^{(*)}$. In other words, $v$ is root-free.
+\end{lemma}
+
+\begin{proof}
+    It suffices to show that if $v = w^k$ for some $w \in \Gamma^{(*)}$ and $k \geq 1$, then $w \in \Gamma^*$. Let $w = x y \overline{x}$, where $y$ is cyclically reduced, that is, $y = \varepsilon$ or the first and last letter of $y$ are not inverses of one another. We have $w^k = x y^k \overline{x}$, which is already reduced from the choice of the partition. Now, if $x y^k \overline{x} \in \Gamma^*$, then we must have that $x = \varepsilon$ and $y \in \Gamma^*$. The statement follows.
+\end{proof}
+
+By \cref{lem:root-free-in-monoid-gives-root-free-in-group}, the notion of being root-free for $v \in \Gamma^*$ coincides with the combinatorial notion of ``primality'' --- that is, the condition $v$ cannot be obtained by repeating an other word in $\Gamma^*$ several (more than one) times. However, we will stick to the ``root-free'' name.
+
+\begin{lemma}[Common root lemma, {\cite[Proposition 2.17]{lyndon2001}}]\label{lem:common-root-theorem}
+    Suppose that $v,w \in \Gamma^{(*)}$ and $k, \ell \in \mathbb{Z} \setminus \{0 \}$ are such that $v^k = w^\ell$. Then $v$ and $w$ have a common root --- there are $r \in \Gamma^{(*)}$ and $p,q \in \mathbb{Z} \setminus \{0 \}$ such that $v = r^p$ and $w = r^q$. 
+\end{lemma}
+
+\begin{lemma}\label{lem:prime-words-must-perfectly-align}
+    If $v \in \Gamma^*$ is a proper infix (not a prefix and not a suffix) of $v^2$, then $v$ is not root-free.
+\end{lemma}
+
+\begin{proof}
+    \katzper{TODO}
+\end{proof}
+
+\begin{lemma}\label{lem:copy-of-v-in-infix-splits-into-prefix-and-suffix}
+    Suppose that $x,v,y \in \Gamma^*$ and $v$ is root-free. If $x v y \leq_\infix v^\omega$, then $x$ is a suffix of $v^{-\omega}$ and $y$ is a prefix of $v^\omega$.
+\end{lemma}
+
+\begin{proof}
+    Assuming the statement is not true, when we look at how $x v y$ aligns with $v^\omega$, we obtain that $v$ is a proper infix of $v^2$. This contradicts the fact that $v$ is root-free by \cref{lem:prime-words-must-perfectly-align}.
+\end{proof}
+
+\begin{lemma}\label{lem:between-two-copies-of-v-it-must-be-power-of-v}
+    Suppose that $x, v \in \Gamma^*$ and $v$ is root-free. If $v x v \leq_\infix v^\omega$, then $x \in v^*$. 
+\end{lemma}
+
+As a simple consequence of \cref{lem:copy-of-v-in-infix-splits-into-prefix-and-suffix}, we obtain the following lemma allowing us to ``pump'' copies of $v$ in infixes of $v^\omega$. 
+
+\begin{lemma}\label{lem:copies-of-v-can-be-pumped}
+    Suppose that $v,x,y \in \Gamma^*$ and $v$ is root-free. If $x v y \leq_\infix v^\omega$, then $x v^k y \leq_\infix v^\omega$ for every $k \geq 0$.
+\end{lemma}

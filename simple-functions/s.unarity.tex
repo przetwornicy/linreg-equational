@@ -1,9 +1,251 @@
-\begin{definition}[Unary simple functions]
-    Given primal $v \in \Gamma^* \setminus \{\varepsilon\}$, we say that $f : A \xrightarrow{\mathrm{sf}} \Gamma^*$ is $v$-unary, if there are $u,w \in \Gamma^*$ such that
+In this section, we establish our results regarding what we call ``cyclic'' and ``unary'' simple functions. First, we formally define these notions.
+
+\begin{definition}[Cyclic simple functions]
+    Given a root-free $v \in \Gamma^*$, we say that $f : A \xrightarrow{\mathrm{sf}} \Gamma^*$ is $v$-cyclic if
     \[
-        \im \left( u \cdot f \cdot w \right) \subseteq v^*.
+        \im (f) \subseteq v^*.
     \]
 \end{definition}
+
+\begin{definition}[Unary simple functions]
+    Given a root-free $v \in \Gamma^*$, we say that $f : A \xrightarrow{\mathrm{sf}} \Gamma^*$ is $v$-unary if
+    \[
+        \im (f) \subseteq \infix \left( v^\omega \right).
+    \]
+\end{definition}
+
+Clearly, as stated, the notion of unarity is weaker than cyclicity. However, in the following part of this chapter, we will show that, as long as simple functions are concerned, being unary is almost the same as being cyclic. This is great news for us, because it is therefore sufficient for us to develop a system for proving cyclicity of simple functions, as basically all reasonable notions of ``unarity'' fall into this category. 
+
+In the following part of this section, we introduce several new axioms and lemmas to our equational system, which will be used for proving cyclicity. Then, we prove that unarity is essentially the same as cyclicity in the world of simple functions. Finally, at the end of this chapter, we prove that our system is complete when it comes to statements of the form ``$f$ is $v$-cyclic''.
+
+\subsubsection{Axioms and lemmas for cyclicity}
+
+Before we proceed any further, we have to address the elephant in the room: the statements of the form ``$f$ is cyclic'' are not equational assertions! Fortunatelly, this one is pretty simple to overcome. We claim that
+
+\begin{center}
+    $f$ is $v$-cyclic \quad if and only if \quad $f^{|v|} = v^{|f|}$. 
+\end{center}
+
+Note that both $f^{|v|}$ and $v^{|f|}$ are simple functions: the former is $f$ concatenated a finite number of times and the latter is $f$ post-composed with a homomorphism.
+
+In fact, we show a more general property for simple functions on $\Gamma^{(*)}$. Given a function $f : A \xrightarrow{\mathrm{sf}} \Gamma^{(*)}$, by $v^f$ we denote $f$ post-composed with the homomorphism which maps $\Gamma$ to $v$ and $\overline{\Gamma}$ to $\overline{v}$. Clearly, $v^f$ is a simple function. With this notion in hand, we introduce an equational definition of cyclicity of simple functions on the free group.
+
+\begin{claim}
+    If $v \in \Gamma^*$ is root-free, then $\im(f) \subseteq v^{(*)}$ if and only if $f^{|v|} = v^f$. 
+\end{claim}
+
+\begin{proof}[Proof of $\implies$]
+    Let $a \in \dom(f)$ be an arbitrary input. If $f(a) = v^\ell$ for some $\ell \geq 0$, then $f(a)^{|v|} = v^{\ell |v|} = v^{|f(a)|} = v^f$. Similarly, if $f(a) = \overline{v}^\ell$ for some $\ell \geq 0$, then $f(a)^{|v|} = \overline{v}^{\ell |v|} = \overline{v}^{|f(a)|} = v^f$.
+\end{proof}
+
+\begin{proof}[Proof of $\Longleftarrow$]
+    Let $a \in \dom(f)$ be an arbitrary input. We know that $f(a)^{|v|} = v^f = v^\ell$ for some $\ell \in \mathbb{Z}$. If $\ell = 0$, then $f(a) = \varepsilon \in v^{(*)}$. However, if $\ell \neq 0$, then by \cref{lem:common-root-theorem} we obtain that $f(a)$ and $v$ have a common root. Since $v$ is root-free, we deduce that $f(a)$ is a power of $v$.
+\end{proof}
+
+In light of the equational definition of cyclicity, whenever we use $\im(f) \subseteq v^*$, we can treat it as syntax sugar for $f^{|v|} = v^{|f|}$. Similarly, we treat $\im(f) \subseteq v^{(*)}$ as $f^{|v|} = v^f$. We are now in position to introduce all new axioms needed for proving cyclicity: 
+
+\[
+    \im(\varepsilon) \subseteq v^{(*)} \quad \im(v) \subseteq v^{(*)} \quad \im(\overline{v}) \subseteq v^{(*)} 
+\]
+
+\begin{mathpar}
+    \inferrule
+        {
+            \im(f) \subseteq v^{(*)} \\ 
+            \im(g) \subseteq v^{(*)} 
+        }
+        {
+            \im(f \cdot g) \subseteq v^{(*)}
+        }[\textsc{(unarity-concat-lift)}]
+\end{mathpar}
+
+\begin{mathpar}
+    \inferrule
+        {   
+            \im (f) \subseteq v^{(*)} \\ 
+            \im (g) \subseteq v^{(*)} 
+        }
+        {
+            f \cdot g = g \cdot f
+        }[\textsc{(unarity-comm)}]\label{rule:unarity-commutativity}
+\end{mathpar}
+
+\begin{mathpar}
+    \inferrule
+        {   
+            \im (h) \subseteq v^{(*)}
+        }
+        {
+            \im \left( \bihom{to, h} \right) \subseteq v^{(*)}
+        }[\textsc{(unarity-bihom-lift)}]\label{rule:unarity-bihom-lift}
+\end{mathpar}
+
+\begin{mathpar}
+    \inferrule
+        {   
+            \im (g) \subseteq v^{(*)} \\ 
+            \im (h) \subseteq v^{(*)}
+        }
+        {
+            \bihom{to, g \cdot h} = \bihom{to, g} \cdot \bihom{to, h}
+        }[\textsc{(unarity-bihom-dist)}]\label{rule:unarity-bihom-dist}
+\end{mathpar}
+
+Apart from the axioms, we give two lemmas we will use to prove cyclicity by structural induction. One is for concatenation of simple functions, and the other is for bihomomorphisms:
+
+\begin{mathpar}
+    \inferrule
+        {
+            \im \left(f \cdot x \right) \subseteq v^* \\ 
+            \im \left(y \cdot g \right) \subseteq v^* \\ 
+            y \cdot x = v
+        }
+        {
+            \im \left(f \cdot g \right) \subseteq v^*
+        }[\textsc{(unarity-concat)}]\label{rule:unarity-concat}
+\end{mathpar}
+
+\begin{mathpar}
+        \inferrule
+        {
+            \forall i,j \quad \im \left( u_i \cdot h_{| A_i \times A_j} \cdot w_j \right) \subseteq v^* \\
+            \forall i \quad u_i \cdot w_i = v
+        }
+        {
+            \im \left( u_1 \cdot \bihom{to, h} \cdot w_1 \right) \subseteq v^*
+        }[\textsc{(unarity-bihom)}]\label{rule:unarity-bihom}
+\end{mathpar}
+
+We prove soundness of \nameref{rule:unarity-concat} and \nameref{rule:unarity-bihom} in two ways. In this section, we provide combinatorial arguments, helpful for gaining some intuition. In \cref{sec:proofs-of-lemmas}, we give formal derivations from the axioms.
+
+\begin{claim}
+    The lemma \nameref{rule:unarity-concat} is sound.
+\end{claim}
+
+\begin{proof}
+    \katzper{WIP}
+\end{proof}
+
+\begin{claim}
+    The lemma \nameref{rule:unarity-bihom} is sound.
+\end{claim}
+
+\begin{proof}
+    \katzper{WIP}
+\end{proof}
+
+\subsubsection{The difference between cyclic and unary}
+
+Clearly, unarity is a weaker assumption than cyclicity. However, it turns out that, if it comes to simple functions, that these two notions are, more or less, equivalent. 
+
+\begin{lemma}\label{lem:unary-is-the-same-as-cyclic}
+    Suppose that $v \in \Gamma^* \setminus \{\varepsilon \}$ is primal and $f : A \xrightarrow{\mathrm{sf}} \Gamma^*$ is $v$-unary. Then there are $u,w \in \Gamma^*$ such that 
+    \[
+        \im(u \cdot f \cdot w) \subseteq v^*. 
+    \]
+\end{lemma}
+
+The rest of this section is devoted to proving \cref{lem:unary-is-the-same-as-cyclic}. By proceed by a nested induction on the input type rank, and then the number of subfuctions. The statement clearly holds if the input is an atomic type, or more generally, $f$ is a constant function. We consider the cases of concatenation and bihomomorphism separately. Although before proceeding to this, we prove an auxiliary lemma.
+
+\begin{lemma}\label{lem:unarity-you-can-attach-prefix-to-unbounded}
+    Suppose that $f$ is unbounded, $(u_0 f w_0)$ and $(u_1 g w_1)$ are $v$-cyclic and $(f g)$ is $v$-unary. Then $(u_0 f g)$ is $v$-unary.
+\end{lemma}
+
+\begin{proof}
+    By cyclicity, every output of $(u_0 f g)$ is of the form 
+    \[
+        u_0 \cdot (\overline{u_0} \cdot v^k \cdot \overline{w_0}) \cdot (\overline{u_1} \cdot v^\ell \cdot \overline{w_1})
+    \]
+    for some $k, \ell \geq 0$. Let $a : A$ be such that $(u_0 f g)(a)$ represented as above has $k \geq 3$ (which can be achieved since $f$ is unbounded), and $\ell \geq 3$ if possible, otherwise $g$ is constant and the choice of $a$ does not affect $\ell$. By \cref{lem:copies-of-v-can-be-pumped}, if we show that $(u_0 f g)(a) \leq_\infix v^\omega$, then we are done. Since $k \geq 3$, we have that 
+    \[
+        (f \cdot g)(a) \in (\overline{u_0} v) \cdot v^+ \cdot (v \overline{w_0}) \cdot (\overline{u_1} \cdot v^\ell \cdot \overline{w_1}).
+    \]
+    Therefore, by \cref{lem:copy-of-v-in-infix-splits-into-prefix-and-suffix} we know that $(v \overline{w_0} \cdot \overline{u_1} \cdot v^\ell \cdot \overline{w_1})$ is prefix of $v^\omega$, yielding $u_0 \cdot (fg)(a) \leq_\infix v^\omega$.
+\end{proof}
+
+\paragraph{Concatenation.} Suppose that $f g$ is $v$-unary. Then both $f$ and $g$ are $v$-unary, and by induction, there are $u_0,w_0,u_1,w_1$ such that $\im(u_0 f w_0), \im(u_1 g w_1) \subseteq v^*$. We can assume that $|u_0|,|w_0|,|u_1|,|w_1| < |v|$. If both $f,g$ are constant, then so is $fg$ and the statement holds. Hence, we now assume that $fg$ is not constant. 
+
+Next, suppose that exactly one of $f,g$ is constant. By symmetry, it suffices to consider the case where $g$ is constant and $f$ is unbounded. Suppose that $g = c$ for some $c \in \Gamma^*$. By \cref{lem:unarity-you-can-attach-prefix-to-unbounded}, we known that $(u_0 f c)$ is $v$-unary. Now the statement is a consequence of the following claim for $f := (u_0 f)$.
+
+\begin{claim}
+    Suppose that $f$ is unbounded, $(f w_0)$ is $v$-cyclic and $(f c)$ is $v$-unary. Then there is $w \in \Gamma^*$ such that $(f  c  w)$ is $v$-cyclic.
+\end{claim}
+
+\begin{proof}
+    Let $a : A$ be such that $f(a) \cdot w_0 \in v^k$ for some $k \geq 2$. Then 
+    \[
+        f(a) \cdot c \in v^+ \cdot (v \overline{w_0}) \cdot c.
+    \]
+    By \cref{lem:copy-of-v-in-infix-splits-into-prefix-and-suffix}, we deduce that $v \overline{w_0} c$ is a prefix of $v^\omega$. Let $w \in \Gamma^*$ be such that $v \overline{w_0} c w \in v^*$. Then 
+    \[
+        \im(f c w) \subseteq v^* \cdot \overline{w_0} \cdot c \cdot w \subseteq v^{(*)} \cdot (v \overline{w_0} c w) \subseteq v^{(*)}.
+    \]
+    Since $f,c,w$ are all elements of the free monoid, the statement follows.
+\end{proof}
+
+The remaining case is that both $f,g$ are unbounded. By \cref{lem:unarity-you-can-attach-prefix-to-unbounded}, $(u_0 f g w_1)$ is $v$-unary. Observe that it suffices to show that $u_1 \cdot w_0 \in v^*$ --- if this is the case, then
+\[
+    \im(u_0 f \cdot g w_1) \subseteq \left(  v^* \cdot \overline{w_0} \right) \left( \overline{u_1} \cdot v^* \right) \subseteq v^* \cdot \overline{v}^* \cdot v^* \subseteq v^{(*)}.
+\]
+Moreover, since $u_0,f,g,w_1$ are elements of the free monoid, the statement follows. Thus, the following claim, applied to $f := (u_0 f), g:= (g w_1)$ finishes the argument in the case of concatenation.
+
+\begin{claim}
+    Suppose that $f,g$ are unbounded, $fg$ is $v$-unary and $(f x), (y g)$ are $v$-cyclic for some $x,y \in \Gamma^*$. Then $(y x) \in v^*$. 
+\end{claim}
+
+\begin{proof}
+    Take $a : A$ such that $f(a) \in v^+ \cdot (v^k \overline x)$ and $g(a) \in (\overline y v^\ell) \cdot v^+$, where $k, \ell \geq 0$ and $(v^k \overline x), (\overline y v^\ell) \in \Gamma^*$. Then we have 
+    \[
+        (f \cdot g)(a) \in v^+ \cdot (v^k \cdot \overline x)(\overline y \cdot v^\ell) \cdot v^+.
+    \] 
+    By \cref{lem:between-two-copies-of-v-it-must-be-power-of-v}, we get that $v^k \cdot \overline x \overline y \cdot v^\ell \in \Gamma^*$, and therefore $(y x) \in v^*$. 
+\end{proof}
+
+\paragraph{Bihomomorphisms.} Suppose that $f = \bihom{to, h} : A_1 \times (A_1 + \dots + A_m)^* \times A_1 \to \Gamma^*$ (the case of reversed bihomomorphism is symmetric). We can assume that $f \neq \varepsilon$, and therefore $f$ is unbounded. The function $h$ can be viewed as a collection of simple functions $h_{i,j} : A_i \times A_j \to \Gamma^*$. Clearly, $h_{i,j}$ is $v$-unary for every $i,j \in [m]$. First, we show that for every $i,j \in [m]$, how outputs of $h_{i,j}$ are ``cut'' at the beginning only depends on $i$, and how they are ``cut'' at the end only depends on $j$.
+
+\begin{claim}\label{claim:unary-bihom-prefix-and-suffix-depends-only-on-bound-type}
+    There are $u_1, \dots, u_m, w_1, \dots, w_m \in \Gamma^*$ such that for every $i,j \in [m]$, we have $\im(u_i \cdot h_{i,j} \cdot w_i) \subseteq v^*$. 
+\end{claim}
+
+\begin{proof}
+    First, we describe how to choose $u_1, \dots, u_m, w_1, \dots, w_m$, and then we prove that our choice satisfies the statement. 
+
+    For every $i \in [m]$, we do the following. Pick a sequence $a^{(i)} = a_1, a_2, \dots, a_n$ such that (1) $a_1 : A_1$, (2) $a_n : A_i$, and (3) $h^*([a_1, \dots, a_{n-1}])$ is long enough to contain a copy of $v^3$. Consider the simple function $g_0 : \prod_{j=1}^n \type{a_j} \to \Gamma^*$ defined as 
+    \[
+        g_0(a'_1, \dots, a'_n) = h^*([a'_1, \dots, a'_n]).
+    \]
+    The function $g_0$ has input type of smaller rank and is $v$-unary, so from induction, there are $x_i, y_i \in \Gamma^*$ such that $\im(x_i g_0 y_i) \subseteq v^*$. We can assume that $|x_i|, |y_i| < |v|$. With this in hand, we let $u_i := v \overline{y_i}$.  
+
+    The word $w_i$ is chosen in a similar way. Pick a sequence $b^{(i)} = b_1, b_2, \dots, b_k$ such that (1) $b_1 : A_i$, (2) $b_k : A_1$, and (3) $h^*([b_2, \dots, b_k])$ contains a copy of $v^3$. Then we consider $g_1 : \prod_{j=1}^k \type{b_j} \to \Gamma^*$ defined as $g_1(b'_1, \dots, b'_k) = h^*([b'_1, \dots, b'_k])$. By induction, there are $z_i, s_i \in \Gamma^*$ with $|z_i|, |s_i| < |v|$ such that $\im(z_i g_1 s_i) \subseteq v^*$. Now we let $w_i := \overline{z_i} v$.  
+
+    We now prove that our choice satisfies the statement. Take any $i,j \in [m]$ and a tuple $(a_i, a_j) \in A_i \times A_j$. Let $a$ be equal to $a^{(i)}$, but with the last element changed to $a_i$. Similarly, let $b$ be the list $b^{(j)}$, but with the first element equal to $a_j$. Consider the following output:
+    \begin{align*}
+        f(a \cdot a_i \cdot a_j \cdot b) &= h^*(a) \cdot h_{i,j}(a_i, a_j) \cdot h^*(b) \\ 
+                                         &= g_0(a) \cdot h_{i,j}(a_i, a_j) \cdot g_1(b) \\ 
+                                         &\in \overline{x_i} \cdot v^{\geq 3} \cdot \overline{y_i} \cdot h_{i,j}(a_i, a_j) \cdot \overline{z_j} \cdot v^{\geq 3} \cdot \overline{s_j} \\ 
+                                         &\in (\overline x_i v) \cdot v^+ \cdot (v \overline y_i) \cdot h_{i,j}(a_i, a_j) \cdot (\overline z_j v) \cdot v^+ \cdot (v \overline s_j).
+    \end{align*}
+    By \cref{lem:between-two-copies-of-v-it-must-be-power-of-v}, we get that $(v \overline{y_i}) \cdot h_{i,j}(a_i, a_j) \cdot (\overline{z_j} v) \in v^*$, which is exactly what we needed to prove.
+\end{proof}
+
+Let $u_1, \dots, u_m, w_1, \dots, w_m$ be as in \cref{claim:unary-bihom-prefix-and-suffix-depends-only-on-bound-type}. Now we show that $u_i \cdot w_i \in v^*$ for every $i \in [m]$. 
+
+\begin{claim}
+    For every $i \in [m]$, we have $(u_i w_i) \in \Gamma^*$. 
+\end{claim}
+
+\begin{proof}
+    If $h_{i,i} = \varepsilon$, then $u_i,w_i = \varepsilon$ and the statement holds. Otherwise, pick any $a : A_i$ such that $|h_{i,i}(a,a)| > 0$. We have $h_{i,i}(a,a) = \overline{u_i} v^k \overline{w_i}$ for some $k \geq 0$. Note that $h^*(a^M) = h_{i,i}(a,a)^{M-1} \leq_\infix v^\omega$ for every $M \geq 2$, so $(\overline{u_i} v^k \overline{w_i})^\omega = v^\omega$. Then by Fine-Wilf's Theorem, $(\overline{u_i} v^k \overline{w_i})$ is a power of a cyclic shift of $v$. In particular, $|u_i| + |w_j| \equiv 0 \, (\mathrm{mod} \, |v|)$. Therefore, since $u_i$ is a prefix of $v^\omega$ and $w_i$ is a suffix of $v^\omega$, the statement follows.
+\end{proof}
+
+\katzper{We now finish by the rule}
+
+\subsubsection{Completeness for cyclicity assertions}
+
+\katzper{WIP}
+
+\begin{comment}
+\subsubsection{System for proving cyclicity}
 
 First, we give an equivalent definition of unarity in terms of functions equality.
 

@@ -1,0 +1,32 @@
+\begin{claim}
+    \nameref{rule:unarity-concat} follows from axioms.
+\end{claim}
+
+\begin{proof}
+    \begin{align*}
+        \left( f \cdot g \right)^{|v|} &= \left( f \cdot x \cdot \overline{xy} \cdot y \cdot g \right)^{|v|} \\ 
+                                                     &= \left( \left( f \cdot x \right) \cdot \overline v \cdot \left( y \cdot g \right) \right)^{|v|} \tag{by $y \cdot x = v$} \\ 
+                                                     &= \left( f \cdot x \right)^{|v|} \cdot \overline{v}^{|v|} \cdot \left( y \cdot g \right)^{|v|} \tag{by \nameref{rule:unarity-commutativity}} \\ 
+                                                     &= v^{|f x|} \cdot v^{-|v|} \cdot v^{|y g|} \tag{by assumptions} \\ 
+                                                     &= v^{|f \cdot g|} \tag{by $|x| + |y| = |v|$}
+    \end{align*}
+\end{proof}
+
+\begin{claim}
+    \nameref{rule:unarity-bihom} follows from axioms.
+\end{claim}
+
+\begin{proof}
+    \begin{align*}  
+        \left( u_1 \cdot \bihom{to, h} \cdot w_1 \right)^{|v|} &= \left( u_1 \cdot w_1 \cdot \bihom{to, \overline{w_i} \cdot h_{| A_i \times A_j} \cdot w_j } \right)^{|v|}  \tag{by \eqref{rule:bihom-rotation}} \\ 
+                                          &= \left( v \cdot \bihom{to, \overline v \cdot u_i \cdot h_{| A_i \times A_j} \cdot w_j } \tag{by $u_i \cdot w_i = v$} \right)^{|v|} \\
+                                          &= \left( v \cdot \bihom{to, \overline v} \cdot \bihom{to, u_i \cdot h_{| A_i \times A_j} \cdot w_j } \right)^{|v|} \tag{by \nameref{rule:unarity-bihom-dist}} \\ 
+                                          &= v^{|v|} \cdot \bihom{to, \overline{v}}^{|v|} \cdot \bihom{to, u_i \cdot h_{| A_i \times A_j} \cdot w_j }^{|v|} \tag{by \nameref{rule:unarity-commutativity}} \\
+                                          &= v^{|v|} \cdot \bihom{to, \overline{v}^{|v|}} \cdot \bihom{to, \left(u_i \cdot h_{| A_i \times A_j} \cdot w_j\right)^{|v|} } \tag{by \nameref{rule:unarity-bihom-dist}} \\
+                                          &= v^{|v|} \cdot \bihom{to, v^{-|v|}} \cdot \bihom{to, v^{|u_i| + |h_{|A_i \times A_j}| + |w_j|}} \tag{by assumptions} \\
+                                          &= v^{|v|} \cdot \bihom{to, v^{|h_{|A_i \times A_j}|}} \cdot \bihom{to, v^{|u_i| + |w_j| - |v|}} \tag{by \nameref{rule:unarity-bihom-dist} and \nameref{rule:unarity-commutativity}} \\
+                                          &= v^{|v|} \cdot v^{|\bihom{to, h}|} \cdot v^{|u_1|} \cdot \bihom{to, v^{|u_j| + |w_j| - |v|}} \cdot v^{-|u_1|} \tag{by \eqref{rule:bihom-rotation}} \\ 
+                                          &= v^{|v| + |\bihom{to, h}|} \tag{by $|u_j| + |w_j| = |v|$} \\ 
+                                          &= v^{|u_1 \cdot \bihom{to, h} \cdot w_1|} \tag{by $|u_1| + |w_1| = |v|$}
+    \end{align*}
+\end{proof}

@@ -1,6 +1,10 @@
 \documentclass{article}
 \usepackage{macros}
 
+%\bibliographystyle{plain}
+%\bibliography{bib}
+\addbibresource{bib.bib}
+
 \begin{document}
 
 \title{Equational theories for regular string-to-string functions}
@@ -19,7 +23,11 @@
 \section{Simple functions}
 \input{simple-functions/main.tex}
 
-% \bibliographystyle{plain}
-% \bibliography{bib}
+\printbibliography
+
+\appendix
+
+\section{Derivations of lemmas}\label{sec:proofs-of-lemmas}
+\input{appendix/s.proofs_of_lemmas.tex}
 
 \end{document}
