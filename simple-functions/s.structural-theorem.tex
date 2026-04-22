@@ -1,0 +1,101 @@
+In this section, we state and prove our ``structural theorem'' for pairs of semantically equal simple functions, which can be seen as an analogue of \cref{lem:segment-lemma} in the world of simple functions. The difference with \cref{lem:segment-lemma} is that the part of output we use to ``connect'' two segments is not necessarily constant, but a simple function on a structurally simpler input type.
+
+\begin{theorem}[Structural Theorem]\label{thm:structural-theorem}
+    Suppose that $f,g : A \xrightarrow{\mathrm{sf}} \Gamma^*$ are such that $f = g$. Then, there is $k \geq 1$ and a ``segment decomposition'' into $k$ segments:
+    \begin{center}
+        \begin{tabular}{l|l|l|l}
+            $\alpha_1 \cdot f_1 \cdot \beta_1$ & $\alpha_2 \cdot f_2 \cdot \beta_2$ & $\dots$ & $\alpha_k \cdot f_k \cdot \beta_k$ \\
+            $\gamma_1 \cdot g_1 \cdot \delta_1$ & $\gamma_2 \cdot g_2 \cdot \delta_2$ & $\dots$ & $\gamma_k \cdot g_k \cdot \delta_k$
+        \end{tabular}
+    \end{center}
+    with $f_i,g_i : A \xrightarrow{\mathrm{sf}} \Gamma^*$ and $\alpha_i,\beta_i,\gamma_i,\delta_i : \shell{A} \xrightarrow{\mathrm{sf}} \Gamma^*$, such that all corresponsing segments are equal:
+    \[
+        \forall i \in [k] \quad \alpha_i \cdot f_i \cdot \beta_i = \gamma_i \cdot g_i \cdot \delta_i,
+    \]
+    the functions $f,g$ can be recovered from the decomposition as
+    \[
+        f = f_1 \cdots f_k \quad \text{ and } \quad g = g_1 \cdots g_k,
+    \]
+    the boundary subfunctions are chosen so that their interfaces match between adjacent segments: \katzpermargin{Isn't this property implied by previous properties?}
+    \[
+        \forall i \in \{ 1, \dots, k-1 \} \quad \lint{\beta_i}{\gamma_i} = \rint{\delta_{i+1}}{\alpha_{i+1}},             
+    \]
+    and every segment $i \in [k]$ is of one of three types:
+    \begin{enumerate}[(i)]
+        \item \textbf{Trivial} --- $f_i, g_i$ are of the type $\shell{A} \xrightarrow{\mathrm{sf}} \Gamma^*$, 
+        \item \textbf{Unary} --- $f_i, g_i$ are $v$-unary for some root-free $v \in \Gamma^*$, or 
+        \item \textbf{Bi-homomorphic} --- $f_i, g_i$ are left-to-right bi-homomorphisms on some part of the input $A^{(j)}$,  $\alpha_i, \gamma_i$ are on $\first{A^{(j)}}$ and $\beta_i, \delta_i$ are on $\last{A^{(j)}}$, or the same is true for reverse of the segment.
+    \end{enumerate}
+\end{theorem}
+
+The analysis of two equal simple functions $f,g$ utilizing \cref{thm:structural-theorem} usually proceeds as follows: (1) take the segment decomposition, (2) analyse every segment separately, using induction hypothesis or more specialised tools for specific types of segments, and (3) synthesise results for individual segments using the properties of segments' interfaces. We will see an example of such reasoning in the proof of completeness of our equational system in the following sections.
+
+But, before we proceed to that, we prove \cref{thm:structural-theorem}. Suppose that $f = g$ are two simple functions of the type $A \xrightarrow{\mathrm{sf}} \Gamma^*$ for a general type $A = A^{(1)} \times \dots \times A^{(\ell)}$. We build the decomposition by iterative refinement, starting from one segment consisting of $\varepsilon \cdot f \cdot \varepsilon$ and $\varepsilon \cdot g \cdot \varepsilon$. Such a single-segment decomposition is trivially \textbf{proper}, by which we mean that it satisfes all conditions required by \cref{thm:structural-theorem}, apart from the fact that the only segment is potentially neither \textbf{trivial}, \textbf{unary}, nor \textbf{bi-homomorphic}. Such a segment is called \textbf{non-atomic}. As long as there exists such a \textbf{non-atomic} segment, we will split it further into smaller segments.
+
+Suppose that there is a \textbf{non-atomic} segment consisting of $\alpha \cdot f \cdot \beta$ and $\gamma \cdot g \cdot \delta$ (we drop the index for readability --- we will now focus solely on this segment). By unfolding concatenations and grouping subfunctions on $\shell{A}$, we can represent $f$ and $g$ as:
+\[
+    f = s_0 \cdot f_1 \cdot s_1 \cdots f_n \cdot s_n \quad \text{ and } \quad g = t_0 \cdot g_1 \cdot t_1 \cdots g_m \cdot t_m,
+\]
+where $f_1, \dots, f_n, g_1, \dots, g_m$ are (non-empty) bihomomorphisms on one of the ``root'' lists, that is, one of $A^{(1)}, \dots, A^{(\ell)}$, and $s_0, \dots, s_n, t_0, \dots, t_m : \shell{A} \xrightarrow{\mathrm{sf}} \Gamma^*$. By the fact that the segment is not \textbf{trivial}, we have $n + m \geq 1$. In fact, we have $n,m \geq 1$, as otherwise we could easily show that $|\alpha f \beta| \neq |\gamma g \delta|$, witnessed by an input with sufficiently many interior elements in the root lists.
+
+\paragraph{Prefix and suffix extraction.} We are going to refine the segment step by step. First, we extract $s_0$ and $t_0$ into a separate segment:
+
+\begin{center}
+    \begin{tabular}{l|l}
+        $\alpha \cdot s_0 \cdot \left( f_1 \cdot s_1 \cdots f_n \cdot s_n \cdot \beta \right)_{| \shell{A}}$ & $(\alpha \cdot s_0) \cdot (f_1 \cdot s_1 \cdots f_n \cdot s_n) \cdot \beta$ \\
+        $\myunderbrace{\gamma \cdot t_0 \cdot \left( g_1 \cdot t_1 \cdots g_m \cdot t_m \cdot \delta \right)_{| \shell{A}}}{\text{prefix}}$ & $\myunderbrace{(\gamma \cdot t_0) \cdot (g_1 \cdot t_1 \cdots g_m \cdot t_m) \cdot \delta}{rest}$
+    \end{tabular}
+\end{center}
+
+Clearly, the ``prefix'' segment is \textbf{trivial}. But we have to argue that the refined decomposition is still \textbf{proper}.
+
+\begin{claim}
+    The decomposition into segments ``prefix'' and ``rest'' is \textbf{proper}.
+\end{claim}
+
+\begin{proof}
+    The only non immediate condition we have to verify is that interfaces on the boundary of the two segments match. In other words, that 
+    \[
+        \lint{(f_1 s_1 \cdots f_n s_n \cdot \beta)_{| \shell{A}}}{(g_1 t_1 \cdots g_m t_m \cdot \delta)_{| \shell{A}}} = \rint{\gamma \cdot t_0}{\alpha \cdot s_0}.
+    \]   
+    However, this directly follows from the definition of interface and the fact that 
+    \[
+        (\alpha \cdot s_0) \cdot (f_1 s_1 \cdots f_n s_n \cdot \beta)_{| \shell{A}} = (\gamma \cdot t_0) \cdot (g_1 t_1 \cdots g_m t_m \cdot \beta)_{| \shell{A}}. \qedhere
+    \]
+\end{proof}
+
+In light of this prefix-extraction procedure, we can basically assume that $s_0 = t_0 = \varepsilon$, and, by a symmetric argument, that $s_n = t_m = \varepsilon$. 
+
+\paragraph{Only one bi-homomorphisms each.} Moving forward, we have to perform some case-analysis. The first case we consider is where $n = m = 1$. In other wods, both $f$ and $g$ are bi-homomorphisms. Since $|\alpha f \beta| = |\gamma g \delta|$, we can immediately deduce that $f$ and $g$ are on the same part of the input --- without loss of generality let it be $A^{(1)}$ --- and that for every input $a : A$ we have $|f(a,a)| = |g(a,a)|$. However, we start with a broader lemma, which will also be used in some following, more general cases.
+
+\begin{lemma}\label{lem:bi-homomorphisms-causes-for-unarity}
+    Suppose that $(\alpha \cdot f  \cdot f') = (\gamma \cdot g \cdot g')$, where $\alpha, \gamma : \shell{A} \xrightarrow{\mathrm{sf}} \Gamma^*$ and $f,g : A \xrightarrow{\mathrm{sf}} \Gamma^*$ are non-empty bi-homomorphisms. If at least one of the following holds:
+    \begin{itemize}
+        \item $f$ and $g$ are on different parts of the input, 
+        \item $f$ is left-to-right and $g$ is right-to-left, or
+        \item there is an input $a : A$ such that $|f(a,a)| > |g(a,a)|$,
+    \end{itemize}
+    then $f,g$ are $v$-unary for some root-free $v \in \Gamma^*$. 
+\end{lemma}
+
+\begin{proof}
+    \katzper{TODO}
+\end{proof}
+
+In light of \cref{lem:bi-homomorphisms-causes-for-unarity}, if the segment consisting of $(\alpha f \beta)$ and $(\gamma g \delta)$ is not \textbf{unary}, then both $f$ and $g$ must have the same direction --- we assume that they are both left-to-right, as the opposite case is symmetric.
+
+Moving forward, we have to address the next potential issue preventing the segment from being \textbf{bi-homomorphic}: $\alpha_i$ and $\gamma_i$ are not necessarily on $\first{A}$. The way we handle this is we show that $\rint{\alpha}{\gamma}$ depends only on the first element of $A^{(1)}$ --- otherwise $f$ and $g$ would be unary --- and hence we can perform some segment refinement.
+
+\begin{lemma}\label{lem:bi-homomorphisms-cause-for-unarity-by-prefix-interface}
+    Suppose that $(\alpha \cdot f  \cdot f') = (\gamma \cdot g \cdot g')$, where $\alpha, \gamma : \shell{A} \xrightarrow{\mathrm{sf}} \Gamma^*$, and $f,g : A^{(1)} \xrightarrow{\mathrm{sf}} \Gamma^*$ are non-empty left-to-right bi-homomorphisms. If 
+    \[
+        \exists a, b : \shell{A} \quad \first{a^{(1)}} = \first{b^{(1)}} \quad \text{ and } \quad \inv{\gamma(a)} \cdot \alpha(a) \neq \inv{\gamma(b)} \cdot \alpha(b),
+    \]
+    then $f,g$ are $v$-unary for some root-free $v \in \Gamma^*$.
+\end{lemma}
+
+\begin{proof}
+    \katzper{TODO}
+\end{proof}
+
+\katzper{TODO: Finish this section.}
