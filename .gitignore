@@ -17,6 +17,7 @@ LaTeX build artifacts
 *.eps
 *.kaux
 *.diagnose
+*.tdo
 main-blx.bib
 main.run.xml
 

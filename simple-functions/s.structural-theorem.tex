@@ -1,6 +1,6 @@
-In this section, we state and prove our ``structural theorem'' for pairs of semantically equal simple functions, which can be seen as an analogue of \cref{lem:segment-lemma} in the world of simple functions. The difference with \cref{lem:segment-lemma} is that the part of output we use to ``connect'' two segments is not necessarily constant, but a simple function on a structurally simpler input type.
+In this section, we state and prove our ``segments theorem'' for pairs of semantically equal simple functions, which can be seen as an analogue of \cref{lem:segment-lemma} in the world of simple functions. The difference with \cref{lem:segment-lemma} is that the part of output we use to ``connect'' two segments is not necessarily constant, but a simple function on a structurally simpler input type.
 
-\begin{theorem}[Structural Theorem]\label{thm:structural-theorem}
+\begin{theorem}[Segments Theorem]\label{thm:segments-theorem}
     Suppose that $f,g : A \xrightarrow{\mathrm{sf}} \Gamma^*$ are such that $f = g$. Then, there is $k \geq 1$ and a ``segment decomposition'' into $k$ segments:
     \begin{center}
         \begin{tabular}{l|l|l|l}
@@ -16,21 +16,21 @@ In this section, we state and prove our ``structural theorem'' for pairs of sema
     \[
         f = f_1 \cdots f_k \quad \text{ and } \quad g = g_1 \cdots g_k,
     \]
-    the boundary subfunctions are chosen so that their interfaces match between adjacent segments: \katzpermargin{Isn't this property implied by previous properties?}
+    the boundary subfunctions are chosen so that their interfaces match between adjacent segments:
     \[
-        \forall i \in \{ 1, \dots, k-1 \} \quad \lint{\beta_i}{\gamma_i} = \rint{\delta_{i+1}}{\alpha_{i+1}},             
+        \forall i \in \{ 1, \dots, k-1 \} \quad \lint{\beta_i}{\delta_i} = \rint{\gamma_{i+1}}{\alpha_{i+1}},
     \]
     and every segment $i \in [k]$ is of one of three types:
     \begin{enumerate}[(i)]
-        \item \textbf{Trivial} --- $f_i, g_i$ are of the type $\shell{A} \xrightarrow{\mathrm{sf}} \Gamma^*$, 
-        \item \textbf{Unary} --- $f_i, g_i$ are $v$-unary for some root-free $v \in \Gamma^*$, or 
+        \item \textbf{Trivial} --- $f_i, g_i$ are of the type $\shell{A} \xrightarrow{\mathrm{sf}} \Gamma^*$,
+        \item \textbf{Unary} --- $f_i, g_i$ are $v$-unary for some root-free $v \in \Gamma^*$, or
         \item \textbf{Bi-homomorphic} --- $f_i, g_i$ are left-to-right bi-homomorphisms on some part of the input $A^{(j)}$,  $\alpha_i, \gamma_i$ are on $\first{A^{(j)}}$ and $\beta_i, \delta_i$ are on $\last{A^{(j)}}$, or the same is true for reverse of the segment.
     \end{enumerate}
 \end{theorem}
 
-The analysis of two equal simple functions $f,g$ utilizing \cref{thm:structural-theorem} usually proceeds as follows: (1) take the segment decomposition, (2) analyse every segment separately, using induction hypothesis or more specialised tools for specific types of segments, and (3) synthesise results for individual segments using the properties of segments' interfaces. We will see an example of such reasoning in the proof of completeness of our equational system in the following sections.
+The analysis of two equal simple functions $f,g$ utilizing \cref{thm:segments-theorem} usually proceeds as follows: (1) take the segment decomposition, (2) analyse every segment separately, using induction hypothesis or more specialised tools for specific types of segments, and (3) synthesise results for individual segments using the properties of segments' interfaces. We will see an example of such reasoning in the proof of completeness of our equational system in the following sections.
 
-But, before we proceed to that, we prove \cref{thm:structural-theorem}. Suppose that $f = g$ are two simple functions of the type $A \xrightarrow{\mathrm{sf}} \Gamma^*$ for a general type $A = A^{(1)} \times \dots \times A^{(\ell)}$. We build the decomposition by iterative refinement, starting from one segment consisting of $\varepsilon \cdot f \cdot \varepsilon$ and $\varepsilon \cdot g \cdot \varepsilon$. Such a single-segment decomposition is trivially \textbf{proper}, by which we mean that it satisfes all conditions required by \cref{thm:structural-theorem}, apart from the fact that the only segment is potentially neither \textbf{trivial}, \textbf{unary}, nor \textbf{bi-homomorphic}. Such a segment is called \textbf{non-atomic}. As long as there exists such a \textbf{non-atomic} segment, we will split it further into smaller segments.
+But, before we proceed to that, we prove \cref{thm:segments-theorem}. Suppose that $f = g$ are two simple functions of the type $A \xrightarrow{\mathrm{sf}} \Gamma^*$ for a general type $A = A^{(1)} \times \dots \times A^{(\ell)}$. We build the decomposition by iterative refinement, starting from one segment consisting of $\varepsilon \cdot f \cdot \varepsilon$ and $\varepsilon \cdot g \cdot \varepsilon$. Such a single-segment decomposition is trivially \textbf{proper}, by which we mean that it satisfes all conditions required by \cref{thm:structural-theorem}, apart from the fact that the only segment is potentially neither \textbf{trivial}, \textbf{unary}, nor \textbf{bi-homomorphic}. Such a segment is called \textbf{non-atomic}. As long as there exists such a \textbf{non-atomic} segment, we will split it further into smaller segments.
 
 Suppose that there is a \textbf{non-atomic} segment consisting of $\alpha \cdot f \cdot \beta$ and $\gamma \cdot g \cdot \delta$ (we drop the index for readability --- we will now focus solely on this segment). By unfolding concatenations and grouping subfunctions on $\shell{A}$, we can represent $f$ and $g$ as:
 \[
@@ -54,40 +54,70 @@ Clearly, the ``prefix'' segment is \textbf{trivial}. But we have to argue that t
 \end{claim}
 
 \begin{proof}
-    The only non immediate condition we have to verify is that interfaces on the boundary of the two segments match. In other words, that 
+    The only non immediate condition we have to verify is that interfaces on the boundary of the two segments match. In other words, that
     \[
         \lint{(f_1 s_1 \cdots f_n s_n \cdot \beta)_{| \shell{A}}}{(g_1 t_1 \cdots g_m t_m \cdot \delta)_{| \shell{A}}} = \rint{\gamma \cdot t_0}{\alpha \cdot s_0}.
-    \]   
-    However, this directly follows from the definition of interface and the fact that 
+    \]
+    However, this directly follows from the definition of interface and the fact that
     \[
         (\alpha \cdot s_0) \cdot (f_1 s_1 \cdots f_n s_n \cdot \beta)_{| \shell{A}} = (\gamma \cdot t_0) \cdot (g_1 t_1 \cdots g_m t_m \cdot \beta)_{| \shell{A}}. \qedhere
     \]
 \end{proof}
 
-In light of this prefix-extraction procedure, we can basically assume that $s_0 = t_0 = \varepsilon$, and, by a symmetric argument, that $s_n = t_m = \varepsilon$. 
+In light of this prefix-extraction procedure, we can basically assume that $s_0 = t_0 = \varepsilon$, and, by a symmetric argument, that $s_n = t_m = \varepsilon$.
 
-\paragraph{Only one bi-homomorphisms each.} Moving forward, we have to perform some case-analysis. The first case we consider is where $n = m = 1$. In other wods, both $f$ and $g$ are bi-homomorphisms. Since $|\alpha f \beta| = |\gamma g \delta|$, we can immediately deduce that $f$ and $g$ are on the same part of the input --- without loss of generality let it be $A^{(1)}$ --- and that for every input $a : A$ we have $|f(a,a)| = |g(a,a)|$. However, we start with a broader lemma, which will also be used in some following, more general cases.
+\paragraph{Only one bi-homomorphisms each.} Moving forward, we have to perform some case-analysis. The first case we consider is where $n = m = 1$. In other wods, both $f$ and $g$ are bi-homomorphisms. We start with a broad lemma, which captures some reasons for which $f$ and $g$ could in fact be \textbf{unary}. The following lemma will also be used in the following, more general cases.
 
 \begin{lemma}\label{lem:bi-homomorphisms-causes-for-unarity}
     Suppose that $(\alpha \cdot f  \cdot f') = (\gamma \cdot g \cdot g')$, where $\alpha, \gamma : \shell{A} \xrightarrow{\mathrm{sf}} \Gamma^*$ and $f,g : A \xrightarrow{\mathrm{sf}} \Gamma^*$ are non-empty bi-homomorphisms. If at least one of the following holds:
-    \begin{itemize}
-        \item $f$ and $g$ are on different parts of the input, 
+    \begin{enumerate}[(i)]
+        \item $f$ and $g$ are on different parts of the input,
         \item $f$ is left-to-right and $g$ is right-to-left, or
-        \item there is an input $a : A$ such that $|f(a,a)| > |g(a,a)|$,
-    \end{itemize}
-    then $f,g$ are $v$-unary for some root-free $v \in \Gamma^*$. 
+        \item $f, g$ are on $A^{(1)}$ and there is an input $a : \inter{A^{(1)}}$ such that $|f(a,a)| > |g(a,a)|$,
+    \end{enumerate}
+    then $f,g$ are $v$-unary for some root-free $v \in \Gamma^*$.
 \end{lemma}
 
+\katzpermargin{A lot of hand-waving in this proof currently --- this will have to be rewritten, perhaps into several smaller proofs. But the statement IS true, and is quite intuitive.}
+
 \begin{proof}
-    \katzper{TODO}
+    First, we observe that it suffices to show that one of $f,g$ is $v$-unary for some root-free $v \in \Gamma^*$, and the statement will follow. Indeed, without loss of generality (this part of the argument will be symmetric) suppose that $g$ is $v$-unary. Suppose that $f$ is on $A^{(1)}$ and let $x : A^{(1)}$ be arbitrary. If we consider an input $a : A$ in which $x$ appears multiple times in $a^{(1)}$ and both $|f(a)|$ and $|g(a)|$ are large, we will find a copy of $f(x)$ entirely covered by $g(a)$. Thus, we have $f(x) \leq_\infix g(a) \leq_\infix v^\omega$. Since $x$ was arbitrary, we have that $f$ is $v$-unary too.
+
+    Therefore, we want to show that $g$ is $v$-unary for some root-free $v \in \Gamma^*$. The strategy is to prepare an input of type $A$, in which the output of $g$ will be completely covered by a periodic output of $f$ originating from a different part of in the input. In each case we do it a bit differently.
+
+    Suppose that $f$ is on $A^{(1)}$. Pick any $a_0 : \first{A^{(1)}}$ and $x : A^{(1)}$. For any $M \geq 1$, we denote
+    \[
+        A^{(1)} \ni y^M = a_0 \myunderbrace{\cdot x \cdot a_0 \cdots x \cdot a_0 \cdot x \cdot a_0}{\text{$M$ times}}.
+    \]
+    Moreover, we choose $x$ such that $|f(y)| > 0$, and if the condition (iii) holds, then additionaly $|f(y)| > |g(y)|$. Note that $f(y^M) = f(y)^M$.
+
+    Suppose that (i) holds and $g$ is on $A^{(2)}$. Let $z : A^{(2)}$ be arbitrary. We will show that $g(z) \leq_\infix f(y)^\omega$. To this end, consider an input of the following shape:
+    \[
+        A \ni a = \left( y^M, z^N, \dots \right),
+    \]
+    for some $M, N \geq 1$. We know that the words $(\alpha f f')(a)$ and $(\gamma g g')(a)$ are equal, and that they start with $\alpha(a) \cdot f(y)^M$ and $\gamma(a) \cdot (g(z) \cdot g(\last{z}, \first{z}))^{N-1}$, respectively. Therefore, with sufficiently large $N$ and $M$, a copy of $g(z)$ will be entirely covered by the word $f(y)^M$. Since $z$ was arbitrary, we deduce that $g$ is $f(y)$-unary.
+
+    Next, suppose that $g$ is on $A^{(1)}$ and (ii) holds, that is, $f$ is left-to-right, while $g$ is right-to-left. Let $z : A^{(2)}$ be arbitrary and consider an input of the following shape:
+    \[
+        A \ni a \left( y^M \cdot z^N, \dots \right),
+    \]
+    for some $M, N \geq 1$. Now, $(\alpha f f')(a)$ and $(\gamma g g')(a)$ start with $\alpha(a) \cdot f(y)^M$ and $\gamma(a) \cdot (g(z) \cdot g(\first{z}, \last{z}))^{N-1}$, respectively. As in the previous case, we deduce that $g$ is $f(y)$-unary.
+
+    Finally, suppose that $f,g$ are on $A^{(1)}$, they are both left-to-right (the case right-to-left is symmetric), and (iii) holds. Recall that $y$ was constructed in such a way that $|f(y)| > |g(y)|$. Let $z : A^{(2)}$ be arbitrary. The input we consider now is the same as in the previous case:
+    \[
+        A \ni a = (y^M \cdot z^N, \dots),
+    \]
+    for some $M, N \geq 1$. The words $(\alpha f f')(a)$, $(\gamma g g')(a)$ start with $\alpha(a) \cdot f(y)^M$ and $\gamma(a) \cdot g(y)^M \cdot (g(z) \cdot g(\last{z}, \first{z}))^{N-1}$. If we choose large $M$ so that $|\alpha(a) \cdot f(y)^M| - |\gamma(a) \cdot g(y)^M|$ is large, and then increase $N$, we again will obtain a copy of $g(z)$ covered by $f(y)^M$. Thus, $g$ is $f(y)$-unary.
+
+    We finish the proof by setting $v$ to be the smallest root of $f(y)$.
 \end{proof}
 
-In light of \cref{lem:bi-homomorphisms-causes-for-unarity}, if the segment consisting of $(\alpha f \beta)$ and $(\gamma g \delta)$ is not \textbf{unary}, then both $f$ and $g$ must have the same direction --- we assume that they are both left-to-right, as the opposite case is symmetric.
+In light of \cref{lem:bi-homomorphisms-causes-for-unarity}, if the segment consisting of $(\alpha f \beta)$ and $(\gamma g \delta)$ is not \textbf{unary}, then $f, g$ must (1) be on the same part of the input $A^{(1)}$, (2) have the same direction --- we assume that they are both left-to-right, as the opposite case is symmetric, and (3) for every $a : \inter{A^{(1)}}$, we have $|f(a,a)| = |g(a,a)|$.
 
-Moving forward, we have to address the next potential issue preventing the segment from being \textbf{bi-homomorphic}: $\alpha_i$ and $\gamma_i$ are not necessarily on $\first{A}$. The way we handle this is we show that $\rint{\alpha}{\gamma}$ depends only on the first element of $A^{(1)}$ --- otherwise $f$ and $g$ would be unary --- and hence we can perform some segment refinement.
+Moving forward, we have to address the next potential issue preventing the segment from being \textbf{bi-homomorphic}: $\alpha_i$ and $\gamma_i$ are not necessarily on $\first{A^{(1)}}$. The way we handle this is we show that $\rint{\alpha}{\gamma}$ depends only on the first element of $A^{(1)}$ --- otherwise $f$ and $g$ would be unary --- and hence we can perform some segment refinement.
 
 \begin{lemma}\label{lem:bi-homomorphisms-cause-for-unarity-by-prefix-interface}
-    Suppose that $(\alpha \cdot f  \cdot f') = (\gamma \cdot g \cdot g')$, where $\alpha, \gamma : \shell{A} \xrightarrow{\mathrm{sf}} \Gamma^*$, and $f,g : A^{(1)} \xrightarrow{\mathrm{sf}} \Gamma^*$ are non-empty left-to-right bi-homomorphisms. If 
+    Suppose that $(\alpha \cdot f  \cdot f') = (\gamma \cdot g \cdot g')$, where $\alpha, \gamma : \shell{A} \xrightarrow{\mathrm{sf}} \Gamma^*$, and $f,g : A^{(1)} \xrightarrow{\mathrm{sf}} \Gamma^*$ are non-empty, left-to-right bi-homomorphisms, such that for every $a : \inter{A^{(1)}}$ we have $|f(a,a)| = |g(a,a)|$. If
     \[
         \exists a, b : \shell{A} \quad \first{a^{(1)}} = \first{b^{(1)}} \quad \text{ and } \quad \inv{\gamma(a)} \cdot \alpha(a) \neq \inv{\gamma(b)} \cdot \alpha(b),
     \]
@@ -95,7 +125,137 @@ Moving forward, we have to address the next potential issue preventing the segme
 \end{lemma}
 
 \begin{proof}
-    \katzper{TODO}
+    Let $a_0 = \first{a^{(1)}} = \first{b^{(1)}}$ and $\alpha' : \shell{A} \to \Gamma^*$ be defined as $\alpha'(a) = \alpha(a[\first{a^{(1)}} \leftarrow a_0])$. Similarly define $\gamma'$. Note that $\alpha', \gamma'$ are simple functions. \katzpermargin{We should have a lemma that if you have a simple function on product type, and you fix one of the input parts to a constant, then the resulting restricted function is also simple.} By assumptions, we know that $\rint{\alpha'}{\gamma'}$ is not constant.
+
+    We argue that $|\alpha'| - |\gamma'|$ can be arbitrarily large or small. On the contrary, suppose that $||\alpha'| - |\gamma'||$ is bounded --- then it is constant. \katzpermargin{This also should be a lemma --- that if the difference of length of two simple functions is bounded, then it is constant.} Without loss of generality, assume that it is equal to a non-negative constant $d \geq 0$. We have that $\inv{\gamma'(a)}\alpha'(a)$ and $\inv{\gamma'(b)}\alpha'(b)$ are two distinct words of length exactly $d$. Now, consider two inputs $x_0, x_1 : A$ with $\shell{x_0} = a, \shell{x_1} = b$ and $x_0^{(1)} = (a_0 \cdot y \cdot z_0), x_1^{(1)} = (a_0 \cdot y \cdot z_1)$, where $|g(y)| \geq d$. If we plug inputs $x_0$ and $x_1$ into $(\alpha f f')$ and $(\gamma g g')$, we obtain that
+    \[
+        \alpha'(a) \leq_\prefix \gamma'(a) \cdot g(a_0 \cdot y) \quad \text{ and } \quad \alpha'(b) \leq_\prefix \gamma'(b) \cdot g(a_0 \cdot y).
+    \]
+    In other words, both $\inv{\gamma'(a)}\alpha'(a)$ and $\inv{\gamma'(b)}\alpha'(b)$ are prefixes of $g(a_0 \cdot y)$. But they are two distinct words of the same length --- contradiction.
+
+    Therefore, the difference $|\alpha'| - |\gamma'|$ is unbounded. Without loss of generality, assume that it can be arbitrarily large. \katzpermargin{Here comes another portion of hand-waving... I will write this formally at some point.} This means, that some interior list element in some part of $\shell{A}$ can be pumped to make $|\alpha'| - |\gamma'|$ arbitrarily large. Moreover, the hanging part $\inv{\gamma'}\alpha'$ will be a periodic word --- with the exception of at most a constant number of letters on the endpoints. Thus, we can show that $g$ is unary; let $x : A^{(1)}$ be arbitrary and consider an input of the form $A \ni y = (a_0 \cdot x^M \dots, \dots)$ for some $M \geq 1$, such that $|\alpha'(y)| - |\gamma'(y)| \geq |g(a_0 \cdot x^M)|$. By choosing $M$ sufficiently large and plugging $y$ into $(\alpha f f')$ and $(\gamma g g')$, we can see that some copy of $g(x)$ must be covered by the hanging interface $\inv{\gamma'(y)} \alpha'(y)$, at a constant distance from its endpoints. Therefore, $g$ is $v$-unary for some root-free $v \in \Gamma^*$. By a similar argument to the beginning of the proof of \cref{lem:bi-homomorphisms-causes-for-unarity}, $f$ must also be $v$-unary. \katzpermargin{This argument that if $g$ is $v$-unary, then $f$ is also $v$-unary, could be extracted to a separate claim.}
 \end{proof}
 
-\katzper{TODO: Finish this section.}
+By virtue of \cref{lem:bi-homomorphisms-cause-for-unarity-by-prefix-interface}, we additionaly have that $(\inv{\gamma} \alpha)$ depends only on the first element of the input list. This opens the door for further segment refinement. Choose any element $a : \shell{A}$ and let $\alpha' : \first{A^{(1)}} \to \Gamma^*$ be defined as $\alpha'(a_0) = \alpha(a[\first{a^{(1)}} \leftarrow a_0])$. Similarly define $\gamma' : \first{A^{(1)}} \to \Gamma^*$. Note that both $\alpha'$ and $\gamma'$ are simple functions, as they are obtained from simple functions on a product type, where some parts of the input were fixed to constants. Moreover, $\inv{\gamma'} \alpha' = \inv{\gamma} \alpha$. With this in hand, we refine the segment as follows:
+
+\begin{center}
+    \begin{tabular}{l|l}
+        $\alpha \cdot \varepsilon \cdot (f \cdot \beta)_{| \shell{A}}$ & $\alpha' \cdot f \cdot \beta$ \\
+        $\myunderbrace{\gamma \cdot \varepsilon \cdot (g \cdot \delta)_{| \shell{A}}}{\text{first}}$ & $\myunderbrace{\gamma' \cdot g \cdot \delta}{rest}$
+    \end{tabular}
+\end{center}
+
+\begin{claim}
+    The decomposition into segments ``first'' and ``rest'' is \textbf{proper}.
+\end{claim}
+
+\begin{proof}
+    Since $(\alpha f \beta) = (\gamma g \delta)$ on $A$, then $\alpha \cdot (f \cdot \beta)_{| \shell{A}} = \gamma \cdot (g \cdot \delta)_{| \shell{A}}$. As for the ``rest'' segment, we have
+    \[
+        \alpha f \beta = \gamma g \delta \implies \inv{\gamma} \alpha \cdot f \beta = g \delta \implies \inv{\gamma'} \alpha' \cdot f \beta = g \delta \implies \alpha ' f \beta = \gamma' g \delta.
+    \]
+    It remains to show compatibility of interfaces between the two segments. This follows directly from $\alpha' f \beta = \gamma' g \delta$:
+    \[
+        \alpha' (f \beta)_{| \shell{A}} = \gamma' (g \delta)_{| \shell{A}} \implies \lint{(f \beta)_{| \shell{A}}}{(g \delta)_{| \shell{A}}} = \rint{\gamma'}{\alpha'} \qedhere
+    \]
+\end{proof}
+
+What did we obtain with such a refinement? The segment ``first'' is \textbf{trivial}, and the segment ``rest'' starts to resemble a \textbf{bi-homomorphic} segment, because $\alpha'$ and $\gamma'$ are on $\first{A^{(1)}}$. Indeed, the only thing left to transform the segment into a truly \textbf{bi-homomorphic} segment is to repeat the reasoning above with the functions $\beta, \delta$, possibly producing one more \textbf{trivial} segment to the right. This finishes the reasoning in the case where $n = m = 1$.
+
+\paragraph{Shell-invariant partitions.} We move on to the case where $n + m > 2$. One thing that lets us easily reduce to simpler subproblems is the occurrence of a syntactic partition of $(f_1 \cdot s_1 \cdots f_n)$ and $(g_1 \cdot t_1 \cdots g_m)$ into two parts, such that their corresponding interfaces depend only on the shell part of the input. In other words, suppose that there are indices $i \in [n], j \in [m]$, such that $1 \leq i+j < n + m$ and
+\[
+    \rint{\alpha \cdot f_{\leq i}}{\gamma \cdot g_{\leq j}} = \rint{\alpha \cdot (f_{\leq i})_{| \shell{A}}}{\gamma \cdot (g_{\leq j})_{| \shell{A}}}, \tag{{\color{magenta}$*$}}\label{eq:shell-invariant-partitions-right-interfaces}
+\]
+where $f_{\leq i} = (f_1 \cdot s_1 \cdots f_i)$ and $g_{\leq j} = (g_1 \cdot t_1 \cdots g_j)$. In such a case, we can refine the segment as follows:
+
+\begin{center}
+    \begin{tabular}{l|l}
+        $\alpha \cdot f_{\leq i} \cdot \left( s_i \cdot f_{>i} \cdot \beta \right)_{| \shell{A}}$ & $(\alpha \cdot f_{\leq i})_{| \shell{A}} \cdot (s_i \cdot f_{> i}) \cdot \beta$ \\
+        $\myunderbrace{\gamma \cdot g_{\leq j} \cdot \left( t_j \cdot g_{>j} \cdot \delta \right)_{| \shell{A}}}{\text{left}}$ & $\myunderbrace{(\gamma \cdot g_{\leq j})_{| \shell{A}} \cdot (t_j \cdot g_{>j}) \cdot \delta}{\text{right}}$
+    \end{tabular}
+\end{center}
+
+Both segments are simpler that the original one, in the sense that each of them contains less than $n + m$ bi-homomorphisms on the outer input lists. Therefore, it remains to show that the refinement is \textbf{proper}.
+
+\begin{claim}
+    The decomposition into segments ``left'' and ``right'' is \textbf{proper}.
+\end{claim}
+
+\begin{proof}
+    To show that functions in ``left'' are equal, we write:
+    \begin{gather*}
+        (\alpha \cdot f_{\leq i} \cdot s_i \cdot f_{>i} \cdot \beta)_{| \shell{A}} = (\gamma \cdot g_{\leq j} \cdot t_j \cdot g_{>j} \cdot \delta)_{| \shell{A}} \\
+        \inv{(\gamma \cdot g_{\leq j})_{| \shell{A}}} \cdot (\alpha \cdot f_{\leq i})_{| \shell{A}} \cdot (s_i \cdot f_{>i} \cdot \beta)_{\shell{A}} = (t_j \cdot g_{>j} \cdot \delta)_{| \shell{A}} \\
+        \inv{(\gamma \cdot g_{\leq j})} \cdot (\alpha \cdot f_{\leq i}) \cdot (s_i \cdot f_{>i} \cdot \beta)_{\shell{A}} = (t_j \cdot g_{>j} \cdot \delta)_{| \shell{A}} \tag*{\eqref{eq:shell-invariant-partitions-right-interfaces}}
+    \end{gather*}
+    It now follows that the functions in ``left'' are equal. The same can be shown for ``right'' by analogous argument, using the fact that \eqref{eq:shell-invariant-partitions-right-interfaces} implies a similar equality for left interfaces:
+    \begin{align*}
+        \lint{s_i \cdot f_{>i} \cdot \beta}{t_j \cdot g_{>j} \cdot \delta} &= \rint{\gamma \cdot g_{\leq j}}{\alpha \cdot f_{\leq i}} \\
+          &= \rint{\gamma \cdot (g_{\leq j})_{| \shell{A}}}{\alpha \cdot (f_{\leq i})_{| \shell{A}}} \tag*{\eqref{eq:shell-invariant-partitions-right-interfaces}} \\
+          &= \lint{s_i \cdot (f_{>i})_{| \shell{A}} \cdot \beta}{t_j \cdot (g_{>j})_{| \shell{A}} \cdot \delta}.
+    \end{align*}
+    It remains to show that interfaces on the boundary of ``left'' and ``right'' are compatible. We write:
+    \begin{gather*}
+        (\alpha \cdot f_{\leq i} \cdot s_i \cdot f_{>i} \cdot \beta)_{| \shell{A}} = (\gamma \cdot g_{\leq j} \cdot t_j \cdot g_{>j} \cdot \delta)_{| \shell{A}} \\
+        (s_i \cdot f_{>i} \cdot \beta)_{| \shell{A}} \cdot \inv{(t_j \cdot g_{>j} \cdot \delta)_{| \shell{A}}} = \inv{(\alpha \cdot f_{\leq i})_{| \shell{A}}} \cdot (\gamma \cdot g_{\leq j})_{| \shell{A}} \\
+        \lint{(s_i t_{>i} \beta)_{| \shell{A}}}{(t_j g_{>j} \delta)_{| \shell{A}}} = \rint{(\gamma g_{\leq j})_{| \shell{A}}}{(\alpha f_{\leq i})_{| \shell{A}}} \qedhere
+    \end{gather*}
+\end{proof}
+
+\paragraph{Otherwise, the segment is unary.} It turns out that if $n + m > 2$ and there is no shell-invariant partition as in the previous paragraph, then the segment is already unary. This is formalized in the following claim, which now implies \cref{thm:segments-theorem}.
+
+\begin{claim}\label{claim:if-no-shell-invariant-partition-then-unary}
+    Suppose that $n + m > 2$ and for all $i \in [n], j \in [m]$ such that $1 \leq i + j < n + m$ we have that
+    \[
+        \exists a, b : A \quad \shell{a} = \shell{b} \quad \text{and} \quad \inv{(\gamma g_{\leq j})(a)} \cdot (\alpha f_{\leq i})(a) \neq \inv{(\gamma g_{\leq j})(b)} \cdot (\alpha f_{\leq i})(b).
+    \]
+    Then $f_{\leq n}$ and $g_{\leq m}$ are $v$-unary for some root-free $v \in \Gamma^*$.
+\end{claim}
+
+We finish this section with a proof of \cref{claim:if-no-shell-invariant-partition-then-unary}. The strategy of the proof is to show unarity for $f_{\leq i}, g_{\leq j}$ for larger, and larger $i$ and $j$. First, we start with $i = j = 1$.
+
+\begin{claim}
+    $f_1, g_1$ are $v$-unary for some root-free $v \in \Gamma^*$.
+\end{claim}
+
+\begin{proof}
+    By \cref{lem:bi-homomorphisms-causes-for-unarity}, we can assume that $f_1,g_1$ are on the same part of input $A^{(1)}$, are both left-to-right (right-to-left case is symmetric), and that for every $a : \inter{A^{(1)}}$ we have $|f_1(a,a)| = |g_1(a,a)|$. Furthermore, by \cref{lem:bi-homomorphisms-cause-for-unarity-by-prefix-interface}, we have that $\inv{\gamma(a)} \cdot \alpha(a)$ depends only on $\first{a}$. We will show that this cannot happen, because then $i = j = 1$ is a shell-invariant partition.
+
+    Let $a : A$ be an arbitrary input with $a^{(1)} = [a_1, \dots, a_k]$. First, we estimate the length of the interface $(\inv{\gamma g_1})(\alpha f_1)$. We obtain that it is equal to:
+    \begin{align*}
+        \left| \rint{\alpha \cdot f_1}{\gamma \cdot g_1} \right| &= |\alpha(a) \cdot f_1(a^{(1)})| - |\gamma(a) \cdot g_1(a^{(1)})| \\
+                       &= (|\alpha(a)| - |\gamma(a)|) + \left( |f_1(a_1, a_k)| - |g_1(a_1, a_k)| \right),
+    \end{align*}
+    which is an expression only depending on $\shell{a}$. Furthermore, by considering an input $a'$ with $(a')^{(1)} = [a_1, \dots, a_k, a_k^M]$ for sufficiently large $M \geq 1$, we note that $\left| \rint{\alpha \cdot f_1}{\gamma \cdot g_1} \right|$ (or its inverse) must be a prefix of $f_1(a_k, a_k)^\omega$ or $g_1(a_k, a_k)^\omega$. Therefore, $\left| \rint{\alpha \cdot f_1}{\gamma \cdot g_1} \right|$ indeed depends only on $\shell{a}$, and therefore $i = j = 1$ gives a shell-invariant partition, contradicting the assumption that there is no such partition.
+\end{proof}
+
+Moving forward, suppose that $f_{\leq i}, g_{\leq j}$ are $v$-unary for some $\Gamma^*$ and $i \in [n], j \in [m]$ are maximal. We argue that $i + j = n + m$. Suppose that it is not the case and $i + j < n + m$.
+
+By \cref{lem:unary-is-the-same-as-cyclic}, there are $u_0, u_1, w_0, w_1 \in \Gamma^*$ such that $(u_0 f_{\leq i} w_0)$ and $(u_1 g_{\leq j} w_1)$ are $v$-cyclic. This allows us to show that the interface $\inv{(\gamma g_{\leq j})}(\alpha f_{\leq i})$ is unary. First, fix any input $a : A$. Observe that we can always add some interior list elements into $a$ to make $f_{\leq i}(a)$ and $g_{\leq j}(a)$ long, without affecting the shell. By doing this, we deduce that there are $x, y \geq 0$ such that
+\[
+    \alpha(a) \cdot (\inv{u_0} \cdot v) \cdot v^x = \gamma(a) \cdot (\inv{u_1} \cdot v) \cdot v^y.
+\]
+By rearranging terms, we get $(\inv{\gamma} \alpha)(a) = \inv{u_1} \cdot v^{y-x} \cdot u_0$. Next, we analyse the interface:
+\begin{align*}
+    \rint{\alpha \cdot f_{\leq i}}{\gamma \cdot g_{\leq j}}(a) &= \inv{g_{\leq j}(a)} \cdot \inv{\gamma(a)} \cdot \alpha(a) \cdot f_{\leq i}(a) \\ &\in (w_1 \cdot \inv{v}^* \cdot u_1) \cdot \left( \inv{\gamma(a)} \cdot \alpha(a) \right) \cdot (\inv{u_0} \cdot v^* \cdot \inv{w_0}) \\
+    &\in w_1 \cdot v^{(*)} \cdot \overline{w_0}.
+\end{align*}
+Now, we observe that there must be a part of input $A^{(\ell)}$ and an element $c : \inter{A^{(\ell)}}$ such that pumping $c$ increases or decreases $|\alpha \cdot f_{\leq i}| - |\gamma \cdot g_{\leq j}|$. Otherwise, the length $|\alpha \cdot f_{\leq i}| - |\gamma \cdot g_{\leq j}|$ would depend only on the shell --- and in addition with the fact that interface is always in $w_1 \cdot v^{(*)} \cdot \overline{w_0}$ --- that would mean that $i,j$ give a shell-invariant partition.
+
+Without loss of generality, suppose that $|\alpha \cdot f_{\leq i}| - |\gamma \cdot g_{\leq j}|$ can get arbitrarily large by pumping an element $c : \inter{A^{(\ell)}}$. Clearly, this implies that $j < m$, as there must be some bi-homomorphism to the right of $g_j$ to catch up after $c$ is pumped. The last thing we now have to do is to show that $g_{\leq j+1}$ is $v$-unary. The following claim finishes the proof of \cref{claim:if-no-shell-invariant-partition-then-unary} and \cref{thm:segments-theorem}.
+
+\begin{claim}
+    $g_{\leq j+1}$ is $v$-unary.
+\end{claim}
+
+\begin{proof}
+    Fix any input $a : A$. Assume that $g_{j+1}$ is a left-to-right bi-homomorphism (the right-to-left case is symmetric). We want to pump the element $c$ so that the hanging interface $\inv{(\gamma g_{\leq j})(a)} \cdot (\alpha f_{\leq i})(a)$ covers the entire output $(t_j \cdot g_{j+1})(a)$. If $g_{j+1}$ is not on $A^{(\ell)}$, we can pump $c$ anywhere inside $a^{(\ell)}$. On the other hand, if $g_{j+1}$ is on $A^{(\ell)}$, then we must pump it at the end of $a^{(\ell)}$, and repeat the last element $\last{a^{(\ell)}}$ at the end. In both cases, we obtain that $(t_j \cdot g_{j+1})(a)$ is an infix of the hanging interface, which we have already shown to be an infix of $v^\omega$. Therefore, $(t_j \cdot g_{j+1})$ is $v$-unary.
+
+    By \cref{lem:unary-is-the-same-as-cyclic}, there are $u_2, w_2 \in \Gamma^*$ such that $(u_2 \cdot t_j \cdot g_{j+1} \cdot w_2)$ is $v$-cyclic. Recall that $(u_1 \cdot g_{\leq j} \cdot w_1)$ is also $v$-cyclic. We can assume that $|u_2| \in \{0, \dots, |v| - 1 \}$ and $w_1 \in \{1, \dots, |v| \}$. By \nameref{rule:unarity-concat}, if we show that $(u_2 \cdot w_1) \in v^*$, then $(u_1 \cdot g_{\leq j+1} \cdot w_2)$ is $v$-cyclic, and the statement follows.
+
+    To show that $(u_2 \cdot w_1) \in v^*$, consider an input $a : A$ such that (1) both $g_{\leq j}(a)$ and $(t_j \cdot g_{j+1}(a))$ contain at least 3 copies of $v$ each, and (2) the word $f_{\leq i}(a)$ covers the last 3 copies of $v$ in $g_{\leq j}(a)$ and the first 3 copies of $v$ in $(t_j \cdot g_{j+1})(a)$. We obtain that
+    \[
+        v \cdot (v \inv{w_1}) \cdot (\inv{u_2} v) \cdot v \leq_\infix f_{\leq i}(a) \leq_{\infix} v^\omega.
+    \]
+    By \cref{lem:prime-words-must-perfectly-align}, the copies of $v$ in the left-hand side must align perfectly with copies of $v$ in $v^\omega$, therefore $(v \inv{w_1}) \cdot (\inv{u_2} v) \in v^*$, and as a consequence, $(u_2 \cdot w_1) \in v^*$.
+\end{proof}

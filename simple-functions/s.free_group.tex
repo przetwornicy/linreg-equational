@@ -1,5 +1,5 @@
 \begin{definition}[Root-free group elements]
-    We say that $v \in \Gamma^{(*)}$ is root-free if 
+    We say that $v \in \Gamma^{(*)}$ is root-free if
     \[
         \forall w \in \Gamma^{(*)}, k \geq 0 \quad v = w^k \implies k = 1.
     \]
@@ -18,7 +18,7 @@ Note that, in particular, $\varepsilon$ is not root-free. We will be mostly inte
 By \cref{lem:root-free-in-monoid-gives-root-free-in-group}, the notion of being root-free for $v \in \Gamma^*$ coincides with the combinatorial notion of ``primality'' --- that is, the condition $v$ cannot be obtained by repeating an other word in $\Gamma^*$ several (more than one) times. However, we will stick to the ``root-free'' name.
 
 \begin{lemma}[Common root lemma, {\cite[Proposition 2.17]{lyndon2001}}]\label{lem:common-root-theorem}
-    Suppose that $v,w \in \Gamma^{(*)}$ and $k, \ell \in \mathbb{Z} \setminus \{0 \}$ are such that $v^k = w^\ell$. Then $v$ and $w$ have a common root --- there are $r \in \Gamma^{(*)}$ and $p,q \in \mathbb{Z} \setminus \{0 \}$ such that $v = r^p$ and $w = r^q$. 
+    Suppose that $v,w \in \Gamma^{(*)}$ and $k, \ell \in \mathbb{Z} \setminus \{0 \}$ are such that $v^k = w^\ell$. Then $v$ and $w$ have a common root --- there are $r \in \Gamma^{(*)}$ and $p,q \in \mathbb{Z} \setminus \{0 \}$ such that $v = r^p$ and $w = r^q$.
 \end{lemma}
 
 \begin{lemma}\label{lem:prime-words-must-perfectly-align}
@@ -38,10 +38,10 @@ By \cref{lem:root-free-in-monoid-gives-root-free-in-group}, the notion of being 
 \end{proof}
 
 \begin{lemma}\label{lem:between-two-copies-of-v-it-must-be-power-of-v}
-    Suppose that $x, v \in \Gamma^*$ and $v$ is root-free. If $v x v \leq_\infix v^\omega$, then $x \in v^*$. 
+    Suppose that $x, v \in \Gamma^*$ and $v$ is root-free. If $v x v \leq_\infix v^\omega$, then $x \in v^*$.
 \end{lemma}
 
-As a simple consequence of \cref{lem:copy-of-v-in-infix-splits-into-prefix-and-suffix}, we obtain the following lemma allowing us to ``pump'' copies of $v$ in infixes of $v^\omega$. 
+As a simple consequence of \cref{lem:copy-of-v-in-infix-splits-into-prefix-and-suffix}, we obtain the following lemma allowing us to ``pump'' copies of $v$ in infixes of $v^\omega$.
 
 \begin{lemma}\label{lem:copies-of-v-can-be-pumped}
     Suppose that $v,x,y \in \Gamma^*$ and $v$ is root-free. If $x v y \leq_\infix v^\omega$, then $x v^k y \leq_\infix v^\omega$ for every $k \geq 0$.
